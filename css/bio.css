@@ -1,9 +1,9 @@
 /* ============================================================
    DON LOW — Bio page
-   Sticky 3D mask + scroll-synced word reveal
+   Sticky 3D mask filling viewport + text overlay at bottom
+   Scroll drives rotation + word reveal
    ============================================================ */
 
-/* Frame overrides */
 .bg-overlay--solid {
   position: fixed;
   inset: 0;
@@ -14,46 +14,48 @@
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: auto; /* we need precise scroll, not smooth */
+  scroll-behavior: auto;
 }
 
-/* Nav override for this page (single active link) */
 .nav--visible { opacity: 1; transform: none; }
 .nav__active {
   opacity: 1 !important;
   color: #9B7A1E !important;
 }
 
-/* --- Content wrapper -------------------------------------- */
+/* --- Scroll container ------------------------------------- */
 .bio-content {
   position: relative;
-  padding-top: 60px;
+  /* Tall — this is the scroll distance that drives the rotation+text reveal */
+  min-height: 260vh;
+  min-height: 260dvh;
+  padding-top: 60px; /* room for nav */
 }
 
-/* --- Sticky 3D stage -------------------------------------- */
-.bio-stage {
+/* --- Sticky viewport (fills remaining frame) -------------- */
+.bio-viewport {
   position: sticky;
-  top: 60px; /* below nav */
+  top: 60px;
   width: 100%;
-  height: 52vh;
-  height: 52dvh;
-  overflow: hidden;
-  z-index: 1;
+  height: calc(100vh - 60px);
+  height: calc(100dvh - 60px);
   background: #E8E0D0;
+  overflow: hidden;
 }
 
-/* Red square backdrop */
+/* --- Red square backdrop ---------------------------------- */
 .bio-stage__backdrop {
   position: absolute;
   top: 50%; left: 50%;
-  width: 80%;
+  width: 85%;
+  max-width: 650px;
   transform: translate(-50%, -50%);
   z-index: 1;
-  opacity: 0.9;
+  opacity: 0.95;
   pointer-events: none;
 }
 
-/* Canvas host (Three.js injects canvas inside) */
+/* --- 3D canvas (fills entire viewport) -------------------- */
 .bio-stage__canvas {
   position: absolute;
   inset: 0;
@@ -65,14 +67,14 @@
   height: 100% !important;
 }
 
-/* Loader indicator */
+/* --- Loader ----------------------------------------------- */
 .bio-stage__loader {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3;
+  z-index: 4;
   pointer-events: none;
   transition: opacity 0.6s;
 }
@@ -88,31 +90,39 @@
   opacity: 0;
 }
 
-/* --- Text section ----------------------------------------- */
-.bio-text-section {
-  position: relative;
-  z-index: 2;
-  padding: 40px 32px 60px;
-  background: #E8E0D0;
-  min-height: 120vh;
-  min-height: 120dvh;
+/* --- Text overlay (bottom of viewport) -------------------- */
+.bio-text-overlay {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 3;
+  padding: 80px 28px 40px;
+  /* Gradient fade: transparent at top, solid at bottom */
+  background: linear-gradient(
+    to top,
+    rgba(232, 224, 208, 0.98) 0%,
+    rgba(232, 224, 208, 0.92) 45%,
+    rgba(232, 224, 208, 0) 100%
+  );
+  max-height: 55%;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .bio-title {
   font-family: 'JRK', 'Teko', sans-serif;
-  font-size: 64px;
+  font-size: 48px;
   letter-spacing: 0.08em;
   line-height: 1;
   color: #080808;
-  margin-bottom: 40px;
+  margin-bottom: 16px;
   text-transform: uppercase;
 }
 
 .bio-paragraph {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  font-size: 18px;
-  line-height: 1.65;
+  font-size: 16px;
+  line-height: 1.55;
   letter-spacing: 0.04em;
   color: #080808;
   text-transform: uppercase;
@@ -128,10 +138,4 @@
 .bio-word--visible {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* --- Footer spacer ---------------------------------------- */
-.bio-footer-spacer {
-  height: 20vh;
-  background: #E8E0D0;
 }

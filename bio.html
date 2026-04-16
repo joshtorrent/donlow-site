@@ -38,29 +38,31 @@
       </ul>
     </nav>
 
+    <!-- Tall scroll container — drives the rotation + reveal -->
     <div class="bio-content" id="bio-content">
 
-      <!-- STICKY 3D AREA -->
-      <div class="bio-stage">
+      <!-- Sticky viewport (stays pinned throughout scroll) -->
+      <div class="bio-viewport">
+
+        <!-- Backdrop red square -->
         <img class="bio-stage__backdrop" src="/assets/bio/carre-rouge.png" alt="" />
+
+        <!-- 3D canvas host (takes full viewport) -->
         <div class="bio-stage__canvas" id="bio-canvas-wrap"></div>
-        <!-- Loading indicator -->
+
+        <!-- Loader -->
         <div class="bio-stage__loader" id="bio-loader">
           <span>LOADING</span>
         </div>
-      </div>
 
-      <!-- SCROLL CONTENT AREA (text revealed progressively) -->
-      <section class="bio-text-section">
-        <h1 class="bio-title">BIO</h1>
-        <p class="bio-paragraph" id="bio-paragraph">
-<!-- Each word wrapped server-side — cleaner than splitting in JS -->
+        <!-- Text overlay at bottom with gradient fade -->
+        <div class="bio-text-overlay">
+          <h1 class="bio-title">BIO</h1>
+          <p class="bio-paragraph" id="bio-paragraph">
 <span class="bio-word">Don</span> <span class="bio-word">Low</span> <span class="bio-word">is</span> <span class="bio-word">an</span> <span class="bio-word">internationally</span> <span class="bio-word">renowned</span> <span class="bio-word">DJ</span> <span class="bio-word">and</span> <span class="bio-word">producer.</span> <span class="bio-word">His</span> <span class="bio-word">unique</span> <span class="bio-word">style,</span> <span class="bio-word">blending</span> <span class="bio-word">powerful</span> <span class="bio-word">Baile</span> <span class="bio-word">Funk</span> <span class="bio-word">with</span> <span class="bio-word">Bass</span> <span class="bio-word">and</span> <span class="bio-word">ethnic</span> <span class="bio-word">influences</span> <span class="bio-word">has</span> <span class="bio-word">captivated</span> <span class="bio-word">crowds</span> <span class="bio-word">at</span> <span class="bio-word">hundreds</span> <span class="bio-word">of</span> <span class="bio-word">venues</span> <span class="bio-word">around</span> <span class="bio-word">the</span> <span class="bio-word">world.</span> <span class="bio-word">He</span> <span class="bio-word">has</span> <span class="bio-word">collaborated</span> <span class="bio-word">with</span> <span class="bio-word">Klap,</span> <span class="bio-word">Smoothies,</span> <span class="bio-word">DJ</span> <span class="bio-word">Smilez</span> <span class="bio-word">and</span> <span class="bio-word">Caïo</span> <span class="bio-word">Prince.</span> <span class="bio-word">His</span> <span class="bio-word">tracks</span> <span class="bio-word">have</span> <span class="bio-word">resonated</span> <span class="bio-word">in</span> <span class="bio-word">Boiler</span> <span class="bio-word">Rooms</span> <span class="bio-word">and</span> <span class="bio-word">clubs</span> <span class="bio-word">worldwide,</span> <span class="bio-word">supported</span> <span class="bio-word">by</span> <span class="bio-word">Nas</span> <span class="bio-word">Thug,</span> <span class="bio-word">Klap,</span> <span class="bio-word">Klean,</span> <span class="bio-word">Tropkillaz,</span> <span class="bio-word">Tye</span> <span class="bio-word">Turner</span> <span class="bio-word">and</span> <span class="bio-word">Baby</span> <span class="bio-word">J,</span> <span class="bio-word">appearing</span> <span class="bio-word">on</span> <span class="bio-word">National</span> <span class="bio-word">TV</span> <span class="bio-word">and</span> <span class="bio-word">official</span> <span class="bio-word">NBA</span> <span class="bio-word">games.</span> <span class="bio-word">Founder</span> <span class="bio-word">of</span> <span class="bio-word">DON.</span> <span class="bio-word">Records,</span> <span class="bio-word">Don</span> <span class="bio-word">is</span> <span class="bio-word">a</span> <span class="bio-word">key</span> <span class="bio-word">player</span> <span class="bio-word">in</span> <span class="bio-word">both</span> <span class="bio-word">the</span> <span class="bio-word">Funk</span> <span class="bio-word">and</span> <span class="bio-word">Bass</span> <span class="bio-word">music</span> <span class="bio-word">scenes.</span>
-        </p>
-      </section>
-
-      <!-- Bottom spacer for extra scroll -->
-      <div class="bio-footer-spacer"></div>
+          </p>
+        </div>
+      </div>
 
     </div>
 
