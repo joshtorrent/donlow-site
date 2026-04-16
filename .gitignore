@@ -15,3 +15,4 @@ assets/Animation 1/
 __pycache__/
 *.pyc
 .venv/
+.vercel
