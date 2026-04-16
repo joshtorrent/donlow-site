@@ -4,6 +4,10 @@ Thumbs.db
 
 # Source PSD / raw exports (too heavy for git)
 assets/Animation 1/
+assets/Contenu brut Don Low/
+assets/Content Processed Don Low/
+assets/Page Bio/
+assets/3D/
 *.psd
 
 # Editor
