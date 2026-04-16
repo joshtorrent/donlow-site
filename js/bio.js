@@ -87,14 +87,14 @@ loader.load(
     // Center
     model.position.sub(center);
 
-    // Scale — middle ground, commanding but not cropped
+    // Scale — present but not overwhelming
     const maxDim = Math.max(size.x, size.y, size.z);
-    const scale = 2.7 / maxDim;
+    const scale = 2.3 / maxDim;
     model.scale.setScalar(scale);
 
     // Shift up so the model is centered in the VISIBLE area
     // (top 55% of the stage — text overlay covers the bottom 45%)
-    model.position.y += 0.55;
+    model.position.y += 0.45;
 
     // Initial rotation: head-down (see top of cap)
     model.rotation.x = INITIAL_TILT;
