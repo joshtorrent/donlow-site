@@ -74,8 +74,23 @@
     if (revealed) return;
     revealed = true;
 
+    // Decide layer 6: video if ready, PNG fallback otherwise
+    var videoReady = maskVideo && maskVideo.readyState >= 2;
+    if (videoReady) {
+      if (maskImg) maskImg.style.display = 'none';
+      if (maskVideo) maskVideo.style.display = 'block';
+    } else {
+      if (maskVideo) maskVideo.style.display = 'none';
+      if (maskImg) maskImg.style.display = 'block';
+    }
+
+    // Filter out the hidden layer from reveal
+    var visibleLayers = Array.from(layers).filter(function (el) {
+      return el.style.display !== 'none';
+    });
+
     // Sort layers: back (10) to front (1) for staggered reveal
-    var sorted = Array.from(layers).sort(function (a, b) {
+    var sorted = visibleLayers.sort(function (a, b) {
       return (parseInt(b.dataset.layer) || 0) - (parseInt(a.dataset.layer) || 0);
     });
 
@@ -98,35 +113,25 @@
       if (loader) loader.classList.add('loader--hidden');
     }, 100);
 
-    // Play masque video once (after reveal settles)
-    var videoDelay = uiDelay + 400;
-    setTimeout(function () {
-      startMaskVideo();
-    }, videoDelay);
+    // Play video immediately if ready (not after delay)
+    if (videoReady) {
+      // Find layer-6 reveal timing in the sequence, then play
+      var layer6Index = sorted.findIndex(function (el) {
+        return parseInt(el.dataset.layer) === 6;
+      });
+      var playDelay = (layer6Index >= 0 ? layer6Index : 0) * REVEAL_DELAY + 200;
+      setTimeout(function () {
+        maskVideo.play().catch(function () {
+          // Autoplay blocked: swap to PNG fallback
+          maskVideo.style.display = 'none';
+          maskImg.style.display = 'block';
+          maskImg.classList.add('layer--visible');
+        });
+      }, playDelay);
+    }
   }
 
   waitForAssets().then(reveal);
-
-  // ----------------------------------------------------------
-  // MASQUE VIDEO — play once, stop on last frame
-  // ----------------------------------------------------------
-  function startMaskVideo() {
-    if (!maskVideo || !maskImg) return;
-
-    // Show video, hide PNG
-    maskImg.style.display   = 'none';
-    maskVideo.style.display = 'block';
-    maskVideo.classList.add('layer--visible');
-
-    // Play once — no loop attribute in HTML
-    maskVideo.play().catch(function () {
-      // Autoplay blocked: show PNG fallback
-      maskImg.style.display   = 'block';
-      maskVideo.style.display = 'none';
-    });
-
-    // On ended: video stays on last frame (default behavior)
-  }
 
   // ----------------------------------------------------------
   // MOUSE (desktop)
