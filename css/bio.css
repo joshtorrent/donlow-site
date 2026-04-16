@@ -109,20 +109,21 @@
 }
 
 .bio-paragraph {
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: 22px;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.65;
+  letter-spacing: 0.04em;
   color: #080808;
   text-transform: uppercase;
-  word-spacing: 0.15em;
+  word-spacing: 0.08em;
 }
 
 .bio-word {
   display: inline-block;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transform: translateY(2px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 .bio-word--visible {
   opacity: 1;
