@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="/css/style.css" />
 <link rel="stylesheet" href="/css/bio.css" />
 <link rel="stylesheet" href="/css/worldwide.css" />
+<link rel="stylesheet" href="/css/testimonials.css" />
 <link rel="stylesheet" href="/css/all.css" />
 </head>
 <body>
@@ -37,6 +38,7 @@
       <a class="nav__logo" href="#top">DON LOW</a>
       <ul class="nav__links">
         <li><a href="#bio-section">Bio</a></li>
+        <li><a href="#testimonials-section">Love</a></li>
         <li><a href="#reach-section">Reach</a></li>
       </ul>
     </nav>
@@ -115,7 +117,55 @@
     </section>
 
     <!-- ================================================================
-         SECTION 3 — WORLDWIDE REACH
+         SECTION 3 — TESTIMONIALS ("They Play It. They Love It.")
+    ================================================================= -->
+    <section id="testimonials-section" class="testimonials">
+
+      <video class="testimonials__bg" autoplay muted loop playsinline preload="auto">
+        <source src="/assets/worldwide/bg-video.mp4" type="video/mp4" />
+      </video>
+      <div class="testimonials__overlay"></div>
+
+      <div class="testimonials__content">
+        <h2 class="testimonials__title">
+          They Play It.<br>
+          <span class="gold">They Love It.</span>
+        </h2>
+
+        <a class="testimonials__cta"
+           href="https://drive.google.com/drive/folders/1svWwYOacrsDXl1dncXACINcgsNiFwABC?usp=sharing"
+           target="_blank" rel="noopener">
+          Watch Live Clips
+        </a>
+
+        <div class="testimonials__main">
+          <video class="testimonials__video" id="testimonials-video" muted loop playsinline preload="metadata">
+            <source src="/assets/bio/hero-video.mp4" type="video/mp4" />
+          </video>
+
+          <div class="testimonials__dms" aria-hidden="true">
+            <div class="dms-track">
+              <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
+              <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
+              <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
+              <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
+              <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
+              <!-- Duplicated for seamless infinite loop -->
+              <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
+              <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
+              <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
+              <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
+              <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="testimonials__footer">— supported by Nas Thug · Baby J · Tropkillaz · Klap · Klean · Tye Turner</p>
+    </section>
+
+    <!-- ================================================================
+         SECTION 4 — WORLDWIDE REACH
     ================================================================= -->
     <section id="reach-section" class="reach-content">
 
@@ -233,6 +283,25 @@
     frame.addEventListener('scroll', request, { passive: true });
     window.addEventListener('resize', request);
     update();
+  })();
+  </script>
+
+  <!-- Testimonials: play the center video only when the section is in view -->
+  <script>
+  (function () {
+    var video = document.getElementById('testimonials-video');
+    if (!video) return;
+    if (!('IntersectionObserver' in window)) {
+      video.play().catch(function () {});
+      return;
+    }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) video.play().catch(function () {});
+        else video.pause();
+      });
+    }, { threshold: 0.25 });
+    obs.observe(video);
   })();
   </script>
 

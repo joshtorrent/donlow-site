@@ -1,0 +1,144 @@
+/* ============================================================
+   DON LOW — Testimonials section
+   "They Play It. They Love It." — DMs carousel + vertical video
+   ============================================================ */
+
+.testimonials {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  min-height: calc(100dvh - 60px);
+  overflow: hidden;
+  background: #080808;
+  color: #E8E0D0;
+  padding: 60px 0 50px;
+}
+
+/* Background video — blurred + dimmed */
+.testimonials__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(18px) brightness(0.35) saturate(0.7);
+  transform: scale(1.1);
+  z-index: 0;
+}
+.testimonials__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 8, 8, 0.55);
+  z-index: 1;
+}
+
+.testimonials__content {
+  position: relative;
+  z-index: 2;
+  padding: 0 24px;
+}
+
+/* --- Title ------------------------------------------------- */
+.testimonials__title {
+  font-family: 'JRK', 'Teko', sans-serif;
+  font-size: clamp(40px, 12vw, 64px);
+  line-height: 0.92;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #E8E0D0;
+  margin-bottom: 22px;
+}
+.testimonials__title .gold {
+  color: #9B7A1E;
+}
+
+/* --- CTA button ------------------------------------------- */
+.testimonials__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 22px;
+  background: #A83030;
+  color: #E8E0D0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  margin-bottom: 32px;
+  transition: background 0.2s, transform 0.2s;
+  text-decoration: none;
+}
+.testimonials__cta:hover {
+  background: #C83838;
+  transform: translateY(-2px);
+}
+.testimonials__cta::after {
+  content: "▶";
+  font-size: 11px;
+}
+
+/* --- Main grid: vertical video + DM carousel ---------------- */
+.testimonials__main {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 14px;
+  align-items: stretch;
+  height: 55vh;
+  min-height: 420px;
+}
+
+.testimonials__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #000;
+  box-shadow: 0 16px 60px rgba(0, 0, 0, 0.5);
+  display: block;
+}
+
+/* --- DM carousel — infinite vertical scroll ---------------- */
+.testimonials__dms {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+}
+.dms-track {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: scroll-dms 28s linear infinite;
+  will-change: transform;
+}
+.dms-track img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  background: #111;
+  display: block;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+@keyframes scroll-dms {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
+/* --- Footer label ----------------------------------------- */
+.testimonials__footer {
+  position: relative;
+  z-index: 2;
+  margin-top: 28px;
+  padding: 0 24px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #E8E0D0;
+  opacity: 0.5;
+  text-align: center;
+}
