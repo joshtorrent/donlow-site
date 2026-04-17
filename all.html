@@ -68,7 +68,8 @@
         <img class="layer" data-layer="7"  data-parallax="0.5" src="/assets/07-wttj-red.png"     alt="" />
 
         <video class="layer layer--video" data-layer="6" data-parallax="0.6"
-               muted playsinline preload="auto" id="layer-mask-video">
+               muted playsinline preload="auto" id="layer-mask-video"
+               poster="/assets/masque-video-poster.jpg">
           <source src="/assets/masque-video.mp4" type="video/mp4" />
         </video>
         <img class="layer" data-layer="6"  data-parallax="0.6" src="/assets/06-masque.png"       alt="" id="layer-mask-img" style="display:none;" />
@@ -97,7 +98,9 @@
     <section id="bio-section" class="bio-content bio-content--preview">
 
       <div class="bio-hero-sticky">
-        <video class="bio-hero-video" autoplay muted loop playsinline preload="auto">
+        <video class="bio-hero-video" autoplay muted loop playsinline
+               preload="none" data-lazy-video
+               poster="/assets/bio/hero-video-poster.jpg">
           <source src="/assets/bio/hero-video.mp4" type="video/mp4" />
         </video>
         <img class="bio-hero-mask bio-hero-mask--visible" src="/assets/bio/hero-mask.png" alt="DON LOW" />
@@ -136,7 +139,9 @@
     <div class="reach-scroll-wrap">
 
       <section id="reach-section" class="reach-hero reach-hero--centered reach-hero--sticky">
-        <video class="reach-hero__video" autoplay muted loop playsinline preload="auto">
+        <video class="reach-hero__video" autoplay muted loop playsinline
+               preload="none" data-lazy-video
+               poster="/assets/worldwide/bg-video-poster.jpg">
           <source src="/assets/worldwide/bg-video.mp4" type="video/mp4" />
         </video>
         <div class="reach-hero__dim"></div>
@@ -185,7 +190,9 @@
     ================================================================= -->
     <section id="testimonials-section" class="testimonials">
       <!-- Full-screen background video (uncropped, fills the whole section) -->
-      <video class="testimonials__bg-video" autoplay muted loop playsinline preload="auto">
+      <video class="testimonials__bg-video" autoplay muted loop playsinline
+             preload="none" data-lazy-video
+             poster="/assets/testimonials/bg-video-poster.jpg">
         <source src="/assets/testimonials/bg-video.mp4" type="video/mp4" />
       </video>
       <div class="testimonials__bg-dim"></div>
@@ -282,6 +289,9 @@
 
   <!-- Hero: parallax + loader + layer-6 video -->
   <script src="/js/parallax.js"></script>
+
+  <!-- Lazy video loader: preloads + plays section videos on approach -->
+  <script src="/js/lazy-video.js" defer></script>
 
   <!-- Worldwide: counter animations -->
   <script src="/js/worldwide.js"></script>
