@@ -69,23 +69,52 @@
   }
 
   // ---------------------------------------------------------------
-  // SCROLL-PASS SCREENSHOTS — fade in as they cross the viewport
+  // SCROLL-PASS SCREENSHOTS — rise continuously as they cross the viewport
   // ---------------------------------------------------------------
   var passImgs = document.querySelectorAll('.pass__img');
-  if ('IntersectionObserver' in window && passImgs.length) {
-    var passObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('pass__img--active');
-        } else {
-          entry.target.classList.remove('pass__img--active');
-        }
-      });
-    }, { threshold: 0.2 });
+  var frameEl  = document.getElementById('frame');
+  var rafId    = null;
+  var dirty    = false;
 
-    passImgs.forEach(function (img) { passObserver.observe(img); });
-  } else {
-    passImgs.forEach(function (img) { img.classList.add('pass__img--active'); });
+  function updatePass() {
+    dirty = false;
+    if (!passImgs.length || !frameEl) return;
+    var viewH = frameEl.clientHeight;
+    var frameRect = frameEl.getBoundingClientRect();
+    var viewCenter = frameRect.top + viewH / 2;
+
+    passImgs.forEach(function (img) {
+      var rect = img.getBoundingClientRect();
+      var imgCenter = rect.top + rect.height / 2;
+      // Normalize offset: -1 (img center above viewport top) → 0 (centered) → +1 (below viewport bottom)
+      var n = (imgCenter - viewCenter) / viewH;
+      var clamped = Math.max(-1.2, Math.min(1.2, n));
+
+      // Rise effect: translate Y from +48px (below natural) to -48px (above natural)
+      var ty = clamped * 48;
+
+      // Fade: opacity 1 when near center, fades toward edges
+      var absN = Math.abs(n);
+      var opacity;
+      if (absN < 0.35)       opacity = 1;
+      else if (absN > 0.9)   opacity = 0;
+      else                   opacity = 1 - (absN - 0.35) / 0.55;
+
+      img.style.transform = 'translateY(' + ty + 'px)';
+      img.style.opacity = opacity.toFixed(3);
+    });
+  }
+
+  function requestPassUpdate() {
+    if (dirty) return;
+    dirty = true;
+    rafId = requestAnimationFrame(updatePass);
+  }
+
+  if (frameEl && passImgs.length) {
+    frameEl.addEventListener('scroll', requestPassUpdate, { passive: true });
+    window.addEventListener('resize', requestPassUpdate);
+    updatePass(); // initial
   }
 
 })();
