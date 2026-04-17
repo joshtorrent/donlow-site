@@ -93,7 +93,10 @@ function init() {
   // SCROLL TRACKING
   // -----------------------------------------------------------
   // Progress = 0 when the section's top just enters viewport from
-  // below, 1 when the section's bottom just leaves from the top.
+  // below, 1 when the section is ~60% of the way through its pass
+  // (so the mask reaches face-camera BEFORE the section exits — user
+  // can actually see the final portrait pose).
+  const SPEED = 1.7;  // >1 = rotation finishes earlier, then stays
   function updateScroll() {
     const section = document.getElementById('music-section');
     if (!section) return;
@@ -101,7 +104,8 @@ function init() {
     const viewportH = window.innerHeight || document.documentElement.clientHeight;
     const total = rect.height + viewportH;
     const scrolled = viewportH - rect.top;
-    scrollProgress = Math.max(0, Math.min(1, scrolled / total));
+    const raw = scrolled / total;
+    scrollProgress = Math.max(0, Math.min(1, raw * SPEED));
   }
 
   // Listen on whichever element actually scrolls (frame or window)
