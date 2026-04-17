@@ -13,15 +13,6 @@
 
 <link rel="stylesheet" href="/css/style.css" />
 <link rel="stylesheet" href="/css/bio.css" />
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
 </head>
 <body>
 
@@ -38,21 +29,16 @@
       </ul>
     </nav>
 
-    <!-- Tall scroll container — drives the rotation + reveal -->
+    <!-- Tall scroll container — drives the text reveal -->
     <div class="bio-content" id="bio-content">
 
-      <!-- Sticky viewport (stays pinned throughout scroll) -->
+      <!-- Sticky viewport -->
       <div class="bio-viewport">
 
-        <!-- 3D canvas host (takes full viewport) -->
-        <div class="bio-stage__canvas" id="bio-canvas-wrap"></div>
+        <!-- Hero mask image -->
+        <img class="bio-hero-mask" src="/assets/bio/hero-mask.jpg" alt="DON LOW" id="bio-hero-mask" />
 
-        <!-- Loader -->
-        <div class="bio-stage__loader" id="bio-loader">
-          <span>LOADING</span>
-        </div>
-
-        <!-- Text overlay at bottom with gradient fade -->
+        <!-- Text overlay at bottom -->
         <div class="bio-text-overlay">
           <h1 class="bio-title">BIO</h1>
           <p class="bio-paragraph" id="bio-paragraph">
@@ -67,6 +53,6 @@
 
   </main>
 
-  <script type="module" src="/js/bio.js"></script>
+  <script src="/js/bio.js"></script>
 </body>
 </html>

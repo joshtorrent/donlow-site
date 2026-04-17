@@ -1,7 +1,6 @@
 /* ============================================================
    DON LOW — Bio page
-   Sticky 3D mask filling viewport + text overlay at bottom
-   Scroll drives rotation + word reveal
+   Static hero mask + sticky viewport + scroll-synced word reveal
    ============================================================ */
 
 .bg-overlay--solid {
@@ -23,16 +22,15 @@
   color: #9B7A1E !important;
 }
 
-/* --- Scroll container ------------------------------------- */
+/* --- Scroll container (drives text reveal) ---------------- */
 .bio-content {
   position: relative;
-  /* Tall — this is the scroll distance that drives the rotation+text reveal */
-  min-height: 260vh;
-  min-height: 260dvh;
-  padding-top: 60px; /* room for nav */
+  min-height: 220vh;
+  min-height: 220dvh;
+  padding-top: 60px;
 }
 
-/* --- Sticky viewport (fills remaining frame) -------------- */
+/* --- Sticky viewport (stays pinned) ----------------------- */
 .bio-viewport {
   position: sticky;
   top: 60px;
@@ -43,39 +41,22 @@
   overflow: hidden;
 }
 
-/* --- 3D canvas (fills entire viewport) -------------------- */
-.bio-stage__canvas {
+/* --- Hero mask image -------------------------------------- */
+.bio-hero-mask {
   position: absolute;
   inset: 0;
-  z-index: 2;
-}
-.bio-stage__canvas canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* --- Loader ----------------------------------------------- */
-.bio-stage__loader {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 4;
-  pointer-events: none;
-  transition: opacity 0.6s;
-}
-.bio-stage__loader span {
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: 16px;
-  letter-spacing: 0.3em;
-  color: #080808;
-  opacity: 0.4;
-  animation: loader-pulse 1.2s ease-in-out infinite;
-}
-.bio-stage__loader--hidden {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 1;
   opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 1s ease, transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.bio-hero-mask--visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* --- Text overlay (bottom of viewport) -------------------- */
@@ -83,7 +64,7 @@
   position: absolute;
   left: 0; right: 0; bottom: 0;
   z-index: 3;
-  padding: 32px 28px 72px; /* generous bottom margin */
+  padding: 32px 28px 72px;
   background: #E8E0D0;
   max-height: 45%;
   overflow: hidden;
