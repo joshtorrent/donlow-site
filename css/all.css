@@ -1,0 +1,69 @@
+/* ============================================================
+   DON LOW — Combined Preview (Hero + Bio + Reach in one scroll)
+   Overrides + section wrappers. Place AFTER other CSS in HTML.
+   ============================================================ */
+
+/* Frame becomes a scrollable container (normally 100vh + overflow:hidden) */
+.frame {
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Nav is sticky across all sections */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 8, 8, 0.55) 0%,
+    rgba(8, 8, 8, 0) 100%
+  );
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* Sig bars become sticky at top/bottom of the frame viewport */
+.sig-bar { position: sticky; z-index: 99; }
+.sig-bar--top    { top: 0; }
+.sig-bar--bottom { bottom: 0; }
+
+/* ---------------------------------------------------------------
+   SECTION 1 — HERO
+--------------------------------------------------------------- */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #E8E0D0;
+  /* This section owns the absolute layers + stats + scroll-hint inside */
+}
+
+/* Layers scoped to hero section */
+.hero-section .layers {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+
+/* ---------------------------------------------------------------
+   SECTION 2 — BIO
+--------------------------------------------------------------- */
+.bio-content--preview {
+  padding-top: 0; /* nav is sticky above; no need for extra padding */
+}
+
+/* ---------------------------------------------------------------
+   SECTION 3 — REACH
+--------------------------------------------------------------- */
+/* Reach content already flows naturally; no override needed */
+
+/* ---------------------------------------------------------------
+   Clean up — hide the scroll hint after leaving the hero
+--------------------------------------------------------------- */
+.scroll-hint { pointer-events: none; }
