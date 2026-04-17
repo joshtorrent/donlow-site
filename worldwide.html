@@ -13,6 +13,15 @@
 
 <link rel="stylesheet" href="/css/style.css" />
 <link rel="stylesheet" href="/css/worldwide.css" />
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
 </head>
 <body class="body--dark">
 
@@ -33,9 +42,7 @@
 
       <!-- ============ HERO ============ -->
       <section class="reach-hero">
-        <video class="reach-hero__video" autoplay muted loop playsinline preload="auto">
-          <source src="/assets/worldwide/bg-video.mp4" type="video/mp4" />
-        </video>
+        <div class="reach-hero__3d" id="reach-3d-canvas"></div>
         <div class="reach-hero__dim"></div>
 
         <div class="reach-hero__content">
@@ -131,5 +138,6 @@
   </main>
 
   <script src="/js/worldwide.js"></script>
+  <script type="module" src="/js/worldwide-3d.js"></script>
 </body>
 </html>
