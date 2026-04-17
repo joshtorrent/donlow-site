@@ -10,6 +10,38 @@ html, body {
   width: 100%;
 }
 
+/* Floating refresh button — always accessible at top-right (the frame
+   scroll intercepts pull-to-refresh, so this is the fallback) */
+.refresh-btn {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(232, 224, 208, 0.25);
+  border-radius: 50%;
+  background: rgba(8, 8, 8, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #E8E0D0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9999;
+  transition: background 0.2s ease, transform 0.4s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.refresh-btn:hover,
+.refresh-btn:active {
+  background: rgba(168, 48, 48, 0.85);
+  transform: rotate(180deg);
+}
+.refresh-btn svg {
+  display: block;
+}
+
 /* Frame is a single scrollable container */
 .frame {
   height: 100vh;
