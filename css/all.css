@@ -1,9 +1,8 @@
 /* ============================================================
-   DON LOW — Combined Preview (Hero + Bio + Reach in one scroll)
-   Overrides + section wrappers. Place AFTER other CSS in HTML.
+   DON LOW — Combined Preview (Hero + Bio + Reach + Testimonials)
    ============================================================ */
 
-/* Frame becomes a scrollable container (normally 100vh + overflow:hidden) */
+/* Frame is a single scrollable container */
 .frame {
   height: 100vh;
   height: 100dvh;
@@ -12,20 +11,33 @@
   -webkit-overflow-scrolling: touch;
 }
 
-/* Nav is sticky across all sections (no bg — matches standalone) */
+/* Sticky nav, transparent (so the content behind it shows through) */
 .nav {
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
-/* Sig bars become sticky at top/bottom of the frame viewport */
+/* Sig-bars sticky at top/bottom of frame viewport */
 .sig-bar { position: sticky; z-index: 99; }
 .sig-bar--top    { top: 0; }
-.sig-bar--bottom { bottom: 0; }
+.sig-bar--bottom { bottom: 0; display: none; } /* hide — Kevin wants no bottom red bar */
+
+/* Every section must fill the viewport */
+.hero-section,
+#bio-section,
+#reach-section,
+#testimonials-section,
+.reach-hero,
+.proof,
+.testimonials {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
 
 /* ---------------------------------------------------------------
    SECTION 1 — HERO
+   Full screen, no top/bottom cropping of the DON LOW composition.
 --------------------------------------------------------------- */
 .hero-section {
   position: relative;
@@ -34,40 +46,91 @@
   height: 100dvh;
   overflow: hidden;
   background: #E8E0D0;
-  /* This section owns the absolute layers + stats + scroll-hint inside */
 }
-
-/* Layers scoped to hero section */
 .hero-section .layers {
   position: absolute;
   inset: 0;
   z-index: 10;
 }
+/* Anchor layer content to the bottom so any aspect-ratio cropping
+   happens at the TOP where the composition has empty/transparent space.
+   Prevents the "DON LOW" text from being cut off. */
+.hero-section .layer {
+  object-position: center bottom;
+}
 
 /* ---------------------------------------------------------------
    SECTION 2 — BIO
+   Mask PNG flush with previous section (no beige gap at top).
+   Text section transparent — the video behind the PNG stays visible
+   through the rising text.
 --------------------------------------------------------------- */
 .bio-content--preview {
-  padding-top: 0;           /* nav is sticky above; no extra padding needed */
-  padding-bottom: 35vh;     /* tail buffer: mask stays pinned & visible longer,
-                               text finishes rising before section hands off
-                               to the reach section */
+  padding-top: 0;
+  padding-bottom: 35vh; /* buffer so mask stays pinned longer */
+  background: transparent;
 }
 
-/* Raise the video ~2 scrolls higher within the sticky mask
-   (~200px, from 48.1% → 28%). Video element becomes taller so
-   cover-fit reveals more of the content through the transparent
-   lower half of the PNG */
+/* Sticky mask fills the entire frame viewport (top:0 instead of 60px),
+   so the bio PNG starts right at the top of the section without gap */
+.bio-content--preview .bio-hero-sticky {
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Raise the video so more of it shows through the transparent bottom half */
 .bio-content--preview .bio-hero-video {
   top: 28%;
 }
 
-/* ---------------------------------------------------------------
-   SECTION 3 — REACH
---------------------------------------------------------------- */
-/* Reach content already flows naturally; no override needed */
+/* Text section: transparent bg — the video + mask behind stays visible
+   through the rising text */
+.bio-content--preview .bio-text-section {
+  background: transparent;
+  min-height: 0;
+}
+
+/* Words: lighter color so they read on the dark video behind */
+.bio-content--preview .bio-word {
+  color: #E8E0D0;
+}
+.bio-content--preview .bio-word--key {
+  color: #E85050; /* brighter red — pops on dark video */
+}
+
+/* Socials removed from preview */
+.bio-content--preview .bio-socials {
+  display: none;
+}
 
 /* ---------------------------------------------------------------
-   Clean up — hide the scroll hint after leaving the hero
+   SECTION 3 — REACH
+   Hero: big centered "WORLD WIDE REACH", no tag, no signature.
+   No bottom margin.
 --------------------------------------------------------------- */
-.scroll-hint { pointer-events: none; }
+.reach-content { padding-bottom: 0; margin-bottom: 0; }
+.reach-hero--centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px;
+}
+.reach-hero--centered .reach-hero__content {
+  text-align: center;
+  width: 100%;
+}
+.reach-hero--centered .reach-hero__title {
+  font-size: clamp(68px, 22vw, 140px);
+  line-height: 0.9;
+  margin: 0 auto;
+}
+
+/* ---------------------------------------------------------------
+   SECTION 4 — TESTIMONIALS
+   Full screen, flush with the section above.
+--------------------------------------------------------------- */
+.testimonials {
+  padding-bottom: 50px;
+}
