@@ -411,13 +411,13 @@ html, body {
 }
 
 /* ---------------------------------------------------------------
-   SECTION 5 — MUSIC (simple: title, 3D mask, Spotify)
+   SECTION 5 — MUSIC (light bg, title, 3D mask, Spotify)
 --------------------------------------------------------------- */
 .music {
   position: relative;
   width: 100%;
-  background: #080808;
-  color: #E8E0D0;
+  background: #E8E0D0;
+  color: #080808;
   display: flex;
   flex-direction: column;
   padding: 32px 0 40px;
@@ -431,7 +431,7 @@ html, body {
   font-size: clamp(72px, 26vw, 180px);
   line-height: 0.88;
   letter-spacing: -0.015em;
-  color: #E8E0D0;
+  color: #080808;
   text-transform: uppercase;
   font-weight: 400;
   margin: 0;

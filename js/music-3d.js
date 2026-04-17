@@ -1,7 +1,9 @@
 /* ============================================================
    DON LOW — Music section 3D mask
-   Slow continuous rotation + gentle vertical bob. Plays when the
-   music section is visible; pauses when off-screen to save battery.
+   Scroll-linked X rotation: starts head-down (cap top visible)
+   and rotates up to face the camera as user scrolls through the
+   music section. Subtle idle Y bob for life.
+   Pauses rAF when off-screen to save battery.
    ============================================================ */
 
 import * as THREE from 'three';
@@ -12,10 +14,21 @@ const container = document.getElementById('music-3d-canvas');
 if (container) init();
 
 function init() {
+  // -----------------------------------------------------------
+  // CONFIG
+  // -----------------------------------------------------------
+  const MODEL_URL    = '/assets/music/mask.glb';
+  const SCALE        = 2.6;                 // bigger mask (was 2.0)
+  const INITIAL_TILT = Math.PI * 0.55;      // head down, cap top toward camera
+  const FINAL_TILT   = 0;                   // face camera
+
+  // -----------------------------------------------------------
+  // SETUP
+  // -----------------------------------------------------------
   const w0 = container.clientWidth  || 400;
   const h0 = container.clientHeight || 400;
 
-  const scene = new THREE.Scene();
+  const scene  = new THREE.Scene();
   scene.background = null;
 
   const camera = new THREE.PerspectiveCamera(30, w0 / h0, 0.1, 100);
@@ -28,43 +41,71 @@ function init() {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   container.appendChild(renderer.domElement);
 
-  // Lights — warm, moody
-  scene.add(new THREE.AmbientLight(0xffffff, 0.95));
-  const keyLight = new THREE.DirectionalLight(0xffe9c0, 2.0);
+  // Lights — warm, light-bg-friendly (no heavy rim)
+  scene.add(new THREE.AmbientLight(0xffffff, 1.1));
+  const keyLight = new THREE.DirectionalLight(0xffe9c0, 1.9);
   keyLight.position.set(2, 3, 4);
   scene.add(keyLight);
-  const fillLight = new THREE.DirectionalLight(0xffd580, 0.8);
+  const fillLight = new THREE.DirectionalLight(0xffd580, 0.9);
   fillLight.position.set(-3, 1, 2);
   scene.add(fillLight);
-  const rimLight = new THREE.DirectionalLight(0xa83030, 0.6);
-  rimLight.position.set(0, -2, -3);
-  scene.add(rimLight);
+  const topLight = new THREE.DirectionalLight(0xffffff, 0.7);
+  topLight.position.set(0, 5, 2);
+  scene.add(topLight);
 
+  // -----------------------------------------------------------
+  // LOAD MODEL
+  // -----------------------------------------------------------
   let model = null;
+  let scrollProgress = 0;
   let inView = true;
   let rafId = null;
 
   const loader = new GLTFLoader();
-  loader.setMeshoptDecoder(MeshoptDecoder);   // required: GLB uses EXT_meshopt_compression
+  loader.setMeshoptDecoder(MeshoptDecoder);
   loader.load(
-    '/assets/music/mask.glb',
+    MODEL_URL,
     (gltf) => {
       model = gltf.scene;
+
       const box = new THREE.Box3().setFromObject(model);
       const size = new THREE.Vector3();
       const center = new THREE.Vector3();
       box.getSize(size);
       box.getCenter(center);
+
       model.position.sub(center);
+
       const maxDim = Math.max(size.x, size.y, size.z);
-      model.scale.setScalar(2.0 / maxDim);
-      model.rotation.x = -0.15;
+      model.scale.setScalar(SCALE / maxDim);
+
+      model.rotation.x = INITIAL_TILT;
+
       scene.add(model);
       container.classList.add('music__3d--ready');
+      updateScroll();
     },
     undefined,
     (err) => console.error('Music GLB load failed', err)
   );
+
+  // -----------------------------------------------------------
+  // SCROLL TRACKING
+  // -----------------------------------------------------------
+  // Progress = 0 when the section's top just enters viewport from
+  // below, 1 when the section's bottom just leaves from the top.
+  function updateScroll() {
+    const section = document.getElementById('music-section');
+    if (!section) return;
+    const rect = section.getBoundingClientRect();
+    const viewportH = window.innerHeight || document.documentElement.clientHeight;
+    const total = rect.height + viewportH;
+    const scrolled = viewportH - rect.top;
+    scrollProgress = Math.max(0, Math.min(1, scrolled / total));
+  }
+
+  window.addEventListener('scroll', updateScroll, { passive: true });
+  window.addEventListener('resize', onResize);
 
   function onResize() {
     const w = container.clientWidth;
@@ -73,23 +114,32 @@ function init() {
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
+    updateScroll();
   }
-  window.addEventListener('resize', onResize);
 
-  const start = performance.now();
+  // -----------------------------------------------------------
+  // ANIMATION LOOP
+  // -----------------------------------------------------------
+  const startTime = performance.now();
   function animate() {
     if (!inView) { rafId = null; return; }
     rafId = requestAnimationFrame(animate);
+
     if (model) {
-      const t = (performance.now() - start) / 1000;
-      model.rotation.y = t * 0.32;   // one full rotation ~ 20s
-      model.position.y = Math.sin(t * 0.6) * 0.05;
+      // Scroll-linked X rotation: head down → face camera
+      model.rotation.x = INITIAL_TILT + (FINAL_TILT - INITIAL_TILT) * scrollProgress;
+
+      // Subtle idle Y oscillation so the mask feels alive
+      const t = (performance.now() - startTime) / 1000;
+      model.rotation.y = Math.sin(t * 0.5) * 0.12 * scrollProgress;
+      model.position.y = Math.sin(t * 0.6) * 0.04;
     }
+
     renderer.render(scene, camera);
   }
   rafId = requestAnimationFrame(animate);
 
-  // Pause when off-screen
+  // Pause the rAF loop when the canvas is off-screen
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
