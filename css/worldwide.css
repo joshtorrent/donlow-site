@@ -107,14 +107,13 @@
   background: #E8E0D0;
   overflow: hidden;
 }
-/* Outdoor-gym PNG as atmospheric backdrop */
+/* Outdoor-gym PNG — raw, no filter, no fade */
 .proof::before {
   content: "";
   position: absolute;
   inset: 0;
   background: url('/assets/worldwide/outdoor-gym.png') no-repeat center 20%;
   background-size: 120% auto;
-  opacity: 0.22;
   z-index: 0;
   pointer-events: none;
 }
@@ -134,11 +133,12 @@
   display: block;
   font-family: 'Teko', sans-serif;
   font-weight: 700;
-  font-size: clamp(46px, 14vw, 90px);
-  line-height: 0.9;
+  font-size: clamp(32px, 9.5vw, 48px);
+  line-height: 1;
   letter-spacing: 0;
   color: #080808;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
   transition: color 0.6s ease;
 }
 .counter--hit .counter__value {
