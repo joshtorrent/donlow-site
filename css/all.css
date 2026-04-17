@@ -12,18 +12,11 @@
   -webkit-overflow-scrolling: touch;
 }
 
-/* Nav is sticky across all sections */
+/* Nav is sticky across all sections (no bg — matches standalone) */
 .nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: linear-gradient(
-    180deg,
-    rgba(8, 8, 8, 0.55) 0%,
-    rgba(8, 8, 8, 0) 100%
-  );
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
 }
 
 /* Sig bars become sticky at top/bottom of the frame viewport */
@@ -55,7 +48,10 @@
    SECTION 2 — BIO
 --------------------------------------------------------------- */
 .bio-content--preview {
-  padding-top: 0; /* nav is sticky above; no need for extra padding */
+  padding-top: 0;           /* nav is sticky above; no extra padding needed */
+  padding-bottom: 35vh;     /* tail buffer: mask stays pinned & visible longer,
+                               text finishes rising before section hands off
+                               to the reach section */
 }
 
 /* ---------------------------------------------------------------
