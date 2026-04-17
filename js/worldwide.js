@@ -69,48 +69,23 @@
   }
 
   // ---------------------------------------------------------------
-  // GALLERY CYCLING
+  // SCROLL-PASS SCREENSHOTS — fade in as they cross the viewport
   // ---------------------------------------------------------------
-  var slides = document.querySelectorAll('.gallery__slide');
-  var dots   = document.querySelectorAll('.gallery__dot');
-  var current = 0;
-  var interval = null;
-  var INTERVAL_MS = 4000;
+  var passImgs = document.querySelectorAll('.pass__img');
+  if ('IntersectionObserver' in window && passImgs.length) {
+    var passObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('pass__img--active');
+        } else {
+          entry.target.classList.remove('pass__img--active');
+        }
+      });
+    }, { threshold: 0.2 });
 
-  function goTo(i) {
-    slides[current].classList.remove('gallery__slide--active');
-    dots[current] && dots[current].classList.remove('gallery__dot--active');
-    current = (i + slides.length) % slides.length;
-    slides[current].classList.add('gallery__slide--active');
-    dots[current] && dots[current].classList.add('gallery__dot--active');
+    passImgs.forEach(function (img) { passObserver.observe(img); });
+  } else {
+    passImgs.forEach(function (img) { img.classList.add('pass__img--active'); });
   }
-
-  function tickGallery() {
-    goTo(current + 1);
-  }
-
-  function startAuto() {
-    stopAuto();
-    interval = setInterval(tickGallery, INTERVAL_MS);
-  }
-  function stopAuto() {
-    if (interval) { clearInterval(interval); interval = null; }
-  }
-
-  dots.forEach(function (dot) {
-    dot.addEventListener('click', function () {
-      var i = parseInt(dot.dataset.i) || 0;
-      goTo(i);
-      startAuto(); // reset timer
-    });
-  });
-
-  if (slides.length) startAuto();
-
-  // Pause cycling when tab hidden
-  document.addEventListener('visibilitychange', function () {
-    if (document.hidden) stopAuto();
-    else startAuto();
-  });
 
 })();
