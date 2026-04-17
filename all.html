@@ -118,25 +118,23 @@
     </section>
 
     <!-- ================================================================
-         SECTIONS 3+4 — REACH (sticky) + TESTIMONIALS (rises over it)
+         SECTION 3 — WORLD WIDE REACH title (sticky)
+         followed by Spotify counters (rises up OVER the WWR title)
     ================================================================= -->
-    <div class="reach-testimonials-wrap">
+    <div class="reach-scroll-wrap">
 
-    <!-- SECTION 3 — WORLDWIDE REACH (sticky so next section can rise over) -->
-    <section id="reach-section" class="reach-content">
+    <section id="reach-section" class="reach-hero reach-hero--centered reach-hero--sticky">
+      <video class="reach-hero__video" autoplay muted loop playsinline preload="auto">
+        <source src="/assets/worldwide/bg-video.mp4" type="video/mp4" />
+      </video>
+      <div class="reach-hero__dim"></div>
 
-      <section class="reach-hero reach-hero--centered">
-        <video class="reach-hero__video" autoplay muted loop playsinline preload="auto">
-          <source src="/assets/worldwide/bg-video.mp4" type="video/mp4" />
-        </video>
-        <div class="reach-hero__dim"></div>
+      <div class="reach-hero__content">
+        <h1 class="reach-hero__title">World<br>Wide<br>Reach.</h1>
+      </div>
+    </section>
 
-        <div class="reach-hero__content">
-          <h1 class="reach-hero__title">World<br>Wide<br>Reach.</h1>
-        </div>
-      </section>
-
-      <section class="proof">
+      <section class="proof proof--rise">
         <img class="proof__bg" src="/assets/worldwide/outdoor-gym.png" alt="" />
         <div class="proof__content">
           <h3 class="proof__platform">Spotify.</h3>
@@ -169,7 +167,7 @@
         </div>
       </section>
 
-    </section>
+    </div><!-- /.reach-scroll-wrap -->
 
     <!-- ================================================================
          SECTION 4 — TESTIMONIALS ("They Play It. They Love It.")
@@ -193,30 +191,23 @@
           Watch Live Clips
         </a>
 
-        <div class="testimonials__main">
-          <video class="testimonials__video" id="testimonials-video" muted loop playsinline preload="metadata">
-            <source src="/assets/bio/hero-video.mp4" type="video/mp4" />
-          </video>
-
-          <div class="testimonials__dms" aria-hidden="true">
-            <div class="dms-track">
-              <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
-            </div>
+        <!-- Big centered DM carousel — takes the middle of the section -->
+        <div class="testimonials__dms-big" aria-hidden="true">
+          <div class="dms-track">
+            <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
           </div>
         </div>
       </div>
     </section>
-
-    </div><!-- /.reach-testimonials-wrap -->
 
     <div class="sig-bar sig-bar--bottom"></div>
 
@@ -279,22 +270,42 @@
   })();
   </script>
 
-  <!-- Testimonials: play the center video only when the section is in view -->
+  <!-- Bio mask clip: as the rising text approaches, crop the mask from the
+       bottom so the text doesn't overlap the (hard-to-read) mask graphic -->
   <script>
   (function () {
-    var video = document.getElementById('testimonials-video');
-    if (!video) return;
-    if (!('IntersectionObserver' in window)) {
-      video.play().catch(function () {});
-      return;
+    var frame = document.getElementById('frame');
+    var sticky = document.querySelector('.bio-hero-sticky');
+    var mask   = document.querySelector('.bio-content--preview .bio-hero-mask');
+    var text   = document.querySelector('.bio-content--preview .bio-text-section');
+    if (!frame || !sticky || !mask || !text) return;
+
+    var scheduled = false;
+    function update() {
+      scheduled = false;
+      var textRect   = text.getBoundingClientRect();
+      var stickyRect = sticky.getBoundingClientRect();
+      var stickyTop    = stickyRect.top;
+      var stickyBottom = stickyRect.bottom;
+      var stickyH      = stickyRect.height;
+      if (stickyH <= 0) return;
+
+      // Where text top sits relative to the sticky container
+      var textTop = textRect.top;
+      // Hidden bottom portion = from textTop to stickyBottom
+      var hiddenFromBottom = Math.max(0, stickyBottom - textTop);
+      var clipPct = Math.min(100, (hiddenFromBottom / stickyH) * 100);
+      mask.style.clipPath  = 'inset(0 0 ' + clipPct + '% 0)';
+      mask.style.webkitClipPath = 'inset(0 0 ' + clipPct + '% 0)';
     }
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) video.play().catch(function () {});
-        else video.pause();
-      });
-    }, { threshold: 0.25 });
-    obs.observe(video);
+    function request() {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(update);
+    }
+    frame.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    update();
   })();
   </script>
 

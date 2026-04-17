@@ -2,26 +2,30 @@
    DON LOW — Combined Preview (Hero + Bio + Reach + Testimonials)
    ============================================================ */
 
-/* Frame is a single scrollable container */
+/* Frame is a single scrollable container, dark bg so transparent nav
+   doesn't show beige behind it */
 .frame {
   height: 100vh;
   height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  background: #080808;
 }
 
-/* Sticky nav, transparent (so the content behind it shows through) */
+/* Nav is absolute (not sticky) so it doesn't take layout flow space —
+   hero touches the very top of the viewport. Nav scrolls away with content. */
 .nav {
-  position: sticky;
+  position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
 }
 
-/* Sig-bars sticky at top/bottom of frame viewport */
-.sig-bar { position: sticky; z-index: 99; }
-.sig-bar--top    { top: 0; }
-.sig-bar--bottom { bottom: 0; display: none; } /* hide — Kevin wants no bottom red bar */
+/* Both sig-bars hidden on /all — no brand strip at top or bottom */
+.sig-bar--top,
+.sig-bar--bottom { display: none; }
 
 /* Every section must fill the viewport */
 .hero-section,
@@ -142,21 +146,20 @@
 --------------------------------------------------------------- */
 .reach-content { padding-bottom: 0; margin-bottom: 0; }
 
-/* Reach + Testimonials wrapper — lets Reach be sticky while the
-   Testimonials section scrolls up OVER it */
-.reach-testimonials-wrap {
+/* Reach scroll wrapper — WWR title stays pinned, Spotify counters rise over */
+.reach-scroll-wrap {
   position: relative;
 }
-#reach-section.reach-content {
+.reach-hero--sticky {
   position: sticky;
   top: 0;
   height: 100vh;
   height: 100dvh;
   z-index: 1;
 }
-#testimonials-section {
+.proof--rise {
   position: relative;
-  z-index: 2; /* above sticky reach so it covers on rise-up */
+  z-index: 2; /* above sticky WWR so it covers as user scrolls */
 }
 
 /* Match the "BIO" PNG treatment: title anchored at TOP LEFT of the section,
@@ -190,8 +193,37 @@
 
 /* ---------------------------------------------------------------
    SECTION 4 — TESTIMONIALS
-   Full screen, flush with the section above.
+   Big centered DM carousel (no side video). Fills the middle.
 --------------------------------------------------------------- */
 .testimonials {
   padding-bottom: 50px;
+}
+
+/* Override the old 2-column layout — big centered DM carousel */
+.testimonials .testimonials__dms-big {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  margin: 28px auto 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+}
+.testimonials .testimonials__dms-big .dms-track {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 4px;
+  animation: scroll-dms 32s linear infinite;
+  will-change: transform;
+}
+.testimonials .testimonials__dms-big .dms-track img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
