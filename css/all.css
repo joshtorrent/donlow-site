@@ -11,17 +11,9 @@
   -webkit-overflow-scrolling: touch;
 }
 
-/* Nav is absolute (not sticky) so it doesn't take layout flow space.
-   Hero can then start at content y=0 and fill the whole viewport. */
-.frame > .nav {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-}
-
-/* Both sig-bars hidden on /all — no brand strip at top or bottom */
+/* Nav and sig-bars hidden entirely on /all — the frame IS the scroll,
+   no need for a visible navigation on the preview */
+.frame > .nav,
 .frame > .sig-bar--top,
 .frame > .sig-bar--bottom { display: none; }
 
@@ -47,8 +39,10 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background: #080808;  /* dark instead of beige: transparent top of the
-                           layer composition no longer shows a beige strip */
+  background: #E8E0D0;  /* BEIGE — matches the layer composition's design
+                           (transparent edges of layers show beige, not
+                           dark). Also matches the beige top of the bio
+                           PNG so the transition is seamless. */
   z-index: 150;
 }
 /* Extend the layer stack slightly above the section's top and scale up
