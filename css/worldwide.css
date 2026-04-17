@@ -1,6 +1,6 @@
 /* ============================================================
    DON LOW — World Wide Reach
-   Editorial magazine × punk zine cut-out aesthetic
+   Dark, moody, cinematic. Movement + counters + auto-cycling screenshots.
    ============================================================ */
 
 .bg-overlay--solid {
@@ -9,6 +9,9 @@
   background: #080808;
   z-index: 0;
 }
+.body--dark { background: #080808; }
+.frame--dark { background: #0a0a0a; }
+
 .frame--scroll {
   overflow-y: auto;
   overflow-x: hidden;
@@ -21,15 +24,10 @@
   color: #9B7A1E !important;
 }
 
-.frame.frame--scroll { background: #E8E0D0; }
-
-/* --- Content wrapper -------------------------------------- */
 .reach-content {
   position: relative;
-  padding-top: 60px;
-  padding-bottom: 0;
-  background: #E8E0D0;
-  color: #080808;
+  padding-top: 0;
+  color: #E8E0D0;
 }
 
 /* ============================================================
@@ -37,351 +35,215 @@
    ============================================================ */
 .reach-hero {
   position: relative;
-  padding: 60px 28px 40px;
-  border-bottom: 3px solid #080808;
+  min-height: calc(100vh - 60px);
+  min-height: calc(100dvh - 60px);
+  padding: 110px 28px 60px;
+  display: flex;
+  align-items: flex-end;
   overflow: hidden;
+}
+
+.reach-hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(18px) brightness(0.5) saturate(0.8);
+  transform: scale(1.15);
+  z-index: 0;
+}
+.reach-hero__dim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8,8,8,0.3) 0%, rgba(8,8,8,0.75) 60%, rgba(8,8,8,0.95) 100%);
+  z-index: 1;
+}
+
+.reach-hero__content {
+  position: relative;
+  z-index: 2;
 }
 .reach-hero__tag {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: #A83030;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+  animation: fade-in-up 1s ease 0.2s both;
 }
 .reach-hero__title {
   font-family: 'JRK', 'Teko', sans-serif;
-  font-weight: 700;
   font-size: clamp(64px, 22vw, 128px);
-  line-height: 0.9;
-  color: #080808;
+  line-height: 0.85;
+  color: #E8E0D0;
   text-transform: uppercase;
   letter-spacing: -0.01em;
+  animation: fade-in-up 1s ease 0.4s both;
 }
-.reach-hero__title span {
-  display: block;
+.reach-hero__title br + * { display: inline; }
+.reach-hero__signature {
+  margin-top: 20px;
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 22px;
+  color: #9B7A1E;
+  opacity: 0.85;
+  animation: fade-in-up 1s ease 0.8s both;
 }
-.reach-hero__title span:nth-child(2) {
-  padding-left: 18%;
-  color: #A83030;
-}
-.reach-hero__title span:nth-child(3) {
-  padding-left: 6%;
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ============================================================
-   CHAPTERS
+   THE PROOF (numbers + cycling screenshots)
    ============================================================ */
-.chapter {
-  position: relative;
-  padding: 54px 28px 32px;
-  border-bottom: 2px solid #080808;
+.proof {
+  padding: 60px 24px 70px;
+  background: #0a0a0a;
 }
-.chapter:last-of-type {
-  border-bottom: none;
+
+/* --- Counters (grid) -------------------------------------- */
+.counters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 18px;
+  margin-bottom: 50px;
 }
-.chapter__tag {
-  display: inline-block;
+.counter {
+  text-align: left;
+}
+.counter__value {
+  display: block;
+  font-family: 'JRK', 'Teko', sans-serif;
+  font-size: clamp(42px, 13vw, 80px);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  color: #E8E0D0;
+  transition: color 0.6s ease;
+}
+.counter--hit .counter__value {
+  color: #9B7A1E; /* gold once counter lands */
+}
+.counter__label {
+  display: block;
+  margin-top: 6px;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   font-size: 11px;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: #E8E0D0;
-  background: #080808;
-  padding: 5px 12px;
-  margin-bottom: 14px;
-  transform: rotate(-1.5deg);
-}
-.chapter__title {
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: clamp(44px, 14vw, 80px);
-  line-height: 0.92;
-  color: #080808;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
-  margin-bottom: 28px;
-}
-.chapter__lead {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 1.55;
-  color: #080808;
-  margin-bottom: 28px;
-  max-width: 90%;
-}
-.chapter__lead .mark {
-  background: #A83030;
-  color: #E8E0D0;
-  padding: 1px 6px;
-  font-weight: 700;
-  display: inline-block;
-  transform: rotate(-1deg);
-}
-
-/* ============================================================
-   CHAPTER I — NUMBERS
-   ============================================================ */
-.numbers-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  counter-reset: numlist;
-}
-.number {
-  padding: 20px 0;
-  border-bottom: 1px solid rgba(8, 8, 8, 0.15);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 12px;
-  position: relative;
-}
-.number:last-child { border-bottom: none; }
-
-.number__value {
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: clamp(56px, 17vw, 100px);
-  line-height: 0.9;
-  color: #080808;
-  letter-spacing: -0.01em;
-  flex: 0 0 auto;
-}
-.number__value sup {
-  font-size: 0.45em;
-  color: #9B7A1E;
-  vertical-align: super;
-  margin-left: 2px;
-}
-.number__value .number__hash {
-  color: #A83030;
-}
-.number__label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #080808;
-  flex: 1 1 60%;
-}
-.number__dash {
-  display: none;
-}
-.number__caption {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #080808;
-  opacity: 0.65;
-  font-style: italic;
-  flex: 1 1 100%;
-  padding-left: 6px;
-  border-left: 2px solid #A83030;
-}
-
-/* ============================================================
-   ARTIFACTS — scrapbook cut-outs
-   ============================================================ */
-.artifact {
-  position: relative;
-  margin: 10px 0 10px;
-  display: block;
-  background: #fff;
-  padding: 10px 10px 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
-  max-width: 100%;
-}
-.artifact img {
-  display: block;
-  width: 100%;
-  height: auto;
-  /* slight photocopy feel */
-  filter: contrast(1.05) saturate(0.95);
-}
-.artifact figcaption {
-  display: block;
-  font-family: 'Caveat', 'Barlow Condensed', cursive;
-  font-weight: 700;
-  font-size: 16px;
-  color: #080808;
-  margin-top: 6px;
-  padding: 0 4px;
-}
-.artifact--wide {
-  margin-left: -8px;
-  margin-right: -8px;
-}
-.artifact--polaroid {
-  padding: 10px 10px 44px; /* room for caption */
-  margin-bottom: 40px;
-}
-.artifact--polaroid figcaption {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
-  text-align: center;
-}
-.artifact--tilted-left { transform: rotate(-2deg); }
-.artifact--tilted-right { transform: rotate(2.5deg); }
-.artifact--offset { margin-top: 40px; margin-left: 20px; }
-.artifact--small {
-  max-width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* "Stamp" on the map */
-.artifact__stamp {
-  position: absolute;
-  top: 20px;
-  right: -12px;
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: 20px;
-  letter-spacing: 0.2em;
-  color: #A83030;
-  border: 3px solid #A83030;
-  padding: 6px 12px;
-  background: rgba(232, 224, 208, 0.9);
-  transform: rotate(8deg);
-  opacity: 0.88;
-  pointer-events: none;
-  z-index: 3;
-}
-
-/* Tape strips */
-.tape {
-  position: absolute;
-  background: rgba(255, 220, 100, 0.8);
-  z-index: 2;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-}
-.tape--yellow {
-  background: rgba(255, 220, 100, 0.78);
-}
-.tape--top {
-  top: 14px;
-  right: -20px;
-  width: 90px;
-  height: 22px;
-  transform: rotate(14deg);
-}
-.tape--corner-tl { top: -8px; left: 18px; width: 60px; height: 20px; transform: rotate(-12deg); }
-.tape--corner-tr { top: -8px; right: 18px; width: 60px; height: 20px; transform: rotate(12deg); }
-.tape--corner-bl { bottom: -8px; left: 18px; width: 60px; height: 20px; transform: rotate(12deg); }
-.tape--corner-br { bottom: -8px; right: 18px; width: 60px; height: 20px; transform: rotate(-12deg); }
-
-.caption {
-  font-family: 'Caveat', 'Barlow Condensed', cursive;
-  font-weight: 700;
-  font-size: 15px;
-  color: #080808;
   opacity: 0.55;
-  margin: 16px 0 20px;
-  padding-left: 8px;
+  line-height: 1.25;
 }
 
-/* ============================================================
-   HIGHLIGHT ROW (under the map)
-   ============================================================ */
-.highlight-row {
+/* --- Cycling gallery -------------------------------------- */
+.gallery {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #111;
+  box-shadow: 0 14px 60px rgba(0, 0, 0, 0.45);
+  margin-bottom: 16px;
+}
+.gallery__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.9s ease, transform 3s linear;
+}
+.gallery__slide--active {
+  opacity: 1;
+  transform: scale(1);
+}
+.gallery__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  display: block;
+}
+
+.gallery__dots {
+  position: absolute;
+  bottom: 12px;
+  left: 0; right: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px 8px;
-  margin-top: 20px;
+  justify-content: center;
+  gap: 6px;
+  z-index: 2;
 }
-.highlight-row__item {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #080808;
-  background: #E8E0D0;
-  border: 1.5px solid #080808;
-  padding: 4px 10px;
-  transform: rotate(var(--rot, -0.8deg));
-}
-.highlight-row__item:nth-child(even) {
-  --rot: 1deg;
-}
-.highlight-row__item:nth-child(3n) {
-  --rot: -1.5deg;
-}
-.highlight-row__item b {
-  color: #A83030;
-  font-weight: 700;
-  margin-right: 3px;
-}
-
-/* ============================================================
-   CITY LIST (Chapter III)
-   ============================================================ */
-.city-list {
-  list-style: none;
+.gallery__dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: none;
   padding: 0;
-  margin: 30px 0 0;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: background 0.2s, width 0.25s;
 }
-.city-list li {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(8,8,8,0.18);
+.gallery__dot--active {
+  background: #A83030;
+  width: 22px;
+  border-radius: 4px;
 }
-.city-list li:last-child { border-bottom: none; }
-.city-list__rank {
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: 42px;
-  color: #A83030;
-  line-height: 0.9;
-  flex: 0 0 auto;
-}
-.city-list__name {
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: 28px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #080808;
-  flex: 1 1 auto;
-  line-height: 1;
-}
-.city-list__num {
-  font-family: 'Barlow Condensed', sans-serif;
+
+.proof__signoff {
+  font-family: 'Caveat', cursive;
   font-weight: 700;
-  font-size: 16px;
-  color: #080808;
-  opacity: 0.7;
-  flex: 0 0 auto;
+  font-size: 20px;
+  color: #9B7A1E;
+  text-align: right;
+  margin-top: 20px;
+  opacity: 0.75;
 }
 
 /* ============================================================
-   TOUR REGIONS (Chapter IV)
+   THE TOUR
    ============================================================ */
+.tour {
+  padding: 60px 24px 80px;
+  background: #0a0a0a;
+  border-top: 1px solid rgba(232, 224, 208, 0.08);
+}
+.tour__title {
+  font-family: 'JRK', 'Teko', sans-serif;
+  font-size: clamp(48px, 15vw, 80px);
+  color: #E8E0D0;
+  text-transform: uppercase;
+  line-height: 0.9;
+  margin-bottom: 28px;
+}
 .region-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin-top: 10px;
 }
 .region {
-  background: #080808;
+  background: #1a1a1a;
+  border: 1px solid rgba(232, 224, 208, 0.1);
   color: #E8E0D0;
-  padding: 22px 14px;
+  padding: 26px 14px;
   text-align: center;
-  position: relative;
-  transform: rotate(var(--rot, -0.5deg));
+  transition: background 0.25s, transform 0.25s, border-color 0.25s;
 }
-.region:nth-child(even) { --rot: 0.8deg; }
-.region:nth-child(3n) { --rot: -1.1deg; }
-.region:nth-child(4n) { --rot: 0.4deg; }
+.region:hover {
+  background: #A83030;
+  border-color: #A83030;
+  transform: translateY(-2px);
+}
 .region--full {
   grid-column: 1 / span 2;
   background: #A83030;
+  border-color: #A83030;
 }
 .region span {
   font-family: 'JRK', 'Teko', sans-serif;
@@ -391,27 +253,18 @@
 }
 
 /* ============================================================
-   ARTIFACTS SECTION (Chapter V)
-   ============================================================ */
-.chapter--artifacts {
-  padding-bottom: 60px;
-  border-bottom: none;
-}
-
-/* ============================================================
    FOOTER
    ============================================================ */
 .reach-footer {
-  padding: 28px 24px;
+  padding: 24px;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 400;
-  font-size: 12px;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #080808;
-  opacity: 0.55;
+  color: #E8E0D0;
+  opacity: 0.4;
   text-align: center;
-  border-top: 2px solid #080808;
   display: flex;
   justify-content: center;
   gap: 10px;
