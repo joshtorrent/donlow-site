@@ -84,11 +84,15 @@
   display: inline-block;
   opacity: 0;
   transform: translateY(2px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease, color 0.4s ease;
 }
 .bio-word--visible {
   opacity: 1;
   transform: translateY(0);
+}
+/* Key words highlighted in red */
+.bio-word--key {
+  color: #A83030;
 }
 
 /* --- Socials ---------------------------------------------- */
