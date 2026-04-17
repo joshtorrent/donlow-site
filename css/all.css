@@ -46,6 +46,7 @@
   height: 100dvh;
   overflow: hidden;
   background: #E8E0D0;
+  z-index: 150; /* above sticky nav/sig-bar so layers fill the very top */
 }
 .hero-section .layers {
   position: absolute;
@@ -67,7 +68,7 @@
 --------------------------------------------------------------- */
 .bio-content--preview {
   padding-top: 0;
-  padding-bottom: 35vh; /* buffer so mask stays pinned longer */
+  padding-bottom: 0;    /* no tail buffer — text finishes, next section starts */
   background: transparent;
 }
 
