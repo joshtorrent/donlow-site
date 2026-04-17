@@ -330,18 +330,18 @@
 .music {
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  min-height: 100dvh;
   background: #080808;
   color: #E8E0D0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding-top: 20px;
 }
 .music__3d {
-  flex: 1 1 auto;
   position: relative;
-  min-height: 50vh;
+  height: 55vh;
+  height: 55dvh;
+  flex-shrink: 0;
   opacity: 0;
   transition: opacity 1s ease;
 }

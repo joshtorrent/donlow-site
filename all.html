@@ -347,8 +347,8 @@
     function measure() {
       maskHeight = mask.clientHeight;
       setHeight  = track.scrollHeight / 2;
-      // Start with the track just below the visible area
-      if (setHeight > 0 && position === 0) position = maskHeight;
+      // Start the track already partly visible (less gap under the hero photo)
+      if (setHeight > 0 && position === 0) position = maskHeight * 0.55;
       lastT = null;
     }
 
