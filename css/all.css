@@ -299,12 +299,16 @@ html, body {
   height: 42vh;
   height: 42dvh;
   z-index: 4;
-  padding: 40px 24px 30px;
+  padding: 40px 24px 0;
   pointer-events: none; /* let scroll/touch pass through except on CTA */
   background: linear-gradient(180deg,
     rgba(8, 8, 8, 0.55) 0%,
     rgba(8, 8, 8, 0.15) 80%,
     transparent 100%);
+  /* Distribute title block at top and CTA at bottom, flush with the red bar */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .testimonials__title-overlay .testimonials__cta {
   pointer-events: auto;
@@ -312,7 +316,7 @@ html, body {
 
 /* Title — "They Play It." big in Anton, "They Love It." sub in JRK */
 .testimonials__title {
-  margin: 0 0 18px;
+  margin: 0;
 }
 .testimonials__title-big {
   display: block;
