@@ -189,24 +189,19 @@
           Watch Live Clips
         </a>
 
-        <div class="testimonials__main">
-          <video class="testimonials__video" id="testimonials-video" muted loop playsinline preload="metadata">
-            <source src="/assets/bio/hero-video.mp4" type="video/mp4" />
-          </video>
-
-          <div class="testimonials__dms" aria-hidden="true">
-            <div class="dms-track">
-              <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
-              <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
-            </div>
+        <!-- Big DM carousel centered in the middle of the section -->
+        <div class="testimonials__dms-big" aria-hidden="true">
+          <div class="dms-track">
+            <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
+            <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
           </div>
         </div>
       </div>
@@ -305,24 +300,6 @@
   })();
   </script>
 
-  <!-- Testimonials: play the center video only when the section is in view -->
-  <script>
-  (function () {
-    var video = document.getElementById('testimonials-video');
-    if (!video) return;
-    if (!('IntersectionObserver' in window)) {
-      video.play().catch(function () {});
-      return;
-    }
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) video.play().catch(function () {});
-        else video.pause();
-      });
-    }, { threshold: 0.25 });
-    obs.observe(video);
-  })();
-  </script>
 
 </body>
 </html>

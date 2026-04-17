@@ -199,8 +199,35 @@
 
 /* ---------------------------------------------------------------
    SECTION 4 — TESTIMONIALS
-   Full screen, flush with the section above.
+   Big centered DM carousel — no side video.
 --------------------------------------------------------------- */
 .testimonials {
   padding-bottom: 50px;
+}
+.testimonials__dms-big {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 28px auto 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+}
+.testimonials__dms-big .dms-track {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 4px;
+  animation: scroll-dms 32s linear infinite;
+  will-change: transform;
+}
+.testimonials__dms-big .dms-track img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
