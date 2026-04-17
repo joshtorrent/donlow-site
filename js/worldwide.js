@@ -138,8 +138,8 @@
 
     var progress = Math.min(1, Math.max(0, scrolled / stickyRange));
 
-    // Switch at 55% — a bit past the middle
-    var phase = progress > 0.55 ? 'tours' : 'spotify';
+    // Switch at 35% — earlier so Tours phase has room before the sticky unpins
+    var phase = progress > 0.35 ? 'tours' : 'spotify';
     setPhase(phase);
   }
 

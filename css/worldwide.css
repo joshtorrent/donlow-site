@@ -104,39 +104,52 @@
 /* ============================================================
    THE PROOF (numbers + cycling screenshots)
    ============================================================ */
-/* Wrapper — tall, gives scroll distance to drive the transform */
+/* Wrapper — gives scroll distance to drive the transform */
 .proof-wrap {
   position: relative;
-  min-height: 180vh;
+  min-height: 150vh;
 }
+
+/* Sticky section — pins to top of frame, PNG covers, content overlaid */
 .proof {
   position: sticky;
   top: 0;
-  height: 100vh;
-  height: 100dvh;
-  background: #E8E0D0;
+  height: calc(100vh - 60px);
+  height: calc(100dvh - 60px);
   overflow: hidden;
-}
-.proof__content {
-  position: relative;
-  z-index: 2;
-  padding: 26px 20px 0;
+  background: #E8E0D0;
 }
 .proof__bg {
-  display: block;
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
-  margin-top: -6px;
-  position: relative;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
   z-index: 1;
   pointer-events: none;
+  user-select: none;
 }
 
-/* Platform title — cross-fade between Spotify/Tours */
+/* Content is positioned in the TOP ~47% (above where figures start in PNG) */
+.proof__content {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 47%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 12px;
+}
+
+/* Title area — slide+fade between Spotify/Tours */
 .proof__platform {
   position: relative;
-  height: clamp(40px, 11vw, 56px);
-  margin-bottom: 18px;
+  height: clamp(40px, 11vw, 54px);
+  margin-bottom: 14px;
   text-align: center;
 }
 .proof__phase {
@@ -150,28 +163,32 @@
   color: #080808;
   text-transform: uppercase;
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.45s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.proof__phase--active { opacity: 1; }
+/* Spotify enters from above, Tours enters from below */
+.proof__phase[data-phase="spotify"]                          { transform: translateY(-22px); }
+.proof__phase[data-phase="spotify"].proof__phase--active     { transform: translateY(0);     opacity: 1; }
+.proof__phase[data-phase="tours"]                            { transform: translateY(22px);  }
+.proof__phase[data-phase="tours"].proof__phase--active       { transform: translateY(0);     opacity: 1; }
 
-/* Grid — cross-fade between counters/regions */
+/* Grid area — slide+fade between panels */
 .proof__grid {
   position: relative;
+  flex: 1;
+  min-height: 0;
 }
 .proof__panel {
   position: absolute;
   inset: 0;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.45s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.proof__panel--active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.proof__panel:first-child {
-  position: relative;  /* first panel defines the natural height */
-}
+/* Spotify counters exit up, Tours regions enter from below */
+.proof__panel[data-phase="spotify"]                          { transform: translateY(-22px); }
+.proof__panel[data-phase="spotify"].proof__panel--active     { transform: translateY(0);     opacity: 1; pointer-events: auto; }
+.proof__panel[data-phase="tours"]                            { transform: translateY(28px);  }
+.proof__panel[data-phase="tours"].proof__panel--active       { transform: translateY(0);     opacity: 1; pointer-events: auto; }
 
 /* --- Counters (grid) — compact, above the figures ------------ */
 .counters {
@@ -259,7 +276,7 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
-/* Jaguar Face Stamp on the bottom-right of each region */
+/* Jaguar Face Stamp on the bottom-right of each region — animated when Tours phase activates */
 .region::after {
   content: "";
   position: absolute;
@@ -268,11 +285,32 @@
   width: 60px;
   height: 60px;
   background: url('/assets/worldwide/jaguar-stamp.png') no-repeat center center / contain;
-  opacity: 0.55;
-  transform: rotate(-8deg);
   pointer-events: none;
   z-index: 1;
-  filter: invert(1);  /* make the black stamp render as light on dark bg */
+  filter: invert(1);
+  /* Invisible until stamp animation runs */
+  opacity: 0;
+  transform: rotate(-8deg) scale(1.9);
+}
+
+/* Trigger: Tours panel is active → stamps animate in, one by one */
+.proof__panel[data-phase="tours"].proof__panel--active .region:nth-child(1)::after {
+  animation: stamp 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) 0.2s both;
+}
+.proof__panel[data-phase="tours"].proof__panel--active .region:nth-child(2)::after {
+  animation: stamp 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) 0.45s both;
+}
+.proof__panel[data-phase="tours"].proof__panel--active .region:nth-child(3)::after {
+  animation: stamp 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) 0.7s both;
+}
+.proof__panel[data-phase="tours"].proof__panel--active .region:nth-child(4)::after {
+  animation: stamp 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) 0.95s both;
+}
+
+@keyframes stamp {
+  0%   { opacity: 0;    transform: rotate(-8deg) scale(1.9); }
+  60%  { opacity: 1;    transform: rotate(-8deg) scale(0.92); }
+  100% { opacity: 0.7;  transform: rotate(-8deg) scale(1); }
 }
 
 
