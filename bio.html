@@ -31,9 +31,12 @@
 
     <div class="bio-content" id="bio-content">
 
-      <!-- Sticky hero mask (stays pinned while text rises over it) -->
+      <!-- Sticky hero: video in background, PNG overlay (transparent bottom reveals the video) -->
       <div class="bio-hero-sticky">
-        <img class="bio-hero-mask" src="/assets/bio/hero-mask.jpg" alt="DON LOW" id="bio-hero-mask" />
+        <video class="bio-hero-video" autoplay muted loop playsinline preload="auto" id="bio-hero-video">
+          <source src="/assets/bio/hero-video.mp4" type="video/mp4" />
+        </video>
+        <img class="bio-hero-mask" src="/assets/bio/hero-mask.png" alt="DON LOW" id="bio-hero-mask" />
       </div>
 
       <!-- Text section rises up and partially covers the hero -->
