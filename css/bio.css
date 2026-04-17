@@ -40,12 +40,14 @@
   background: #E8E0D0;
 }
 
-/* Background video — behind the PNG, visible through the transparent bottom */
+/* Background video — aligned so its TOP meets the PNG transparent edge (48.1%) */
 .bio-hero-video {
   position: absolute;
-  inset: 0;
+  top: 48.1%;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
-  height: 100%;
   object-fit: cover;
   object-position: center center;
   z-index: 1;
@@ -108,64 +110,46 @@
   color: #A83030;
 }
 
-/* --- Socials — prominent block, fills the bottom area ----- */
+/* --- Socials — quincunx (dice-5) layout, big & filling the space ---- */
 .bio-socials {
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(8, 8, 8, 0.15);
-}
-.bio-socials__title {
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: 28px;
-  letter-spacing: 0.06em;
-  line-height: 1;
-  color: #A83030;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 22px;
-}
-.bio-socials__grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-}
-.bio-socials__grid a {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   gap: 8px;
-  padding: 8px 4px;
-  border-radius: 8px;
-  transition: background 0.2s, transform 0.2s;
+  margin-top: 20px;
+  aspect-ratio: 1 / 1;         /* keeps the grid square */
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
-.bio-socials__grid a:hover {
-  background: rgba(8, 8, 8, 0.04);
-  transform: translateY(-2px);
-}
-.bio-socials__icon-wrap {
+.bio-socials__item {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #080808;
-  transition: background 0.2s;
+  padding: 8px;
+  border-radius: 10px;
+  transition: background 0.2s, transform 0.2s;
 }
-.bio-socials__grid a:hover .bio-socials__icon-wrap {
-  background: #A83030;
-}
-.bio-socials__icon-wrap img {
-  width: 22px;
-  height: 22px;
+.bio-socials__item img {
+  width: 100%;
+  height: 100%;
+  max-width: 72px;
+  max-height: 72px;
   object-fit: contain;
-  filter: brightness(10); /* make logo white on dark circle */
+  /* Force icons to pure red — on-brand & visible on beige */
+  filter: brightness(0) saturate(100%) invert(21%) sepia(72%) saturate(1871%) hue-rotate(347deg) brightness(92%) contrast(88%);
+  transition: filter 0.2s, transform 0.2s;
 }
-.bio-socials__label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: #080808;
-  text-transform: uppercase;
+.bio-socials__item:hover img {
+  /* Hover: pure black */
+  filter: brightness(0);
+  transform: scale(1.1);
 }
+
+/* Dice-5 placement: corners + center */
+.bio-socials__item--tl     { grid-area: 1 / 1; }
+.bio-socials__item--tr     { grid-area: 1 / 3; }
+.bio-socials__item--center { grid-area: 2 / 2; }
+.bio-socials__item--bl     { grid-area: 3 / 1; }
+.bio-socials__item--br     { grid-area: 3 / 3; }
