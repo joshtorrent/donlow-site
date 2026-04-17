@@ -95,28 +95,64 @@
   color: #A83030;
 }
 
-/* --- Socials ---------------------------------------------- */
+/* --- Socials — prominent block, fills the bottom area ----- */
 .bio-socials {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(8, 8, 8, 0.15);
+}
+.bio-socials__title {
+  font-family: 'JRK', 'Teko', sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: #A83030;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 22px;
+}
+.bio-socials__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.bio-socials__grid a {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 24px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(8, 8, 8, 0.12);
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  transition: background 0.2s, transform 0.2s;
 }
-.bio-socials a {
-  display: block;
-  width: 26px;
-  height: 26px;
-  opacity: 0.7;
-  transition: opacity 0.2s, transform 0.2s;
-}
-.bio-socials a:hover {
-  opacity: 1;
+.bio-socials__grid a:hover {
+  background: rgba(8, 8, 8, 0.04);
   transform: translateY(-2px);
 }
-.bio-socials img {
-  width: 100%;
-  height: 100%;
+.bio-socials__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #080808;
+  transition: background 0.2s;
+}
+.bio-socials__grid a:hover .bio-socials__icon-wrap {
+  background: #A83030;
+}
+.bio-socials__icon-wrap img {
+  width: 22px;
+  height: 22px;
   object-fit: contain;
+  filter: brightness(10); /* make logo white on dark circle */
+}
+.bio-socials__label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #080808;
+  text-transform: uppercase;
 }
