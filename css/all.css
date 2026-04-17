@@ -194,9 +194,24 @@
 /* ---------------------------------------------------------------
    SECTION 4 — TESTIMONIALS
    Big centered DM carousel — no side video.
+   Title matches the WWR treatment (Anton, left-aligned), with red accent.
 --------------------------------------------------------------- */
 .testimonials {
   padding-bottom: 50px;
+}
+.testimonials .testimonials__title {
+  font-family: 'Anton', 'Archivo Black', 'Impact', 'Teko', sans-serif;
+  font-size: clamp(72px, 26vw, 180px);
+  line-height: 0.88;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  text-align: left;
+  font-weight: 400;
+  padding: 0 4px;
+  margin-bottom: 22px;
+}
+.testimonials .testimonials__title .gold {
+  color: #A83030; /* red accent, matches brand + CTA button */
 }
 .testimonials__dms-big {
   position: relative;
