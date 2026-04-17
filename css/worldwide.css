@@ -103,40 +103,47 @@
    ============================================================ */
 .proof {
   position: relative;
-  padding: 50px 24px 60px;
+  padding: 50px 0 0;
+  min-height: 100vh;
+  min-height: 100dvh;
   background:
-    url('/assets/worldwide/outdoor-gym.png') no-repeat center bottom / contain,
+    url('/assets/worldwide/outdoor-gym.png') no-repeat center bottom / 100% auto,
     #E8E0D0;
   overflow: hidden;
 }
-.proof > * { position: relative; z-index: 1; }
-
-/* Platform title */
-.proof__platform {
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: clamp(56px, 18vw, 96px);
-  line-height: 0.9;
-  letter-spacing: 0.02em;
-  color: #080808;
-  text-transform: uppercase;
-  margin-bottom: 24px;
+.proof__inner {
+  position: relative;
+  z-index: 1;
+  padding: 0 20px;
 }
 
-/* --- Counters (grid) -------------------------------------- */
+/* Platform title — centered, compact */
+.proof__platform {
+  font-family: 'JRK', 'Teko', sans-serif;
+  font-size: clamp(40px, 11vw, 56px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: #080808;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+/* --- Counters (grid) — compact, above the figures ------------ */
 .counters {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px 18px;
-  margin-bottom: 50px;
+  gap: 16px 14px;
+  margin-bottom: 0;
 }
 .counter {
-  text-align: left;
+  text-align: center;
 }
 .counter__value {
   display: block;
   font-family: 'Teko', sans-serif;
   font-weight: 700;
-  font-size: clamp(32px, 9.5vw, 48px);
+  font-size: clamp(26px, 7.2vw, 36px);
   line-height: 1;
   letter-spacing: 0;
   color: #080808;
@@ -145,19 +152,19 @@
   transition: color 0.6s ease;
 }
 .counter--hit .counter__value {
-  color: #A83030; /* red once counter lands */
+  color: #A83030;
 }
 .counter__label {
   display: block;
-  margin-top: 4px;
+  margin-top: 3px;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: #080808;
   opacity: 0.7;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 /* --- Scroll-through screenshots (rise continuously as page scrolls) --- */
@@ -181,61 +188,30 @@
   opacity: 0;
 }
 
-.proof__signoff {
-  font-family: 'Caveat', cursive;
-  font-weight: 700;
-  font-size: 20px;
-  color: #080808;
-  text-align: right;
-  margin-top: 20px;
-  opacity: 0.65;
-}
-
-/* ============================================================
-   THE TOUR
-   ============================================================ */
-.tour {
-  padding: 60px 24px 80px;
-  background: #0a0a0a;
-  border-top: 1px solid rgba(232, 224, 208, 0.08);
-}
-.tour__title {
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: clamp(48px, 15vw, 80px);
-  color: #E8E0D0;
-  text-transform: uppercase;
-  line-height: 0.9;
-  margin-bottom: 28px;
-}
+/* --- Region grid (inside .proof--touring) ----------------- */
 .region-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 .region {
-  background: #1a1a1a;
-  border: 1px solid rgba(232, 224, 208, 0.1);
+  background: #080808;
   color: #E8E0D0;
-  padding: 26px 14px;
+  padding: 22px 12px;
   text-align: center;
-  transition: background 0.25s, transform 0.25s, border-color 0.25s;
+  transition: background 0.2s, transform 0.2s;
 }
 .region:hover {
   background: #A83030;
-  border-color: #A83030;
   transform: translateY(-2px);
-}
-.region--full {
-  grid-column: 1 / span 2;
-  background: #A83030;
-  border-color: #A83030;
 }
 .region span {
   font-family: 'JRK', 'Teko', sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
+
 
 /* ============================================================
    FOOTER
