@@ -172,37 +172,36 @@
     ================================================================= -->
     <section id="testimonials-section" class="testimonials">
 
-      <video class="testimonials__bg" autoplay muted loop playsinline preload="auto">
-        <source src="/assets/worldwide/bg-video.mp4" type="video/mp4" />
-      </video>
-      <div class="testimonials__overlay"></div>
+      <!-- TOP ZONE: crowd photo + title + CTA (opaque, DMs disappear behind it) -->
+      <div class="testimonials__hero-top">
+        <div class="testimonials__hero-top-dim"></div>
+        <div class="testimonials__hero-top-content">
+          <h2 class="testimonials__title">
+            <span class="testimonials__title-big">They Play It.</span>
+            <span class="testimonials__title-sub">They Love It.</span>
+          </h2>
+          <a class="testimonials__cta"
+             href="https://drive.google.com/drive/folders/1svWwYOacrsDXl1dncXACINcgsNiFwABC?usp=sharing"
+             target="_blank" rel="noopener">
+            Watch Live Clips
+          </a>
+        </div>
+      </div>
 
-      <div class="testimonials__content">
-        <h2 class="testimonials__title">
-          They Play It.<br>
-          <span class="gold">They Love It.</span>
-        </h2>
-
-        <a class="testimonials__cta"
-           href="https://drive.google.com/drive/folders/1svWwYOacrsDXl1dncXACINcgsNiFwABC?usp=sharing"
-           target="_blank" rel="noopener">
-          Watch Live Clips
-        </a>
-
-        <!-- Big DM carousel centered in the middle of the section -->
-        <div class="testimonials__dms-big" aria-hidden="true">
-          <div class="dms-track">
-            <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
-            <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
-            <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
-            <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
-            <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
-            <img src="/assets/testimonials/dm-baby-j.jpg" alt="" loading="lazy" />
-            <img src="/assets/testimonials/dm-baddiejuice.jpg" alt="" loading="lazy" />
-            <img src="/assets/testimonials/dm-katayanagi-twins.jpg" alt="" loading="lazy" />
-            <img src="/assets/testimonials/dm-nas-thug.jpg" alt="" loading="lazy" />
-            <img src="/assets/testimonials/dm-tye-turner.jpg" alt="" loading="lazy" />
-          </div>
+      <!-- DM CAROUSEL: scrolls from bottom upward, disappears behind the top zone -->
+      <div class="testimonials__dm-mask" aria-hidden="true">
+        <div class="testimonials__dm-track">
+          <img src="/assets/testimonials/dm-1.jpg" alt="" loading="lazy" />
+          <img src="/assets/testimonials/dm-2.jpg" alt="" loading="lazy" />
+          <img src="/assets/testimonials/dm-3.jpg" alt="" loading="lazy" />
+          <img src="/assets/testimonials/dm-4.jpg" alt="" loading="lazy" />
+          <img src="/assets/testimonials/dm-5.jpg" alt="" loading="lazy" />
+          <!-- Duplicate set for seamless infinite loop -->
+          <img src="/assets/testimonials/dm-1.jpg" alt="" loading="lazy" />
+          <img src="/assets/testimonials/dm-2.jpg" alt="" loading="lazy" />
+          <img src="/assets/testimonials/dm-3.jpg" alt="" loading="lazy" />
+          <img src="/assets/testimonials/dm-4.jpg" alt="" loading="lazy" />
+          <img src="/assets/testimonials/dm-5.jpg" alt="" loading="lazy" />
         </div>
       </div>
     </section>

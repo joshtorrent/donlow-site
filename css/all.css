@@ -192,25 +192,143 @@
 
 /* ---------------------------------------------------------------
    SECTION 4 — TESTIMONIALS
-   Big centered DM carousel — no side video.
-   Title matches the WWR treatment (Anton, left-aligned), with red accent.
+   Top zone: crowd photo + title + CTA (opaque ceiling).
+   Bottom zone: DMs scroll from bottom upward, disappear under top zone.
 --------------------------------------------------------------- */
 .testimonials {
-  padding-bottom: 50px;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #080808;
+  padding: 0;
 }
-.testimonials .testimonials__title {
-  font-family: 'Anton', 'Archivo Black', 'Impact', 'Teko', sans-serif;
-  font-size: clamp(72px, 26vw, 180px);
+/* Kill the old full-bg video and overlay — we use a specific top zone now */
+.testimonials .testimonials__bg,
+.testimonials .testimonials__overlay { display: none; }
+
+/* Top zone — opaque, has the crowd photo + title. Acts as a "ceiling"
+   behind which the DM carousel items disappear when they scroll up. */
+.testimonials__hero-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 48vh;
+  height: 48dvh;
+  z-index: 2;
+  overflow: hidden;
+  background-image: url('/assets/testimonials/hero-crowd.jpg');
+  background-size: cover;
+  background-position: center center;
+}
+.testimonials__hero-top-dim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(8, 8, 8, 0.35) 0%,
+    rgba(8, 8, 8, 0.55) 70%,
+    rgba(8, 8, 8, 0.85) 100%);
+  z-index: 1;
+}
+.testimonials__hero-top-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  padding: 40px 24px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Title — "They Play It." big in Anton, "They Love It." sub in JRK */
+.testimonials__title {
+  margin: 0 0 18px;
+}
+.testimonials__title-big {
+  display: block;
+  font-family: 'Anton', 'Archivo Black', 'Impact', sans-serif;
+  font-size: clamp(56px, 18vw, 120px);
   line-height: 0.88;
   letter-spacing: -0.015em;
+  color: #E8E0D0;
   text-transform: uppercase;
-  text-align: left;
   font-weight: 400;
-  padding: 0 4px;
-  margin-bottom: 22px;
 }
-.testimonials .testimonials__title .gold {
-  color: #A83030; /* red accent, matches brand + CTA button */
+.testimonials__title-sub {
+  display: block;
+  font-family: 'JRK', 'Teko', sans-serif;
+  font-size: clamp(24px, 6vw, 44px);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: #E8E0D0;
+  text-transform: uppercase;
+  margin-top: 8px;
+  opacity: 0.9;
+}
+
+/* CTA stays in the top zone below the title */
+.testimonials__hero-top-content .testimonials__cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 22px;
+  background: #A83030;
+  color: #E8E0D0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  margin-top: 4px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.testimonials__hero-top-content .testimonials__cta::after {
+  content: "\25B6";
+  font-size: 11px;
+}
+.testimonials__hero-top-content .testimonials__cta:hover {
+  background: #C83838;
+  transform: translateY(-2px);
+}
+
+/* DM carousel — fills the whole section, z-index below the top zone.
+   Items scroll upward. When they reach the top zone area (top 48vh),
+   they're hidden behind it (lower stacking). */
+.testimonials__dm-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+.testimonials__dm-track {
+  position: absolute;
+  top: 100%;                 /* start below the visible area */
+  left: 18%;
+  right: 18%;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  animation: scroll-dms-up 42s linear infinite;
+  will-change: transform;
+}
+.testimonials__dm-track img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  display: block;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* 2 sets of DMs duplicated in the DOM — translating 50% = exactly 1 set,
+   looping back at that point looks seamless because of the duplicate. */
+@keyframes scroll-dms-up {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
 }
 .testimonials__dms-big {
   position: relative;
