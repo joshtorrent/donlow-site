@@ -45,40 +45,65 @@
         </div>
       </section>
 
-      <!-- ============ THE PROOF — SPOTIFY ============ -->
-      <section class="proof">
-        <div class="proof__content">
-          <h3 class="proof__platform">Spotify.</h3>
+      <!-- ============ PROOF — single section, scroll-transforms Spotify → Tours ============ -->
+      <div class="proof-wrap" id="proof-wrap">
+        <section class="proof">
+          <div class="proof__content">
 
-          <div class="counters" id="counters">
-            <div class="counter">
-              <span class="counter__value" data-target="40000" data-suffix="K" data-divide="1000">0</span>
-              <span class="counter__label">Monthly<br>Listeners</span>
-            </div>
-            <div class="counter">
-              <span class="counter__value" data-target="1200000" data-suffix="M" data-divide="1000000" data-decimals="1">0</span>
-              <span class="counter__label">Listeners</span>
-            </div>
-            <div class="counter">
-              <span class="counter__value" data-target="2500000" data-suffix="M" data-divide="1000000" data-decimals="1">0</span>
-              <span class="counter__label">Streams</span>
-            </div>
-            <div class="counter">
-              <span class="counter__value" data-target="1800000" data-suffix="M" data-divide="1000000" data-decimals="1">0</span>
-              <span class="counter__label">Hours<br>Played</span>
-            </div>
-            <div class="counter">
-              <span class="counter__value" data-target="169" data-suffix="" data-divide="1">0</span>
-              <span class="counter__label">Countries</span>
-            </div>
-            <div class="counter">
-              <span class="counter__value" data-target="195" data-suffix="" data-divide="1" data-prefix="#1 for ">#1 for 0</span>
-              <span class="counter__label">Fans</span>
+            <!-- Title — two phases cross-fade -->
+            <h3 class="proof__platform">
+              <span class="proof__phase proof__phase--active" data-phase="spotify">Spotify.</span>
+              <span class="proof__phase" data-phase="tours">Tours.</span>
+            </h3>
+
+            <!-- Grid — two phases cross-fade -->
+            <div class="proof__grid">
+
+              <!-- SPOTIFY counters -->
+              <div class="proof__panel proof__panel--active" data-phase="spotify">
+                <div class="counters" id="counters">
+                  <div class="counter">
+                    <span class="counter__value" data-target="40000" data-suffix="K" data-divide="1000">0</span>
+                    <span class="counter__label">Monthly<br>Listeners</span>
+                  </div>
+                  <div class="counter">
+                    <span class="counter__value" data-target="1200000" data-suffix="M" data-divide="1000000" data-decimals="1">0</span>
+                    <span class="counter__label">Listeners</span>
+                  </div>
+                  <div class="counter">
+                    <span class="counter__value" data-target="2500000" data-suffix="M" data-divide="1000000" data-decimals="1">0</span>
+                    <span class="counter__label">Streams</span>
+                  </div>
+                  <div class="counter">
+                    <span class="counter__value" data-target="1800000" data-suffix="M" data-divide="1000000" data-decimals="1">0</span>
+                    <span class="counter__label">Hours<br>Played</span>
+                  </div>
+                  <div class="counter">
+                    <span class="counter__value" data-target="169" data-suffix="" data-divide="1">0</span>
+                    <span class="counter__label">Countries</span>
+                  </div>
+                  <div class="counter">
+                    <span class="counter__value" data-target="195" data-suffix="" data-divide="1" data-prefix="#1 for ">#1 for 0</span>
+                    <span class="counter__label">Fans</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TOURS regions -->
+              <div class="proof__panel" data-phase="tours">
+                <div class="region-grid">
+                  <div class="region"><span>Latin America</span></div>
+                  <div class="region"><span>Europe</span></div>
+                  <div class="region"><span>Asia</span></div>
+                  <div class="region"><span>India</span></div>
+                </div>
+              </div>
+
             </div>
           </div>
-        </div>
-        <img class="proof__bg" src="/assets/worldwide/outdoor-gym.png" alt="" />
-      </section>
+          <img class="proof__bg" src="/assets/worldwide/outdoor-gym.png" alt="" />
+        </section>
+      </div>
 
       <!-- ============ SCROLL-THROUGH SCREENSHOTS ============ -->
       <section class="pass">
@@ -87,21 +112,6 @@
 
       <section class="pass">
         <img class="pass__img" src="/assets/worldwide/stats-soundcloud.jpg" alt="SoundCloud — top cities" loading="lazy" />
-      </section>
-
-      <!-- ============ THE PROOF — TOURING ============ -->
-      <section class="proof proof--touring">
-        <div class="proof__content">
-          <h3 class="proof__platform">Touring.</h3>
-
-          <div class="region-grid">
-            <div class="region"><span>Latin America</span></div>
-            <div class="region"><span>Europe</span></div>
-            <div class="region"><span>Asia</span></div>
-            <div class="region"><span>India</span></div>
-          </div>
-        </div>
-        <img class="proof__bg" src="/assets/worldwide/outdoor-gym.png" alt="" />
       </section>
 
       <!-- ============ FOOTER ============ -->

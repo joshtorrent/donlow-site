@@ -104,37 +104,73 @@
 /* ============================================================
    THE PROOF (numbers + cycling screenshots)
    ============================================================ */
-.proof {
+/* Wrapper — tall, gives scroll distance to drive the transform */
+.proof-wrap {
   position: relative;
-  padding: 22px 0 0;
+  min-height: 180vh;
+}
+.proof {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
   background: #E8E0D0;
   overflow: hidden;
 }
 .proof__content {
   position: relative;
   z-index: 2;
-  padding: 0 20px;
+  padding: 26px 20px 0;
 }
 .proof__bg {
   display: block;
   width: 100%;
   height: auto;
-  margin-top: -6px;   /* flush with counters, no visible gap */
+  margin-top: -6px;
   position: relative;
   z-index: 1;
   pointer-events: none;
 }
 
-/* Platform title — centered, compact, small top margin */
+/* Platform title — cross-fade between Spotify/Tours */
 .proof__platform {
+  position: relative;
+  height: clamp(40px, 11vw, 56px);
+  margin-bottom: 18px;
+  text-align: center;
+}
+.proof__phase {
+  position: absolute;
+  inset: 0;
+  display: block;
   font-family: 'JRK', 'Teko', sans-serif;
   font-size: clamp(36px, 10vw, 52px);
   line-height: 1;
   letter-spacing: 0.04em;
   color: #080808;
   text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 18px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.proof__phase--active { opacity: 1; }
+
+/* Grid — cross-fade between counters/regions */
+.proof__grid {
+  position: relative;
+}
+.proof__panel {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.proof__panel--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.proof__panel:first-child {
+  position: relative;  /* first panel defines the natural height */
 }
 
 /* --- Counters (grid) — compact, above the figures ------------ */
@@ -196,17 +232,19 @@
   opacity: 0;
 }
 
-/* --- Region grid (inside .proof--touring) ----------------- */
+/* --- Region grid (inside .proof Tours phase) -------------- */
 .region-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 .region {
+  position: relative;
   background: #080808;
   color: #E8E0D0;
-  padding: 22px 12px;
+  padding: 24px 14px 26px;
   text-align: center;
+  overflow: hidden;
   transition: background 0.2s, transform 0.2s;
 }
 .region:hover {
@@ -214,10 +252,27 @@
   transform: translateY(-2px);
 }
 .region span {
+  position: relative;
+  z-index: 2;
   font-family: 'JRK', 'Teko', sans-serif;
   font-size: 20px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+/* Jaguar Face Stamp on the bottom-right of each region */
+.region::after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  bottom: -14px;
+  width: 60px;
+  height: 60px;
+  background: url('/assets/worldwide/jaguar-stamp.png') no-repeat center center / contain;
+  opacity: 0.55;
+  transform: rotate(-8deg);
+  pointer-events: none;
+  z-index: 1;
+  filter: invert(1);  /* make the black stamp render as light on dark bg */
 }
 
 

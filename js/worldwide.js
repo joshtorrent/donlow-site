@@ -117,4 +117,49 @@
     updatePass(); // initial
   }
 
+  // ---------------------------------------------------------------
+  // PROOF TRANSFORM — Spotify → Tours as user scrolls through .proof-wrap
+  // ---------------------------------------------------------------
+  var proofWrap = document.getElementById('proof-wrap');
+  var phaseEls  = document.querySelectorAll('[data-phase]');
+
+  function updateProofPhase() {
+    if (!proofWrap || !frameEl) return;
+    var rect   = proofWrap.getBoundingClientRect();
+    var frameRect = frameEl.getBoundingClientRect();
+    var viewH  = frameEl.clientHeight;
+
+    // scrolled = how far into the wrapper we've scrolled, in px
+    var scrolled = frameRect.top - rect.top;
+    // total distance of sticky scroll inside wrap
+    var wrapH = rect.height;
+    var stickyRange = wrapH - viewH; // distance sticky stays pinned
+    if (stickyRange <= 0) { setPhase('spotify'); return; }
+
+    var progress = Math.min(1, Math.max(0, scrolled / stickyRange));
+
+    // Switch at 55% — a bit past the middle
+    var phase = progress > 0.55 ? 'tours' : 'spotify';
+    setPhase(phase);
+  }
+
+  function setPhase(phase) {
+    phaseEls.forEach(function (el) {
+      var p = el.dataset.phase;
+      var active = (p === phase);
+      // Titles use --active class, panels use --active class
+      if (el.classList.contains('proof__phase')) {
+        el.classList.toggle('proof__phase--active', active);
+      } else if (el.classList.contains('proof__panel')) {
+        el.classList.toggle('proof__panel--active', active);
+      }
+    });
+  }
+
+  if (proofWrap && frameEl) {
+    frameEl.addEventListener('scroll', updateProofPhase, { passive: true });
+    window.addEventListener('resize', updateProofPhase);
+    updateProofPhase();
+  }
+
 })();
