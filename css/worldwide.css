@@ -104,16 +104,9 @@
 /* ============================================================
    THE PROOF (numbers + cycling screenshots)
    ============================================================ */
-/* Wrapper — gives scroll distance to drive the transform */
-.proof-wrap {
-  position: relative;
-  min-height: 150vh;
-}
-
-/* Sticky section — pins to top of frame, PNG covers, content overlaid */
+/* Proof section — PNG as full-cover bg, content overlaid at top */
 .proof {
-  position: sticky;
-  top: 0;
+  position: relative;
   height: calc(100vh - 60px);
   height: calc(100dvh - 60px);
   overflow: hidden;
@@ -131,7 +124,7 @@
   user-select: none;
 }
 
-/* Content is positioned in the TOP ~47% (above where figures start in PNG) */
+/* Content sits in the TOP ~47% (above where figures start in PNG) */
 .proof__content {
   position: absolute;
   top: 0;
@@ -142,53 +135,21 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  padding-top: 26px;      /* breathing room above "Spotify." */
   padding-bottom: 12px;
 }
 
-/* Title area — slide+fade between Spotify/Tours */
+/* Spotify title */
 .proof__platform {
-  position: relative;
-  height: clamp(40px, 11vw, 54px);
-  margin-bottom: 14px;
-  text-align: center;
-}
-.proof__phase {
-  position: absolute;
-  inset: 0;
-  display: block;
   font-family: 'JRK', 'Teko', sans-serif;
   font-size: clamp(36px, 10vw, 52px);
   line-height: 1;
   letter-spacing: 0.04em;
   color: #080808;
   text-transform: uppercase;
-  opacity: 0;
-  transition: opacity 0.45s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  text-align: center;
+  margin-bottom: 14px;
 }
-/* Spotify enters from above, Tours enters from below */
-.proof__phase[data-phase="spotify"]                          { transform: translateY(-22px); }
-.proof__phase[data-phase="spotify"].proof__phase--active     { transform: translateY(0);     opacity: 1; }
-.proof__phase[data-phase="tours"]                            { transform: translateY(22px);  }
-.proof__phase[data-phase="tours"].proof__phase--active       { transform: translateY(0);     opacity: 1; }
-
-/* Grid area — slide+fade between panels */
-.proof__grid {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-}
-.proof__panel {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-/* Spotify counters exit up, Tours regions enter from below */
-.proof__panel[data-phase="spotify"]                          { transform: translateY(-22px); }
-.proof__panel[data-phase="spotify"].proof__panel--active     { transform: translateY(0);     opacity: 1; pointer-events: auto; }
-.proof__panel[data-phase="tours"]                            { transform: translateY(28px);  }
-.proof__panel[data-phase="tours"].proof__panel--active       { transform: translateY(0);     opacity: 1; pointer-events: auto; }
 
 /* --- Counters (grid) — compact, above the figures ------------ */
 .counters {
@@ -249,69 +210,6 @@
   opacity: 0;
 }
 
-/* --- Region grid (inside .proof Tours phase) -------------- */
-.region-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.region {
-  position: relative;
-  background: #080808;
-  color: #E8E0D0;
-  padding: 24px 14px 26px;
-  text-align: center;
-  overflow: hidden;
-  transition: background 0.2s, transform 0.2s;
-}
-.region:hover {
-  background: #A83030;
-  transform: translateY(-2px);
-}
-.region span {
-  position: relative;
-  z-index: 2;
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: 20px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-/* Jaguar Face Stamp on the bottom-right of each region — animated when Tours phase activates */
-.region::after {
-  content: "";
-  position: absolute;
-  right: -10px;
-  bottom: -14px;
-  width: 60px;
-  height: 60px;
-  background: url('/assets/worldwide/jaguar-stamp.png') no-repeat center center / contain;
-  pointer-events: none;
-  z-index: 1;
-  filter: invert(1);
-  /* Invisible until stamp animation runs */
-  opacity: 0;
-  transform: rotate(-8deg) scale(1.9);
-}
-
-/* Trigger: Tours panel is active → stamps animate in, one by one */
-.proof__panel[data-phase="tours"].proof__panel--active .region:nth-child(1)::after {
-  animation: stamp 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) 0.2s both;
-}
-.proof__panel[data-phase="tours"].proof__panel--active .region:nth-child(2)::after {
-  animation: stamp 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) 0.45s both;
-}
-.proof__panel[data-phase="tours"].proof__panel--active .region:nth-child(3)::after {
-  animation: stamp 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) 0.7s both;
-}
-.proof__panel[data-phase="tours"].proof__panel--active .region:nth-child(4)::after {
-  animation: stamp 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) 0.95s both;
-}
-
-@keyframes stamp {
-  0%   { opacity: 0;    transform: rotate(-8deg) scale(1.9); }
-  60%  { opacity: 1;    transform: rotate(-8deg) scale(0.92); }
-  100% { opacity: 0.7;  transform: rotate(-8deg) scale(1); }
-}
 
 
 /* ============================================================
