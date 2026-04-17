@@ -212,6 +212,39 @@
 
   </main>
 
+  <!-- Force-play all videos on mobile: iOS Safari blocks autoplay sometimes,
+       retry on first user interaction + whenever the page becomes visible. -->
+  <script>
+  (function () {
+    function playAll() {
+      document.querySelectorAll('video').forEach(function (v) {
+        try {
+          v.muted = true;
+          v.setAttribute('muted', '');
+          v.setAttribute('playsinline', '');
+          v.setAttribute('webkit-playsinline', '');
+          if (v.paused) {
+            var p = v.play();
+            if (p && p.catch) p.catch(function () {});
+          }
+        } catch (e) {}
+      });
+    }
+    // Try on DOM ready + load
+    if (document.readyState !== 'loading') playAll();
+    else document.addEventListener('DOMContentLoaded', playAll);
+    window.addEventListener('load', playAll);
+    // Retry on first user interaction (unblocks iOS autoplay restriction)
+    ['touchstart', 'click', 'pointerdown'].forEach(function (ev) {
+      document.addEventListener(ev, playAll, { once: true, passive: true });
+    });
+    // Retry when tab becomes visible again
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) playAll();
+    });
+  })();
+  </script>
+
   <!-- Hero: parallax + loader + layer-6 video -->
   <script src="/js/parallax.js"></script>
 
