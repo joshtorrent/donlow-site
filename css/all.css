@@ -113,28 +113,32 @@
    No bottom margin.
 --------------------------------------------------------------- */
 .reach-content { padding-bottom: 0; margin-bottom: 0; }
+
+/* Match the "BIO" PNG treatment: title anchored at TOP of the section,
+   tight block-letter stack almost touching the frame edges */
 .reach-hero--centered {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  text-align: center;
-  padding: 0 0;
+  padding: 40px 0 0;
 }
 .reach-hero--centered .reach-hero__content {
-  text-align: center;
   width: 100%;
-  padding: 0 8px;
+  padding: 0;
+  text-align: center;
 }
-/* Massive block letters, like the "BIO" PNG — fills the width aggressively,
-   tight leading, stacks 3 lines (World / Wide / Reach.) */
 .reach-hero--centered .reach-hero__title {
-  font-size: clamp(96px, 34vw, 220px);
+  display: block;
+  width: 100%;
+  font-size: clamp(110px, 38vw, 260px);
   line-height: 0.82;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: #E8E0D0;
   text-transform: uppercase;
-  margin: 0 auto;
   font-weight: 700;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 /* ---------------------------------------------------------------
