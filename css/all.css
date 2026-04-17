@@ -210,18 +210,8 @@
 .testimonials .testimonials__bg,
 .testimonials .testimonials__overlay { display: none; }
 
-/* Top zone — opaque ceiling with Don Low Web Block video fullscreen as bg.
-   DMs rising from the bottom disappear behind this zone. */
-.testimonials__hero-top {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 48vh;
-  height: 48dvh;
-  z-index: 2;
-  overflow: hidden;
-  background: #080808;
-}
-.testimonials__hero-video {
+/* Full-screen background video — fills the whole testimonials section, uncropped */
+.testimonials__bg-video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -230,24 +220,31 @@
   object-position: center center;
   z-index: 0;
 }
-.testimonials__hero-top-dim {
+.testimonials__bg-dim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg,
-    rgba(8, 8, 8, 0.35) 0%,
-    rgba(8, 8, 8, 0.55) 70%,
-    rgba(8, 8, 8, 0.85) 100%);
+  background: rgba(8, 8, 8, 0.4);
   z-index: 1;
   pointer-events: none;
 }
-.testimonials__hero-top-content {
+
+/* Title + CTA overlay — stays pinned at the top of the section, OVER the
+   video and OVER the DMs scrolling */
+.testimonials__title-overlay {
   position: absolute;
-  inset: 0;
-  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
   padding: 40px 24px 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  pointer-events: none; /* let scroll/touch pass through except on CTA */
+  background: linear-gradient(180deg,
+    rgba(8, 8, 8, 0.55) 0%,
+    rgba(8, 8, 8, 0.2) 80%,
+    transparent 100%);
+}
+.testimonials__title-overlay .testimonials__cta {
+  pointer-events: auto;
 }
 
 /* Title — "They Play It." big in Anton, "They Love It." sub in JRK */
@@ -277,7 +274,7 @@
 }
 
 /* CTA stays in the top zone below the title */
-.testimonials__hero-top-content .testimonials__cta {
+.testimonials__title-overlay .testimonials__cta {
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
@@ -295,25 +292,25 @@
   text-decoration: none;
   transition: background 0.2s, transform 0.2s;
 }
-.testimonials__hero-top-content .testimonials__cta::after {
+.testimonials__title-overlay .testimonials__cta::after {
   content: "\25B6";
   font-size: 11px;
 }
-.testimonials__hero-top-content .testimonials__cta:hover {
+.testimonials__title-overlay .testimonials__cta:hover {
   background: #C83838;
   transform: translateY(-2px);
 }
 
-/* DM carousel — fills the whole section, z-index below the top zone.
-   Items scroll upward (driven by JS, pixel-based for mobile reliability).
-   When they reach the top 48vh zone, they go behind the opaque hero-top. */
+/* DM carousel — fills the whole section, OVER the video (z-index 2),
+   UNDER the title overlay (z-index 3). Driven by JS, pixel-based. */
 .testimonials__dm-mask {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   overflow: hidden;
   display: flex;
   justify-content: center;
+  pointer-events: none;
 }
 .testimonials__dm-track {
   width: min(64vw, 420px);
@@ -332,8 +329,7 @@
 }
 
 /* ---------------------------------------------------------------
-   SECTION 5 — MUSIC
-   3D mask rotating on top, Spotify artist embed player at bottom.
+   SECTION 5 — MUSIC (simple: title, 3D mask, Spotify)
 --------------------------------------------------------------- */
 .music {
   position: relative;
@@ -342,93 +338,11 @@
   color: #E8E0D0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  padding: 32px 0 40px;
 }
-
-/* 3D stage — the mask is the centerpiece, accents are small corner touches */
-.music__stage {
-  position: relative;
-  width: 100%;
-  height: 55vh;
-  height: 55dvh;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-/* 3D CANVAS ON TOP of the decoration accents */
-.music__3d {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-.music__3d.music__3d--ready { opacity: 1; }
-.music__3d canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-  background: transparent;
-}
-
-/* Decorative hero-layer accents — small, in the extreme corners, BEHIND the 3D */
-.music__deco {
-  position: absolute;
-  pointer-events: none;
-  z-index: 1;
-  user-select: none;
-}
-.music__deco--chain {
-  top: -10px;
-  left: -20px;
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  object-position: 70% 5%;
-  transform: rotate(-8deg);
-  opacity: 0.75;
-}
-.music__deco--bailepunk {
-  top: 14px;
-  right: -6px;
-  width: 95px;
-  height: 70px;
-  object-fit: cover;
-  object-position: 75% 32%;
-  transform: rotate(6deg);
-  opacity: 0.9;
-}
-.music__deco--feuilles {
-  bottom: -24px;
-  left: -18px;
-  width: 110px;
-  height: 140px;
-  object-fit: cover;
-  object-position: 15% 40%;
-  transform: rotate(-10deg);
-  opacity: 0.8;
-}
-.music__deco--eclair {
-  bottom: 18px;
-  right: -8px;
-  width: 60px;
-  height: 120px;
-  object-fit: cover;
-  object-position: center 38%;
-  transform: rotate(14deg);
-  opacity: 0.65;
-}
-
-/* Red signature bar — recalls the hero bottom bar */
-.music__sig-bar {
-  width: 100%;
-  height: 4px;
-  background: #A83030;
-  flex-shrink: 0;
-}
-
-/* Title */
 .music__title-wrap {
-  padding: 28px 24px 8px;
+  padding: 0 24px;
+  margin-bottom: 8px;
 }
 .music__title {
   font-family: 'Anton', 'Archivo Black', 'Impact', sans-serif;
@@ -441,25 +355,23 @@
   margin: 0;
   text-align: left;
 }
-.music__title-dot {
-  color: #9B7A1E;
+.music__3d {
+  position: relative;
+  width: 100%;
+  height: 48vh;
+  height: 48dvh;
+  min-height: 320px;
+  opacity: 0;
+  transition: opacity 1s ease;
 }
-
-/* DON LOW gold signature — cropped out of 05-donlow.png */
-.music__donlow-sig {
+.music__3d.music__3d--ready { opacity: 1; }
+.music__3d canvas {
   display: block;
-  width: 85%;
-  max-width: 320px;
-  height: 52px;
-  margin: 4px auto 18px;
-  object-fit: cover;
-  object-position: center 78%;
+  width: 100% !important;
+  height: 100% !important;
 }
-
-/* Spotify player */
 .music__player {
-  padding: 0 20px 40px;
-  flex-shrink: 0;
+  padding: 0 20px;
 }
 .music__player iframe {
   display: block;

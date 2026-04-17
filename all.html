@@ -180,27 +180,13 @@
          SECTION 4 — TESTIMONIALS ("They Play It. They Love It.")
     ================================================================= -->
     <section id="testimonials-section" class="testimonials">
+      <!-- Full-screen background video (uncropped, fills the whole section) -->
+      <video class="testimonials__bg-video" autoplay muted loop playsinline preload="auto">
+        <source src="/assets/testimonials/bg-video.mp4" type="video/mp4" />
+      </video>
+      <div class="testimonials__bg-dim"></div>
 
-      <!-- TOP ZONE: Don Low Web Block video (fullscreen behind) + title + CTA -->
-      <div class="testimonials__hero-top">
-        <video class="testimonials__hero-video" autoplay muted loop playsinline preload="auto">
-          <source src="/assets/testimonials/bg-video.mp4" type="video/mp4" />
-        </video>
-        <div class="testimonials__hero-top-dim"></div>
-        <div class="testimonials__hero-top-content">
-          <h2 class="testimonials__title">
-            <span class="testimonials__title-big">They Play It.</span>
-            <span class="testimonials__title-sub">They Love It.</span>
-          </h2>
-          <a class="testimonials__cta"
-             href="https://drive.google.com/drive/folders/1svWwYOacrsDXl1dncXACINcgsNiFwABC?usp=sharing"
-             target="_blank" rel="noopener">
-            Watch Live Clips
-          </a>
-        </div>
-      </div>
-
-      <!-- DM CAROUSEL: scrolls from bottom upward, disappears behind the top zone -->
+      <!-- DMs scroll upward OVER the video (not hidden behind anything) -->
       <div class="testimonials__dm-mask" aria-hidden="true">
         <div class="testimonials__dm-track">
           <img src="/assets/testimonials/dm-1.jpg" alt="" loading="lazy" />
@@ -208,7 +194,6 @@
           <img src="/assets/testimonials/dm-3.jpg" alt="" loading="lazy" />
           <img src="/assets/testimonials/dm-4.jpg" alt="" loading="lazy" />
           <img src="/assets/testimonials/dm-5.jpg" alt="" loading="lazy" />
-          <!-- Duplicate set for seamless infinite loop -->
           <img src="/assets/testimonials/dm-1.jpg" alt="" loading="lazy" />
           <img src="/assets/testimonials/dm-2.jpg" alt="" loading="lazy" />
           <img src="/assets/testimonials/dm-3.jpg" alt="" loading="lazy" />
@@ -216,30 +201,30 @@
           <img src="/assets/testimonials/dm-5.jpg" alt="" loading="lazy" />
         </div>
       </div>
+
+      <!-- Title + CTA at top, OVER the video and DMs -->
+      <div class="testimonials__title-overlay">
+        <h2 class="testimonials__title">
+          <span class="testimonials__title-big">They Play It.</span>
+          <span class="testimonials__title-sub">They Love It.</span>
+        </h2>
+        <a class="testimonials__cta"
+           href="https://drive.google.com/drive/folders/1svWwYOacrsDXl1dncXACINcgsNiFwABC?usp=sharing"
+           target="_blank" rel="noopener">
+          Watch Live Clips
+        </a>
+      </div>
     </section>
 
     <!-- ================================================================
-         SECTION 5 — MUSIC (3D mask + hero-layer accents + Spotify player)
+         SECTION 5 — MUSIC (simple: title, 3D mask, Spotify player)
     ================================================================= -->
     <section id="music-section" class="music">
-      <!-- 3D stage with decorative layer accents from the hero composition -->
-      <div class="music__stage">
-        <img class="music__deco music__deco--chain"     src="/assets/01-chain.png"     alt="" aria-hidden="true" />
-        <img class="music__deco music__deco--eclair"    src="/assets/02-eclair.png"    alt="" aria-hidden="true" />
-        <img class="music__deco music__deco--feuilles"  src="/assets/03-feuilles.png"  alt="" aria-hidden="true" />
-        <img class="music__deco music__deco--bailepunk" src="/assets/04-bailepunk.png" alt="" aria-hidden="true" />
-        <div class="music__3d" id="music-3d-canvas"></div>
-      </div>
-
-      <!-- Red signature bar — recalls the hero bottom bar -->
-      <div class="music__sig-bar"></div>
-
       <div class="music__title-wrap">
-        <h2 class="music__title">Music<span class="music__title-dot">.</span></h2>
+        <h2 class="music__title">Music.</h2>
       </div>
 
-      <!-- DON LOW gold text signature, extracted from layer 05-donlow.png -->
-      <img class="music__donlow-sig" src="/assets/05-donlow.png" alt="DON LOW" />
+      <div class="music__3d" id="music-3d-canvas"></div>
 
       <div class="music__player">
         <iframe
