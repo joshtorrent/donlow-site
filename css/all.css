@@ -11,17 +11,19 @@
   -webkit-overflow-scrolling: touch;
 }
 
-/* Sticky nav, transparent (so the content behind it shows through) */
-.nav {
-  position: sticky;
+/* Nav is absolute (not sticky) so it doesn't take layout flow space.
+   Hero can then start at content y=0 and fill the whole viewport. */
+.frame > .nav {
+  position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
 }
 
-/* Sig-bars sticky at top/bottom of frame viewport */
-.sig-bar { position: sticky; z-index: 99; }
-.sig-bar--top    { top: 0; }
-.sig-bar--bottom { bottom: 0; display: none; } /* hide — Kevin wants no bottom red bar */
+/* Both sig-bars hidden on /all — no brand strip at top or bottom */
+.frame > .sig-bar--top,
+.frame > .sig-bar--bottom { display: none; }
 
 /* Every section must fill the viewport */
 .hero-section,
