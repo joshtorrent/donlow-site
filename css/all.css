@@ -144,22 +144,29 @@
 --------------------------------------------------------------- */
 .reach-content { padding-bottom: 0; margin-bottom: 0; }
 
-/* Reach + Testimonials wrapper — lets Reach be sticky while the
-   Testimonials section scrolls up OVER it */
-.reach-testimonials-wrap {
+/* Reach wrapper — WWR title is sticky, Spotify counters rise UP over it */
+.reach-scroll-wrap {
   position: relative;
 }
-#reach-section.reach-content {
+.reach-hero--sticky {
   position: sticky;
   top: 0;
   height: 100vh;
   height: 100dvh;
   z-index: 1;
 }
-#testimonials-section {
+/* Proof section rises over the sticky WWR, but stops before fully covering.
+   Height = 80vh so at max scroll, the top 20vh of WWR remains visible. */
+.proof--rise {
   position: relative;
-  z-index: 2; /* above sticky reach so it covers on rise-up */
+  z-index: 2;
+  min-height: 80vh;
+  background:
+    url('/assets/worldwide/outdoor-gym.png') no-repeat center bottom / contain,
+    #E8E0D0;
+  overflow: hidden;
 }
+.proof--rise .proof__bg { display: none; }
 
 /* Match the "BIO" PNG treatment: title anchored at TOP LEFT of the section,
    heavy condensed block-letter stack (Anton) — each word on its own line,

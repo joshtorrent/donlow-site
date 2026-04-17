@@ -118,14 +118,11 @@
     </section>
 
     <!-- ================================================================
-         SECTIONS 3+4 — REACH (sticky) + TESTIMONIALS (rises over it)
+         SECTION 3 — WORLD WIDE REACH (sticky) + Spotify counters (rises over)
     ================================================================= -->
-    <div class="reach-testimonials-wrap">
+    <div class="reach-scroll-wrap">
 
-    <!-- SECTION 3 — WORLDWIDE REACH (sticky so next section can rise over) -->
-    <section id="reach-section" class="reach-content">
-
-      <section class="reach-hero reach-hero--centered">
+      <section id="reach-section" class="reach-hero reach-hero--centered reach-hero--sticky">
         <video class="reach-hero__video" autoplay muted loop playsinline preload="auto">
           <source src="/assets/worldwide/bg-video.mp4" type="video/mp4" />
         </video>
@@ -136,8 +133,7 @@
         </div>
       </section>
 
-      <section class="proof">
-        <img class="proof__bg" src="/assets/worldwide/outdoor-gym.png" alt="" />
+      <section class="proof proof--rise">
         <div class="proof__content">
           <h3 class="proof__platform">Spotify.</h3>
           <div class="counters" id="counters">
@@ -169,7 +165,7 @@
         </div>
       </section>
 
-    </section>
+    </div><!-- /.reach-scroll-wrap -->
 
     <!-- ================================================================
          SECTION 4 — TESTIMONIALS ("They Play It. They Love It.")
@@ -216,7 +212,6 @@
       </div>
     </section>
 
-    </div><!-- /.reach-testimonials-wrap -->
 
     <div class="sig-bar sig-bar--bottom"></div>
 
