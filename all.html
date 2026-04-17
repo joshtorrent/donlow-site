@@ -301,6 +301,48 @@
   })();
   </script>
 
+  <!-- Testimonials DM carousel: pixel-based infinite scroll (mobile-reliable).
+       Track is duplicated (2 sets of 5), translates up until one set worth has
+       passed, then resets by exactly one set height → seamless loop. -->
+  <script>
+  (function () {
+    var track = document.querySelector('.testimonials__dm-track');
+    var mask  = document.querySelector('.testimonials__dm-mask');
+    if (!track || !mask) return;
+
+    var SPEED   = 0.045;  // pixels per millisecond (~45 px/s)
+    var position = 0;      // current translateY value in px
+    var setHeight = 0;     // height of ONE set of DMs (= scrollHeight / 2)
+    var maskHeight = 0;
+    var lastT = null;
+
+    function measure() {
+      maskHeight = mask.clientHeight;
+      setHeight  = track.scrollHeight / 2;
+      // Start with the track just below the visible area
+      if (setHeight > 0 && position === 0) position = maskHeight;
+      lastT = null;
+    }
+
+    function tick(t) {
+      if (lastT === null) lastT = t;
+      var dt = t - lastT;
+      lastT = t;
+      if (!setHeight) { measure(); requestAnimationFrame(tick); return; }
+      position -= SPEED * dt;
+      if (position <= -setHeight) position += setHeight;
+      track.style.transform = 'translate3d(0, ' + position + 'px, 0)';
+      requestAnimationFrame(tick);
+    }
+
+    function start() { measure(); requestAnimationFrame(tick); }
+
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start);
+    window.addEventListener('resize', measure);
+  })();
+  </script>
+
   <!-- Bio mask: crop from bottom so text never overlaps the gold mask.
        Capped so the top of the mask (BIO text + top of jaguar) stays visible. -->
   <script>

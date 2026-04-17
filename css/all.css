@@ -297,38 +297,30 @@
 }
 
 /* DM carousel — fills the whole section, z-index below the top zone.
-   Items scroll upward. When they reach the top zone area (top 48vh),
-   they're hidden behind it (lower stacking). */
+   Items scroll upward (driven by JS, pixel-based for mobile reliability).
+   When they reach the top 48vh zone, they go behind the opaque hero-top. */
 .testimonials__dm-mask {
   position: absolute;
   inset: 0;
   z-index: 1;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
 }
 .testimonials__dm-track {
-  position: absolute;
-  top: 100%;                 /* start below the visible area */
-  left: 18%;
-  right: 18%;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  animation: scroll-dms-up 42s linear infinite;
+  width: min(64vw, 420px);
+  flex-shrink: 0;
   will-change: transform;
+  /* JS drives transform: translate3d(0, Ypx, 0) */
 }
 .testimonials__dm-track img {
-  width: 100%;
-  height: auto;
-  border-radius: 14px;
   display: block;
+  width: 100%;
+  aspect-ratio: 800 / 1422;   /* deterministic size without waiting for image load */
+  border-radius: 14px;
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
-}
-
-/* 2 sets of DMs duplicated in the DOM — translating 50% = exactly 1 set,
-   looping back at that point looks seamless because of the duplicate. */
-@keyframes scroll-dms-up {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-50%); }
+  margin-bottom: 24px;
+  background: #111;            /* placeholder color before image paints */
 }
 .testimonials__dms-big {
   position: relative;
