@@ -240,12 +240,26 @@
 
       <div class="music__3d" id="music-3d-canvas"></div>
 
-      <div class="music__player">
-        <iframe
-          src="https://open.spotify.com/embed/artist/2fBDf4ES1SWLbeH4GuiOVz?utm_source=generator&theme=0&locale=en"
-          width="100%" height="352" frameBorder="0"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"></iframe>
+      <!-- Artworks horizontal slider — replaces the Spotify embed.
+           Scales up at center, scales down at the edges, gentle levitation. -->
+      <div class="artworks" aria-label="Don Low artworks">
+        <div class="artworks__track" id="artworks-track">
+          <div class="artwork"><img src="/assets/music/artworks/aw-01.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-02.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-03.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-04.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-05.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-06.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-07.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-08.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-09.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-10.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-11.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-12.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-13.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-14.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+          <div class="artwork"><img src="/assets/music/artworks/aw-15.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+        </div>
       </div>
     </section>
 
@@ -391,6 +405,9 @@
 
   <!-- Music section — 3D mask (Three.js) -->
   <script type="module" src="/js/music-3d.js"></script>
+
+  <!-- Music artworks slider — center-zoom + gentle levitation -->
+  <script src="/js/artworks-slider.js" defer></script>
 
   <!-- Bio mask: crop from bottom so text never overlaps the gold mask.
        Capped so the top of the mask (BIO text + top of jaguar) stays visible. -->
