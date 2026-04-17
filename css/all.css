@@ -2,12 +2,21 @@
    DON LOW — Combined Preview (Hero + Bio + Reach + Testimonials)
    ============================================================ */
 
+/* Global safety: kill any horizontal overflow that might cause the
+   viewport to "zoom out" on mobile */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+}
+
 /* Frame is a single scrollable container */
 .frame {
   height: 100vh;
   height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
+  max-width: 100vw;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -322,7 +331,8 @@
 
 /* DM carousel — starts BELOW the red bar (42vh), scrolls up, clipped at
    the bar top by overflow:hidden. Over the video (z-index 2), under
-   the title overlay (z-index 4). */
+   the title overlay (z-index 4). Container-relative sizing (no vw) so
+   mobile Chrome/Brave doesn't miscompute widths. */
 .testimonials__dm-mask {
   position: absolute;
   top: calc(42vh + 4px);
@@ -332,24 +342,26 @@
   bottom: 0;
   z-index: 2;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
   pointer-events: none;
 }
 .testimonials__dm-track {
-  width: min(64vw, 420px);
-  flex-shrink: 0;
+  width: 64%;
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
   will-change: transform;
   /* JS drives transform: translate3d(0, Ypx, 0) */
 }
 .testimonials__dm-track img {
   display: block;
   width: 100%;
-  aspect-ratio: 800 / 1422;   /* deterministic size without waiting for image load */
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 800 / 1422;
   border-radius: 14px;
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
   margin-bottom: 24px;
-  background: #111;            /* placeholder color before image paints */
+  background: #111;
 }
 
 /* ---------------------------------------------------------------
