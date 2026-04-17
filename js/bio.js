@@ -42,9 +42,10 @@
   function updateWordReveal() {
     if (!words.length) return;
 
-    // Reveal words between 5% and 95% scroll
+    // Reveal all words by 85% scroll — so they're fully visible once
+    // the rising text section settles into its final resting position.
     var startAt = 0.05;
-    var endAt   = 0.95;
+    var endAt   = 0.85;
     var range   = endAt - startAt;
 
     var local = (scrollProgress - startAt) / range;
