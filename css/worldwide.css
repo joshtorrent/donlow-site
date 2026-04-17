@@ -24,6 +24,9 @@
   color: #9B7A1E !important;
 }
 
+/* Hide the global red signature bar on this page */
+.frame .sig-bar--bottom { display: none; }
+
 .reach-content {
   position: relative;
   padding-top: 0;
@@ -103,30 +106,35 @@
    ============================================================ */
 .proof {
   position: relative;
-  padding: 50px 0 0;
-  min-height: 100vh;
-  min-height: 100dvh;
-  background:
-    url('/assets/worldwide/outdoor-gym.png') no-repeat center bottom / 100% auto,
-    #E8E0D0;
+  padding: 22px 0 0;
+  background: #E8E0D0;
   overflow: hidden;
 }
-.proof__inner {
+.proof__content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   padding: 0 20px;
 }
+.proof__bg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: -6px;   /* flush with counters, no visible gap */
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
 
-/* Platform title — centered, compact */
+/* Platform title — centered, compact, small top margin */
 .proof__platform {
   font-family: 'JRK', 'Teko', sans-serif;
-  font-size: clamp(40px, 11vw, 56px);
+  font-size: clamp(36px, 10vw, 52px);
   line-height: 1;
   letter-spacing: 0.04em;
   color: #080808;
   text-transform: uppercase;
   text-align: center;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
 
 /* --- Counters (grid) — compact, above the figures ------------ */
