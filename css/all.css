@@ -85,12 +85,11 @@
 }
 
 /* Text section: transparent bg — the video + mask behind stays visible
-   through the rising text. translateY lifts it slightly higher for a
-   cleaner end-of-scroll position. */
+   through the rising text. No translate — keeping text at natural position
+   so it doesn't rise up into the gold mask area. */
 .bio-content--preview .bio-text-section {
   background: transparent;
   min-height: 0;
-  transform: translateY(-8vh);
 }
 
 /* Words: lighter color so they read on the dark video behind */

@@ -302,19 +302,16 @@
   })();
   </script>
 
-  <!-- Bio mask: light crop from the bottom when the rising text approaches,
-       just enough to see the text cleanly. Capped so the majority of the
-       mask stays visible at end of scroll. -->
+  <!-- Bio mask: crop from bottom so text never overlaps the gold mask.
+       Capped so the top of the mask (BIO text + top of jaguar) stays visible. -->
   <script>
   (function () {
-    var frame = document.getElementById('frame');
+    var frame  = document.getElementById('frame');
     var sticky = document.querySelector('.bio-hero-sticky');
     var mask   = document.querySelector('.bio-content--preview .bio-hero-mask');
     var text   = document.querySelector('.bio-content--preview .bio-text-section');
     if (!frame || !sticky || !mask || !text) return;
-    var MAX_CLIP = 40; // percent — enough to lift the gold mask above
-                       // the rising text, while keeping the majority of
-                       // the mask (top ~60%) visible at end of scroll
+    var MIN_MASK_VISIBLE_PCT = 35; // percent of mask always visible (top portion)
 
     var scheduled = false;
     function update() {
@@ -323,14 +320,22 @@
       var stickyRect = sticky.getBoundingClientRect();
       var stickyH    = stickyRect.height;
       if (stickyH <= 0) return;
-      var hidden = Math.max(0, stickyRect.bottom - textRect.top);
-      var pct    = Math.min(MAX_CLIP, (hidden / stickyH) * 100);
-      mask.style.clipPath         = 'inset(0 0 ' + pct + '% 0)';
-      mask.style.webkitClipPath   = 'inset(0 0 ' + pct + '% 0)';
+      // How far from the top of the sticky is the text's top? (0 = sticky top, 100 = sticky bottom)
+      var textTopInMask = ((textRect.top - stickyRect.top) / stickyH) * 100;
+      // Keep at least MIN_MASK_VISIBLE_PCT of the mask visible
+      var visibleUpTo = Math.max(MIN_MASK_VISIBLE_PCT, Math.min(100, textTopInMask));
+      var clipPct     = Math.max(0, 100 - visibleUpTo);
+      var clipValue   = 'inset(0 0 ' + clipPct.toFixed(2) + '% 0)';
+      mask.style.setProperty('clip-path', clipValue);
+      mask.style.setProperty('-webkit-clip-path', clipValue);
+      mask.setAttribute('data-clip', clipPct.toFixed(1));
     }
     function request() { if (!scheduled) { scheduled = true; requestAnimationFrame(update); } }
     frame.addEventListener('scroll', request, { passive: true });
     window.addEventListener('resize', request);
+    // Also update after layout stabilizes (fonts, images loaded)
+    window.addEventListener('load', update);
+    setTimeout(update, 200);
     update();
   })();
   </script>
