@@ -54,6 +54,14 @@
                                to the reach section */
 }
 
+/* Raise the video ~2 scrolls higher within the sticky mask
+   (~200px, from 48.1% → 28%). Video element becomes taller so
+   cover-fit reveals more of the content through the transparent
+   lower half of the PNG */
+.bio-content--preview .bio-hero-video {
+  top: 28%;
+}
+
 /* ---------------------------------------------------------------
    SECTION 3 — REACH
 --------------------------------------------------------------- */
