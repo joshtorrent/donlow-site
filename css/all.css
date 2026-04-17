@@ -86,10 +86,12 @@
 }
 
 /* Text section: transparent bg — the video + mask behind stays visible
-   through the rising text */
+   through the rising text. translateY lifts it slightly higher for a
+   cleaner end-of-scroll position. */
 .bio-content--preview .bio-text-section {
   background: transparent;
   min-height: 0;
+  transform: translateY(-8vh);
 }
 
 /* Words: lighter color so they read on the dark video behind */
@@ -116,16 +118,23 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 60px 24px;
+  padding: 0 0;
 }
 .reach-hero--centered .reach-hero__content {
   text-align: center;
   width: 100%;
+  padding: 0 8px;
 }
+/* Massive block letters, like the "BIO" PNG — fills the width aggressively,
+   tight leading, stacks 3 lines (World / Wide / Reach.) */
 .reach-hero--centered .reach-hero__title {
-  font-size: clamp(68px, 22vw, 140px);
-  line-height: 0.9;
+  font-size: clamp(96px, 34vw, 220px);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  color: #E8E0D0;
+  text-transform: uppercase;
   margin: 0 auto;
+  font-weight: 700;
 }
 
 /* ---------------------------------------------------------------
