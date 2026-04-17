@@ -74,11 +74,79 @@
   slider.addEventListener('scroll', requestScaleUpdate, { passive: true });
   window.addEventListener('resize', requestScaleUpdate);
 
+  // ---------------------------------------------------------------
+  // AUTO-SCROLL — gentle continuous drift, ping-pong at ends
+  // ---------------------------------------------------------------
+  var AUTO_SPEED = 28;        // px/s
+  var RESUME_DELAY = 2500;    // ms after user interaction before resuming
+
+  var autoOn    = true;
+  var inView    = true;
+  var autoRaf   = null;
+  var autoDir   = 1;           // 1 = forward, -1 = reverse
+  var lastTick  = null;
+  var accum     = 0;           // fractional accumulator
+  var resumeT   = null;
+
+  function autoLoop(now) {
+    if (!autoOn || !inView) { autoRaf = null; return; }
+    if (lastTick === null) lastTick = now;
+    var dt = now - lastTick;
+    lastTick = now;
+
+    accum += (AUTO_SPEED * dt / 1000) * autoDir;
+    if (Math.abs(accum) >= 1) {
+      var step = Math.trunc(accum);
+      slider.scrollLeft += step;
+      accum -= step;
+    }
+
+    var max = slider.scrollWidth - slider.clientWidth;
+    if (slider.scrollLeft >= max - 1 && autoDir > 0) autoDir = -1;
+    if (slider.scrollLeft <= 0       && autoDir < 0) autoDir = 1;
+
+    autoRaf = requestAnimationFrame(autoLoop);
+  }
+
+  function startAuto() {
+    if (autoRaf !== null) return;
+    lastTick = null;
+    accum = 0;
+    autoRaf = requestAnimationFrame(autoLoop);
+  }
+
+  function pauseAuto() {
+    autoOn = false;
+    if (autoRaf !== null) { cancelAnimationFrame(autoRaf); autoRaf = null; }
+    if (resumeT) clearTimeout(resumeT);
+    resumeT = setTimeout(function () {
+      autoOn = true;
+      startAuto();
+    }, RESUME_DELAY);
+  }
+
+  // User interaction pauses auto-scroll briefly
+  ['touchstart', 'wheel', 'pointerdown', 'mousedown'].forEach(function (ev) {
+    slider.addEventListener(ev, pauseAuto, { passive: true });
+  });
+
+  // Stop auto-scroll entirely when slider is off-screen (battery saver)
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        inView = e.isIntersecting;
+        if (inView && autoOn) startAuto();
+      });
+    }, { threshold: 0.05 });
+    io.observe(slider);
+  }
+
   // Kick everything off when layout is stable
   function start() {
     centerInitial();
     updateScales();
     requestAnimationFrame(levitationLoop);
+    startAuto();
   }
   if (document.readyState === 'complete') start();
   else window.addEventListener('load', start);
