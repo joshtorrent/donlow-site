@@ -312,7 +312,9 @@
     var mask   = document.querySelector('.bio-content--preview .bio-hero-mask');
     var text   = document.querySelector('.bio-content--preview .bio-text-section');
     if (!frame || !sticky || !mask || !text) return;
-    var MAX_CLIP = 15; // percent — upper bound so the mask remains mostly visible
+    var MAX_CLIP = 40; // percent — enough to lift the gold mask above
+                       // the rising text, while keeping the majority of
+                       // the mask (top ~60%) visible at end of scroll
 
     var scheduled = false;
     function update() {
