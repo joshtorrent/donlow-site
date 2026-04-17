@@ -335,27 +335,91 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding-top: 20px;
 }
-.music__3d {
+
+/* 3D stage with scattered hero-layer accents */
+.music__stage {
   position: relative;
+  width: 100%;
   height: 55vh;
   height: 55dvh;
+  overflow: hidden;
   flex-shrink: 0;
+}
+.music__3d {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   opacity: 0;
   transition: opacity 1s ease;
 }
-.music__3d.music__3d--ready {
-  opacity: 1;
-}
+.music__3d.music__3d--ready { opacity: 1; }
 .music__3d canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
 }
+
+/* Decorative hero-layer accents — echoes of the hero composition */
+.music__deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  user-select: none;
+}
+.music__deco--chain {
+  top: -20px;
+  left: -15px;
+  width: 130px;
+  height: 190px;
+  object-fit: cover;
+  object-position: 65% 3%;
+  transform: rotate(-8deg);
+  opacity: 0.9;
+}
+.music__deco--bailepunk {
+  top: 30px;
+  right: -8px;
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  object-position: 70% 32%;
+  transform: rotate(8deg);
+  opacity: 0.95;
+}
+.music__deco--feuilles {
+  bottom: -30px;
+  left: -20px;
+  width: 140px;
+  height: 210px;
+  object-fit: cover;
+  object-position: 20% 40%;
+  transform: rotate(-12deg);
+  opacity: 0.9;
+}
+.music__deco--eclair {
+  bottom: 24px;
+  right: 4px;
+  width: 90px;
+  height: 170px;
+  object-fit: cover;
+  object-position: center 35%;
+  transform: rotate(18deg);
+  opacity: 0.75;
+  z-index: 3;
+}
+
+/* Red signature bar — recalls the hero bottom bar */
+.music__sig-bar {
+  width: 100%;
+  height: 4px;
+  background: #A83030;
+  flex-shrink: 0;
+}
+
+/* Title */
 .music__title-wrap {
-  padding: 0 24px;
-  margin-bottom: 16px;
+  padding: 28px 24px 8px;
 }
 .music__title {
   font-family: 'Anton', 'Archivo Black', 'Impact', sans-serif;
@@ -368,6 +432,22 @@
   margin: 0;
   text-align: left;
 }
+.music__title-dot {
+  color: #9B7A1E;
+}
+
+/* DON LOW gold signature — cropped out of 05-donlow.png */
+.music__donlow-sig {
+  display: block;
+  width: 85%;
+  max-width: 320px;
+  height: 52px;
+  margin: 4px auto 18px;
+  object-fit: cover;
+  object-position: center 78%;
+}
+
+/* Spotify player */
 .music__player {
   padding: 0 20px 40px;
   flex-shrink: 0;
