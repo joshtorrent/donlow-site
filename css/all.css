@@ -322,6 +322,62 @@
   margin-bottom: 24px;
   background: #111;            /* placeholder color before image paints */
 }
+
+/* ---------------------------------------------------------------
+   SECTION 5 — MUSIC
+   3D mask rotating on top, Spotify artist embed player at bottom.
+--------------------------------------------------------------- */
+.music {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #080808;
+  color: #E8E0D0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.music__3d {
+  flex: 1 1 auto;
+  position: relative;
+  min-height: 50vh;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.music__3d.music__3d--ready {
+  opacity: 1;
+}
+.music__3d canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+.music__title-wrap {
+  padding: 0 24px;
+  margin-bottom: 16px;
+}
+.music__title {
+  font-family: 'Anton', 'Archivo Black', 'Impact', sans-serif;
+  font-size: clamp(72px, 26vw, 180px);
+  line-height: 0.88;
+  letter-spacing: -0.015em;
+  color: #E8E0D0;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin: 0;
+  text-align: left;
+}
+.music__player {
+  padding: 0 20px 40px;
+  flex-shrink: 0;
+}
+.music__player iframe {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+}
 .testimonials__dms-big {
   position: relative;
   width: 100%;
