@@ -104,7 +104,16 @@ function init() {
     scrollProgress = Math.max(0, Math.min(1, scrolled / total));
   }
 
-  window.addEventListener('scroll', updateScroll, { passive: true });
+  // Listen on whichever element actually scrolls (frame or window)
+  const frameEl = document.getElementById('frame');
+  let scroller = window;
+  if (frameEl) {
+    const style = window.getComputedStyle(frameEl);
+    if (style.overflowY === 'auto' || style.overflowY === 'scroll') {
+      scroller = frameEl;
+    }
+  }
+  scroller.addEventListener('scroll', updateScroll, { passive: true });
   window.addEventListener('resize', onResize);
 
   function onResize() {
