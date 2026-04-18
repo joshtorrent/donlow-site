@@ -14,14 +14,15 @@
   var section = document.getElementById('booking-section');
   if (!section) return;
 
-  var links = section.querySelectorAll('.booking__link');
-  if (!links.length) return;
+  // Reveal in order: WhatsApp link → Email link → socials row.
+  var items = section.querySelectorAll('.booking__link, .booking__socials');
+  if (!items.length) return;
 
   function reveal() {
-    links.forEach(function (el, i) {
+    items.forEach(function (el, i) {
       setTimeout(function () {
         el.classList.add('booking__link--in');
-      }, i * 90);
+      }, i * 120);
     });
   }
 

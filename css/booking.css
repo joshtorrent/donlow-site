@@ -48,23 +48,21 @@
   pointer-events: none;
 }
 
-/* Contact block — 2 columns, simple typography */
+/* Contact block — single centered column: WhatsApp, Email, socials.
+   Minimal vertical rhythm, all content aligned to center. */
 .booking__contacts {
-  padding: 0 24px;
-  margin-top: 12px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px 20px;
-}
-.booking__col {
+  padding: 24px 24px 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 22px;
+  text-align: center;
 }
 
 .booking__link {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2px;
   text-decoration: none;
   color: #080808;
@@ -83,7 +81,6 @@
 .booking__link--in:hover,
 .booking__link--in:active {
   color: #A83030;
-  transform: translateX(2px);
 }
 
 .booking__link-label {
@@ -97,14 +94,46 @@
 .booking__link-value {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  font-size: 17px;
+  font-size: 19px;
   letter-spacing: 0.01em;
   word-break: break-word;
   line-height: 1.15;
 }
 
-/* Desktop — a bit more breathing room */
+/* Socials row — reuse .bio-socials-row's icons, but override the filter
+   that was whitening them (for dark bg). On Booking's beige bg we need
+   the icons in dark/red. Same palette as the WWR page so they match. */
+.booking__socials {
+  margin-top: 8px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.booking__socials.booking__link--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.booking__socials a {
+  width: 38px;
+  height: 38px;
+}
+/* Higher specificity than all.css's .bio-socials-row img rule (which
+   applies a white/invert filter for the dark Bio bg) — we need black
+   icons on Booking's beige bg. */
+.booking .booking__socials img {
+  filter: brightness(0);
+  transition: filter 0.2s, transform 0.2s;
+}
+.booking .booking__socials a:hover img {
+  /* Red tint on hover — on-brand accent. */
+  filter: brightness(0) saturate(100%) invert(21%) sepia(72%) saturate(1871%) hue-rotate(347deg) brightness(92%) contrast(88%);
+  transform: scale(1.1);
+}
+
+/* Desktop — bigger type + icons */
 @media (min-width: 768px) {
-  .booking__link-value { font-size: 20px; }
-  .booking__contacts { gap: 36px 40px; padding: 0 32px; }
+  .booking__link-value { font-size: 22px; }
+  .booking__socials a { width: 44px; height: 44px; }
 }
