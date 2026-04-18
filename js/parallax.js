@@ -30,7 +30,9 @@
   var MAX_SHIFT     = 25;     // px — parallax max translation
   var IDLE_AMP      = 3;      // px — idle breathing amplitude base
   var IDLE_SPEED    = 0.4;    // base speed multiplier (slow drift)
-  var REVEAL_DELAY  = 80;     // ms between each layer reveal
+  var REVEAL_DELAY  = 0;      // ms between each layer reveal (0 = all at once,
+                              // avoids the "out-of-order composition" flash
+                              // as the loader fades and layers appear staggered)
   var LOADER_MIN_MS = 1800;   // minimum visible time, even if assets load faster
   var BPM_MIN       = 70;
   var BPM_MAX       = 170;
