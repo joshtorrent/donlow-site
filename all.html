@@ -533,15 +533,14 @@
   <!-- Booking section — generates the WhatsApp QR + stagger-reveals cards -->
   <script src="/js/booking.js" defer></script>
 
-  <!-- Bio stop + clamp: the cropped mask PNG no longer contains the
-       "BIO." title — it's now its own <h1>, with the jaguar photo
-       just below. As the body copy rises, we want it to STOP exactly
-       at the bottom of the title and stay pinned there (not continue
+  <!-- Bio stop + clamp: as the body copy rises, we want it to STOP at
+       the bottom of the BIO. title and stay pinned there (not continue
        rising behind the title). Two things happen when it lands:
-         1) .bio-content--done class toggled → fades video, bg → black
-         2) transform: translateY applied to the text section to clamp
-            its visual position at title.bottom, so further scrolling
-            doesn't push it up. -->
+         1) .bio-content--done class toggled → fades the video
+         2) transform: translateY applied to text-section to clamp it
+            at title.bottom. bio-content has `contain: paint` so any
+            visual overflow below bio-content's bounds gets clipped
+            (doesn't bleed into the next section). -->
   <script>
   (function () {
     var frame = document.getElementById('frame');
@@ -555,9 +554,7 @@
       scheduled = false;
       var titleRect = title.getBoundingClientRect();
 
-      // Clamp: if the text's natural top would be above the title's bottom,
-      // push it back down so it visually stops at title.bottom. Strip any
-      // previous transform first so we measure the "natural" position.
+      // Strip prior transform, read the natural top, decide clamp.
       text.style.transform = '';
       var naturalTop = text.getBoundingClientRect().top;
       var clamp = Math.max(0, titleRect.bottom - naturalTop);
@@ -565,9 +562,8 @@
         text.style.transform = 'translateY(' + clamp.toFixed(1) + 'px)';
       }
 
-      var atStop = clamp > 0;
-      if (atStop) bio.classList.add('bio-content--done');
-      else        bio.classList.remove('bio-content--done');
+      if (clamp > 0) bio.classList.add('bio-content--done');
+      else           bio.classList.remove('bio-content--done');
     }
     function request() { if (!scheduled) { scheduled = true; requestAnimationFrame(update); } }
     frame.addEventListener('scroll', request, { passive: true });

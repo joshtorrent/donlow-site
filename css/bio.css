@@ -115,7 +115,10 @@
   color: #080808;
   text-transform: uppercase;
   word-spacing: 0.06em;
-  margin-bottom: auto;
+  /* margin-bottom: 32px puts the socials row right below the paragraph
+     (instead of the previous `auto` which pushed them to the bottom of
+     the text-section and left a big empty black gap between). */
+  margin-bottom: 32px;
 }
 
 .bio-word {

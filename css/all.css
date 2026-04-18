@@ -289,6 +289,15 @@ html, body {
   padding-top: 0;
   padding-bottom: 0;
   background: transparent;
+  /* isolation:isolate contains the text-section's z-index so it can't
+     paint on top of the next section (WWR). contain:paint adds paint
+     clipping so the text-section's translateY clamp (applied by the
+     bio-stop script) cannot draw below bio's own bounds. Using paint
+     containment instead of overflow:hidden because overflow:hidden
+     turns the element into a sticky-scroll ancestor and breaks the
+     hero-sticky pinning. */
+  isolation: isolate;
+  contain: paint;
 }
 
 /* Sticky mask fills the entire frame viewport (top:0 instead of 60px),
@@ -304,13 +313,16 @@ html, body {
   top: 28%;
 }
 
-/* Text section: transparent bg by default. Its min-height is bumped so
-   the bio-content's CONTENT area (not padding) is tall enough to keep
-   the sticky pinned until the rising text's top can reach the bottom
-   of the "Bio." title. Sticky's pin range = parent content height
-   minus sticky height — padding doesn't count, so we extend text. */
+/* Text section — BLACK bg so as it rises from below it COVERS the
+   jaguar mask in black (Kevin: "la bio qui remonte doit recouvrir en
+   noir le masque"). Min-height keeps the bio-content content area tall
+   enough that the hero-sticky stays pinned while the rising text's top
+   reaches the bottom of the BIO. title. The bio-stop script applies
+   a translateY clamp to stop text at title.bottom; bio-content's
+   contain:paint keeps the visual overflow from bleeding into WWR. */
 .bio-content--preview .bio-text-section {
-  background: transparent;
+  z-index: 2;
+  background: #080808;
   min-height: 90vh;
   min-height: 90dvh;
 }

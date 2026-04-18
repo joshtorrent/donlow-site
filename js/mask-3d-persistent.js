@@ -177,23 +177,24 @@ function init() {
   (scroller === window ? window : scroller).addEventListener('scroll', onScroll, { passive: true });
 
   // -----------------------------------------------------------
-  // VISIBILITY — mask appears when its target slot enters viewport.
-  // Using the slot (not the section) means:
-  //   • Testimonials above Music: slot is still far below viewport
-  //     → mask hidden (Kevin's original complaint resolved).
-  //   • User arrives on Music: slot enters from below just as the
-  //     user sees the MUSIC. title → mask already visible, no
-  //     fade-in delay (Kevin's latest complaint: "il soit déjà là").
-  // Same logic for Booking slot.
+  // VISIBILITY — mask is tied STRICTLY to the Music section (and
+  // Booking). It must NOT bleed into the preceding Support section
+  // even while Music is peeking from below. So trigger only once
+  // music.rect.top is at or above viewport top (user has arrived).
+  // Combined with the 0.15s canvas fade, the mask appears instantly
+  // the moment Music takes over the viewport — "déjà là".
   // -----------------------------------------------------------
-  function slotInView(el) {
-    if (!el) return false;
-    const r = el.getBoundingClientRect();
+  function musicEntered() {
+    if (!musicSection) return false;
+    const r = musicSection.getBoundingClientRect();
+    return r.top <= 1 && r.bottom > 0;
+  }
+  function bookingInView() {
+    if (!bookingSection) return false;
+    const r = bookingSection.getBoundingClientRect();
     const vh = window.innerHeight || document.documentElement.clientHeight;
     return r.top < vh && r.bottom > 0;
   }
-  function musicEntered() { return slotInView(musicSlot); }
-  function bookingInView() { return slotInView(bookingSlot); }
 
   function evaluateVisibility() {
     wantVisible = musicEntered() || bookingInView();
