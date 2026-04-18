@@ -1,10 +1,10 @@
 /* ============================================================
    DON LOW — BOOKING section
-   Last section. Anton "BOOKING" title flush-left (matches WWR /
-   World Wide Support). Central slot reserved for the persistent
-   3D mask (rendered by /js/mask-3d-persistent.js into the fixed
-   #mask-3d-canvas). Around the mask: 5 grunge mini-cards floating
-   like collaged tickets / stamped papers with contact info.
+   Last section of the EPK. Same visual grammar as Music: title,
+   3D mask slot, info under it. Light beige bg (#E8E0D0) so the
+   persistent 3D mask carries its Music look straight into this
+   section. Contact info laid out in two plain columns — no
+   stickers, no QR, no grunge.
    ============================================================ */
 
 .booking {
@@ -12,278 +12,99 @@
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
-  background: #080808;
-  color: #E8E0D0;
-  overflow: hidden;
-  padding: 30px 0 60px;
-  isolation: isolate;
+  background: #E8E0D0;     /* palette Music — continuity with the mask */
+  color: #080808;
+  padding: 32px 0 48px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Grunge texture overlay — SVG feTurbulence data URL, low opacity.
-   Prolongs the film grain vibe locally in this section. */
-.booking__grunge-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.22;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9 0 0 0 0 0.85 0 0 0 0 0.75 0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
-  background-size: 420px 420px;
-}
-
-/* Radial vignette darkens the corners to pull the eye to the mask */
-.booking__vignette {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center,
-    transparent 0%,
-    transparent 45%,
-    rgba(0, 0, 0, 0.55) 100%);
-}
-
-/* Title: same pattern as WWR and WWS */
+/* Title — same treatment as Music (light-bg section family) */
 .booking__title-wrap {
-  position: relative;
-  z-index: 3;
-  padding: 0 20px;
+  padding: 0 24px;
+  margin-bottom: 8px;
 }
 .booking__title {
   display: block;
   margin: 0;
   font-family: 'Anton', 'Archivo Black', 'Impact', 'Teko', sans-serif;
   font-weight: 400;
-  font-size: clamp(72px, 22vw, 140px);
+  font-size: clamp(72px, 26vw, 180px);
   line-height: 0.88;
   letter-spacing: -0.015em;
-  color: #E8E0D0;
+  color: #080808;
   text-transform: uppercase;
   text-align: left;
 }
 
-/* Central anchor slot — reserves vertical room at center of section
-   for the persistent 3D mask (rendered outside this DOM via fixed canvas).
-   Sized so the mask visually dominates the center. */
+/* 3D mask slot — mirrors Music's .music__3d so the fixed canvas
+   lands at the same screen position */
 .booking__3d-slot {
   position: relative;
-  z-index: 2;
   width: 100%;
-  height: 56vh;
-  height: 56dvh;
-  min-height: 380px;
+  height: 48vh;
+  height: 48dvh;
+  min-height: 320px;
   pointer-events: none;
 }
 
-/* ---------------------------------------------------------------
-   GRUNGE CARDS
-   Absolute-positioned around the 3D slot. Each starts invisible
-   (reveal handled by booking.js IntersectionObserver with stagger).
---------------------------------------------------------------- */
-.booking__cards {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;  /* only the cards themselves catch clicks */
+/* Contact block — 2 columns, simple typography */
+.booking__contacts {
+  padding: 0 24px;
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 20px;
 }
-
-.booking__card {
-  position: absolute;
-  pointer-events: auto;
+.booking__col {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 4px;
-  padding: 12px 14px;
-  width: 150px;
-  min-height: 80px;
-  background: #E8E0D0;
-  color: #080808;
-  border-radius: 3px;
+  gap: 22px;
+}
+
+.booking__link {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   text-decoration: none;
-  font-family: 'Barlow Condensed', sans-serif;
-  box-shadow:
-    0 18px 28px -8px rgba(0, 0, 0, 0.8),
-    0 2px 6px rgba(0, 0, 0, 0.5);
-  /* Torn paper edge via SVG turbulence mask */
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='2' seed='4'/><feDisplacementMap in='SourceGraphic' scale='5'/></filter><rect x='0' y='0' width='300' height='200' fill='white' filter='url(%23r)'/></svg>");
-  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' preserveAspectRatio='none'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='2' seed='4'/><feDisplacementMap in='SourceGraphic' scale='5'/></filter><rect x='0' y='0' width='300' height='200' fill='white' filter='url(%23r)'/></svg>");
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  /* Reveal animation base state */
-  opacity: 0;
-  transform: translateY(20px) rotate(var(--rot-from, 0deg));
-  transition:
-    opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-.booking__card--in {
-  opacity: 1;
-  transform: translateY(0) rotate(var(--rot-to, 0deg));
-}
-.booking__card:hover {
-  z-index: 5;
-  transform: translateY(-4px) rotate(var(--rot-to, 0deg));
-}
-
-.booking__card-icon {
-  width: 22px;
-  height: 22px;
   color: #080808;
-  margin-bottom: 2px;
+  /* Reveal base state — booking.js toggles .booking__link--in */
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    color 0.2s ease;
 }
-.booking__card-label {
-  font-weight: 700;
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  opacity: 0.7;
+.booking__link--in {
+  opacity: 1;
+  transform: translateY(0);
 }
-.booking__card-value {
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.01em;
-  line-height: 1.15;
-  word-break: break-word;
-}
-
-/* Red angled "stamp" overlay */
-.booking__card-stamp {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  padding: 2px 6px;
-  font-family: 'Anton', 'Archivo Black', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.18em;
+.booking__link--in:hover,
+.booking__link--in:active {
   color: #A83030;
-  border: 1.5px solid #A83030;
-  border-radius: 2px;
-  transform: rotate(9deg);
-  opacity: 0.85;
-  pointer-events: none;
+  transform: translateX(2px);
+}
+
+.booking__link-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
+  opacity: 0.55;
 }
-.booking__card-stamp--diag {
-  top: auto;
-  bottom: 10px;
-  right: -8px;
-  transform: rotate(-14deg);
-  font-size: 11px;
-  padding: 3px 8px;
-}
-
-/* Dog-ear corner for the mail card */
-.booking__card-corner {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 16px;
-  height: 16px;
-  background: #A83030;
-  clip-path: polygon(0 0, 100% 0, 100% 100%);
-  pointer-events: none;
+.booking__link-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+  word-break: break-word;
+  line-height: 1.15;
 }
 
-/* ---------------------------------------------------------------
-   PER-CARD: variants + positions (mobile-first)
-   Positions are tuned so no card overlaps the central 3D slot,
-   which visually sits around 50% vertical, 50% horizontal.
---------------------------------------------------------------- */
-
-/* PHONE — top left */
-.booking__card--phone {
-  top: 20vh;
-  left: 4%;
-  --rot-from: -8deg;
-  --rot-to: -5deg;
-  background: #E8E0D0;
-}
-
-/* EMAIL — top right */
-.booking__card--mail {
-  top: 18vh;
-  right: 4%;
-  --rot-from: 6deg;
-  --rot-to: 4deg;
-  background: #E8E0D0;
-  width: 170px;
-}
-
-/* INSTAGRAM — middle left, red card */
-.booking__card--ig {
-  top: 52vh;
-  left: 2%;
-  --rot-from: 10deg;
-  --rot-to: 7deg;
-  background: #A83030;
-  color: #E8E0D0;
-}
-.booking__card--ig .booking__card-icon { color: #E8E0D0; }
-.booking__card--ig .booking__card-label { opacity: 0.85; }
-.booking__card--ig .booking__card-stamp { color: #E8E0D0; border-color: #E8E0D0; }
-
-/* SPOTIFY — middle right */
-.booking__card--spotify {
-  top: 50vh;
-  right: 3%;
-  --rot-from: -4deg;
-  --rot-to: -3deg;
-  background: #E8E0D0;
-  width: 150px;
-}
-.booking__card--spotify .booking__card-icon { color: #1DB954; width: 24px; height: 24px; }
-
-/* WHATSAPP QR — bottom center, biggest */
-.booking__card--whatsapp {
-  bottom: 4%;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px) rotate(var(--rot-from, 0deg));
-  --rot-from: -5deg;
-  --rot-to: -3deg;
-  width: 200px;
-  padding: 14px 14px 16px;
-  background: #E8E0D0;
-  align-items: center;
-  text-align: center;
-  gap: 6px;
-}
-.booking__card--whatsapp.booking__card--in {
-  transform: translateX(-50%) translateY(0) rotate(var(--rot-to, 0deg));
-}
-.booking__card--whatsapp .booking__card-label {
-  width: 100%;
-  text-align: center;
-}
-.booking__card--whatsapp .booking__card-value {
-  width: 100%;
-  text-align: center;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  opacity: 0.7;
-}
-.booking__card-qr {
-  width: 140px;
-  height: 140px;
-  background: #E8E0D0;
-}
-.booking__card-qr img,
-.booking__card-qr canvas,
-.booking__card-qr svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* Desktop tweaks — more spacing, same logic */
+/* Desktop — a bit more breathing room */
 @media (min-width: 768px) {
-  .booking__card {
-    width: 180px;
-    padding: 14px 16px;
-  }
-  .booking__card-value { font-size: 17px; }
-  .booking__card--whatsapp { width: 220px; }
-  .booking__card-qr { width: 160px; height: 160px; }
+  .booking__link-value { font-size: 20px; }
+  .booking__contacts { gap: 36px 40px; padding: 0 32px; }
 }
