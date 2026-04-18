@@ -177,23 +177,23 @@ function init() {
   (scroller === window ? window : scroller).addEventListener('scroll', onScroll, { passive: true });
 
   // -----------------------------------------------------------
-  // VISIBILITY — mask only appears once the user has actually ENTERED
-  // Music (rect.top <= 0), or at any overlap with Booking. The old
-  // "any overlap" rule made the cap poke into the previous testimonials
-  // panel as Music peeked up from below, which we don't want.
+  // VISIBILITY — mask appears when its target slot enters viewport.
+  // Using the slot (not the section) means:
+  //   • Testimonials above Music: slot is still far below viewport
+  //     → mask hidden (Kevin's original complaint resolved).
+  //   • User arrives on Music: slot enters from below just as the
+  //     user sees the MUSIC. title → mask already visible, no
+  //     fade-in delay (Kevin's latest complaint: "il soit déjà là").
+  // Same logic for Booking slot.
   // -----------------------------------------------------------
-  function musicEntered() {
-    if (!musicSection) return false;
-    const r = musicSection.getBoundingClientRect();
-    // 1px slack for subpixel rounding (rect.top often lands at 0.3 at exact boundary)
-    return r.top <= 1 && r.bottom > 0;
-  }
-  function bookingInView() {
-    if (!bookingSection) return false;
-    const r = bookingSection.getBoundingClientRect();
+  function slotInView(el) {
+    if (!el) return false;
+    const r = el.getBoundingClientRect();
     const vh = window.innerHeight || document.documentElement.clientHeight;
     return r.top < vh && r.bottom > 0;
   }
+  function musicEntered() { return slotInView(musicSlot); }
+  function bookingInView() { return slotInView(bookingSlot); }
 
   function evaluateVisibility() {
     wantVisible = musicEntered() || bookingInView();
@@ -270,23 +270,30 @@ function init() {
       const yNdc = 1 - 2 * POS_Y_VH;
       targetYWorld = yNdc * halfH;
     } else {
-      // Weighted slot center (pixels in viewport)
-      const wM = slotWeight(musicSlot);
-      const wB = slotWeight(bookingSlot);
-      const total = wM + wB;
+      // Target = center of the NEAREST slot (in viewport pixel Y).
+      // This works whether the slot is currently in view or not:
+      //   • Slot above viewport → targetPx is negative → mask drifts
+      //     off the top, naturally "following" Music as it scrolls.
+      //   • Slot below viewport → targetPx > vh → mask drifts in from
+      //     the bottom as Booking approaches.
+      //   • Between sections: whichever slot is closer to viewport wins,
+      //     so the mask transitions cleanly from Music to Booking.
+      // The per-frame lerp below smooths the switch.
+      const musicR = musicSlot ? musicSlot.getBoundingClientRect() : null;
+      const bookingR = bookingSlot ? bookingSlot.getBoundingClientRect() : null;
+      const viewportMid = vH / 2;
       let targetPx;
-      if (total > 0) {
-        targetPx = 0;
-        if (musicSlot) {
-          const r = musicSlot.getBoundingClientRect();
-          targetPx += (r.top + r.height / 2) * (wM / total);
-        }
-        if (bookingSlot) {
-          const r = bookingSlot.getBoundingClientRect();
-          targetPx += (r.top + r.height / 2) * (wB / total);
-        }
+      if (musicR && bookingR) {
+        const musicCenter = musicR.top + musicR.height / 2;
+        const bookingCenter = bookingR.top + bookingR.height / 2;
+        const distMusic = Math.abs(musicCenter - viewportMid);
+        const distBooking = Math.abs(bookingCenter - viewportMid);
+        targetPx = distMusic < distBooking ? musicCenter : bookingCenter;
+      } else if (musicR) {
+        targetPx = musicR.top + musicR.height / 2;
+      } else if (bookingR) {
+        targetPx = bookingR.top + bookingR.height / 2;
       } else {
-        // Neither slot in view — hold the last fixed position
         targetPx = POS_Y_VH * vH;
       }
       const pixelInCanvas = targetPx - canvasRect.top;
