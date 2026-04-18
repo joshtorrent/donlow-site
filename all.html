@@ -15,7 +15,10 @@
 <link rel="stylesheet" href="/css/bio.css" />
 <link rel="stylesheet" href="/css/worldwide.css" />
 <link rel="stylesheet" href="/css/testimonials.css" />
+<link rel="stylesheet" href="/css/booking.css" />
 <link rel="stylesheet" href="/css/all.css" />
+<!-- QR code generator for WhatsApp card in Booking section -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" defer></script>
 
 <script type="importmap">
 {
@@ -66,6 +69,7 @@
         <li><a href="#bio-section">Bio</a></li>
         <li><a href="#reach-section">Reach</a></li>
         <li><a href="#testimonials-section">Support</a></li>
+        <li><a href="#booking-section">Booking</a></li>
       </ul>
     </nav>
 
@@ -333,6 +337,79 @@
     </section>
 
 
+    <!-- ================================================================
+         SECTION 6 — BOOKING
+         Last section. Flush with the World Wide Support / Reach pattern:
+         "BOOKING" in huge Anton flush-left at the top. The persistent 3D
+         mask (fixed canvas) translates to center-screen here. Five grunge
+         mini-cards float around the mask with contact info.
+    ================================================================= -->
+    <section id="booking-section" class="booking">
+      <div class="booking__grunge-bg" aria-hidden="true"></div>
+      <div class="booking__vignette" aria-hidden="true"></div>
+
+      <div class="booking__title-wrap">
+        <h2 class="booking__title">Booking.</h2>
+      </div>
+
+      <!-- Central anchor slot where the fixed 3D mask should visually sit -->
+      <div class="booking__3d-slot" id="booking-3d-slot" aria-hidden="true"></div>
+
+      <!-- 5 grunge mini-cards scattered around the mask -->
+      <div class="booking__cards">
+
+        <!-- 1. PHONE — top left -->
+        <a class="booking__card booking__card--phone" href="tel:+33603135654">
+          <span class="booking__card-stamp" aria-hidden="true">CALL</span>
+          <svg class="booking__card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span class="booking__card-label">Call</span>
+          <span class="booking__card-value">+33 6 03 13 56 54</span>
+        </a>
+
+        <!-- 2. EMAIL — top right -->
+        <a class="booking__card booking__card--mail" href="mailto:contact@donrecords.fr">
+          <span class="booking__card-corner" aria-hidden="true"></span>
+          <svg class="booking__card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          <span class="booking__card-label">Email</span>
+          <span class="booking__card-value">contact@donrecords.fr</span>
+        </a>
+
+        <!-- 3. INSTAGRAM — middle left -->
+        <a class="booking__card booking__card--ig" href="https://www.instagram.com/iamdonlow/" target="_blank" rel="noopener">
+          <svg class="booking__card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          <span class="booking__card-label">Follow</span>
+          <span class="booking__card-value">@iamdonlow</span>
+        </a>
+
+        <!-- 4. SPOTIFY — middle right -->
+        <a class="booking__card booking__card--spotify" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          <svg class="booking__card-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.959-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.361 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+          </svg>
+          <span class="booking__card-label">Listen</span>
+          <span class="booking__card-value">DON LOW</span>
+        </a>
+
+        <!-- 5. WHATSAPP QR — bottom center, biggest card -->
+        <div class="booking__card booking__card--whatsapp">
+          <span class="booking__card-stamp booking__card-stamp--diag" aria-hidden="true">SCAN ME</span>
+          <span class="booking__card-label">WhatsApp</span>
+          <div class="booking__card-qr" id="booking-qr" aria-label="WhatsApp QR code"></div>
+          <span class="booking__card-value">+33 6 03 13 56 54</span>
+        </div>
+
+      </div>
+    </section>
+
     <div class="sig-bar sig-bar--bottom"></div>
 
   </main>
@@ -483,6 +560,9 @@
 
   <!-- Music artworks slider — center-zoom + gentle levitation -->
   <script src="/js/artworks-slider.js" defer></script>
+
+  <!-- Booking section — generates the WhatsApp QR + stagger-reveals cards -->
+  <script src="/js/booking.js" defer></script>
 
   <!-- Bio mask: crop from bottom so text never overlaps the gold mask.
        Capped so the top of the mask (BIO text + top of jaguar) stays visible. -->
