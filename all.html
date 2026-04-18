@@ -255,7 +255,10 @@
         <h2 class="music__title">Music.</h2>
       </div>
 
-      <div class="music__3d" id="music-3d-canvas"></div>
+      <!-- Visual placeholder: reserves the 48dvh slot where the persistent
+           3D mask (rendered by the fixed #mask-3d-canvas) should visually
+           appear during the Music section. No canvas inside — just layout. -->
+      <div class="music__3d" id="music-3d-slot" aria-hidden="true"></div>
 
       <!-- Artworks horizontal slider — replaces the Spotify embed.
            Each artwork has a track title button linking to Don Low's Spotify
@@ -333,6 +336,11 @@
     <div class="sig-bar sig-bar--bottom"></div>
 
   </main>
+
+  <!-- Persistent 3D mask canvas — spans Music + Booking sections.
+       Outside the scroll frame so it stays visible during scroll.
+       Hidden by default (opacity 0), activated by mask-3d-persistent.js. -->
+  <canvas id="mask-3d-canvas" aria-hidden="true"></canvas>
 
   <!-- Force-play all videos on mobile: iOS Safari blocks autoplay sometimes,
        retry on first user interaction + whenever the page becomes visible. -->
@@ -469,8 +477,9 @@
   })();
   </script>
 
-  <!-- Music section — 3D mask (Three.js) -->
-  <script type="module" src="/js/music-3d.js"></script>
+  <!-- Persistent 3D mask — spans Music + Booking sections, Y-axis rotation
+       accelerated by scroll, rendered into the fixed #mask-3d-canvas. -->
+  <script type="module" src="/js/mask-3d-persistent.js"></script>
 
   <!-- Music artworks slider — center-zoom + gentle levitation -->
   <script src="/js/artworks-slider.js" defer></script>
