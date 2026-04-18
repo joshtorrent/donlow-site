@@ -279,7 +279,7 @@ html, body {
 --------------------------------------------------------------- */
 .bio-content--preview {
   padding-top: 0;
-  padding-bottom: 0;    /* no tail buffer — text finishes, next section starts */
+  padding-bottom: 0;
   background: transparent;
 }
 
@@ -296,12 +296,15 @@ html, body {
   top: 28%;
 }
 
-/* Text section: transparent bg — the video + mask behind stays visible
-   through the rising text. No translate — keeping text at natural position
-   so it doesn't rise up into the gold mask area. */
+/* Text section: transparent bg by default. Its min-height is bumped so
+   the bio-content's CONTENT area (not padding) is tall enough to keep
+   the sticky pinned until the rising text's top can reach the bottom
+   of the "Bio." title. Sticky's pin range = parent content height
+   minus sticky height — padding doesn't count, so we extend text. */
 .bio-content--preview .bio-text-section {
   background: transparent;
-  min-height: 0;
+  min-height: 90vh;
+  min-height: 90dvh;
 }
 
 /* Words: lighter color so they read on the dark video behind */
@@ -312,24 +315,34 @@ html, body {
   color: #E85050; /* brighter red — pops on dark video */
 }
 
-/* Bio "done" state — triggered by the mask script once the body copy
-   has fully risen up to the stop point (under the BIO. letters). At
-   that moment we kill the video and switch the sticky bg to pure
-   black for a clean reading frame. Smooth fade on both. */
+/* Bio "done" state — triggered by the bio-stop script once the body copy
+   has risen up to the bottom of the "Bio." title. At that moment we kill
+   the video, switch every bg surface to pure black, and flip the title
+   color from dark-on-beige to beige-on-black so it stays legible. Smooth
+   fade on everything. */
 .bio-content--done .bio-hero-video {
   opacity: 0;
   transition: opacity 0.45s ease;
 }
-.bio-content--done .bio-hero-sticky {
+.bio-content--done .bio-hero-sticky,
+.bio-content--done .bio-hero-title,
+.bio-content--done .bio-text-section,
+.bio-content--done {
   background: #080808;
-  transition: background 0.45s ease;
+  transition: background 0.45s ease, color 0.45s ease;
+}
+.bio-content--done .bio-hero-title {
+  color: #E8E0D0;
 }
 /* Reverse transitions when scrolling back up — user re-sees the video */
 .bio-content--preview .bio-hero-video {
   transition: opacity 0.35s ease;
 }
-.bio-content--preview .bio-hero-sticky {
-  transition: background 0.35s ease;
+.bio-content--preview .bio-hero-sticky,
+.bio-content--preview .bio-hero-title,
+.bio-content--preview .bio-text-section,
+.bio-content--preview {
+  transition: background 0.35s ease, color 0.35s ease;
 }
 
 /* Socials — single line row, centered, just below bio text */

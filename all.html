@@ -108,12 +108,13 @@
     <section id="bio-section" class="bio-content bio-content--preview">
 
       <div class="bio-hero-sticky">
+        <h1 class="bio-hero-title">Bio.</h1>
+        <img class="bio-hero-mask bio-hero-mask--visible" src="/assets/bio/hero-mask.png" alt="DON LOW" />
         <video class="bio-hero-video" autoplay muted loop playsinline
                preload="none" data-lazy-video
                poster="/assets/bio/hero-video-poster.jpg">
           <source src="/assets/bio/hero-video.mp4" type="video/mp4" />
         </video>
-        <img class="bio-hero-mask bio-hero-mask--visible" src="/assets/bio/hero-mask.png" alt="DON LOW" />
       </div>
 
       <section class="bio-text-section">
@@ -531,52 +532,33 @@
   <!-- Booking section — generates the WhatsApp QR + stagger-reveals cards -->
   <script src="/js/booking.js" defer></script>
 
-  <!-- Bio mask: crop from bottom so text never overlaps the gold mask.
-       Capped so the top of the mask (BIO text + top of jaguar) stays visible. -->
+  <!-- Bio stop detector: the cropped mask PNG no longer contains the "BIO."
+       title — it's now its own <h1>, with the jaguar photo sitting just
+       below. So the stop logic is dead simple: when the rising text's top
+       reaches the bottom of the title, we're at the landing point, switch
+       the bio into --done state (fade video, bg → black). -->
   <script>
   (function () {
-    var frame  = document.getElementById('frame');
-    var bio    = document.getElementById('bio-section');
-    var sticky = document.querySelector('.bio-hero-sticky');
-    var mask   = document.querySelector('.bio-content--preview .bio-hero-mask');
-    var text   = document.querySelector('.bio-content--preview .bio-text-section');
-    if (!frame || !sticky || !mask || !text) return;
-    // Stop point: text top lands at the bottom of the "BIO." letters (approx
-    // 42% down the hero-mask PNG). Bumped up from 35 so there's a small gap
-    // (micro écart) between the bottom of "BIO." and the top of the body copy.
-    var MIN_MASK_VISIBLE_PCT = 42;
+    var frame = document.getElementById('frame');
+    var bio   = document.getElementById('bio-section');
+    var title = document.querySelector('.bio-content--preview .bio-hero-title');
+    var text  = document.querySelector('.bio-content--preview .bio-text-section');
+    if (!frame || !bio || !title || !text) return;
 
     var scheduled = false;
     function update() {
       scheduled = false;
-      var textRect   = text.getBoundingClientRect();
-      var stickyRect = sticky.getBoundingClientRect();
-      var stickyH    = stickyRect.height;
-      if (stickyH <= 0) return;
-      // How far from the top of the sticky is the text's top? (0 = sticky top, 100 = sticky bottom)
-      var textTopInMask = ((textRect.top - stickyRect.top) / stickyH) * 100;
-      // Keep at least MIN_MASK_VISIBLE_PCT of the mask visible
-      var visibleUpTo = Math.max(MIN_MASK_VISIBLE_PCT, Math.min(100, textTopInMask));
-      var clipPct     = Math.max(0, 100 - visibleUpTo);
-      var clipValue   = 'inset(0 0 ' + clipPct.toFixed(2) + '% 0)';
-      mask.style.setProperty('clip-path', clipValue);
-      mask.style.setProperty('-webkit-clip-path', clipValue);
-      mask.setAttribute('data-clip', clipPct.toFixed(1));
-
-      // Once the text has risen up to the stop point (mask can't shrink any
-      // further because of MIN_MASK_VISIBLE_PCT cap), switch the bio into
-      // "done" mode: fade the video to 0 and swap the sticky bg to black,
-      // so the final reading frame is clean — no moving picture behind.
-      if (bio) {
-        var atStop = textTopInMask <= MIN_MASK_VISIBLE_PCT + 0.5;
-        if (atStop) bio.classList.add('bio-content--done');
-        else        bio.classList.remove('bio-content--done');
-      }
+      var titleRect = title.getBoundingClientRect();
+      var textRect  = text.getBoundingClientRect();
+      // Landing: text's top has risen to (or past) the bottom of the title.
+      // Small slack so we don't flicker at exactly the threshold.
+      var atStop = textRect.top <= titleRect.bottom + 1;
+      if (atStop) bio.classList.add('bio-content--done');
+      else        bio.classList.remove('bio-content--done');
     }
     function request() { if (!scheduled) { scheduled = true; requestAnimationFrame(update); } }
     frame.addEventListener('scroll', request, { passive: true });
     window.addEventListener('resize', request);
-    // Also update after layout stabilizes (fonts, images loaded)
     window.addEventListener('load', update);
     setTimeout(update, 200);
     update();
