@@ -249,15 +249,67 @@ function init() {
       model.rotation.y = 0;
     }
 
-    // Position: fixed viewport Y fraction so the mask stays anchored
-    // in the same screen spot across Music and Booking — no jump.
+    // Position: two-phase behavior.
+    //   Phase 1 — X rotation in progress (xProgress < 1):
+    //     Mask stays anchored at a FIXED viewport Y so the rise
+    //     animation reads cleanly on the same screen spot.
+    //   Phase 2 — X rotation complete (xProgress >= 1):
+    //     Mask is "released" and tracks the weighted center of the
+    //     music and booking slots. The slots move with scroll, so
+    //     the mask scrolls naturally with the content — it now
+    //     travels along with the user toward Booking.
+    //   Smooth per-frame lerp between the two so the handoff at
+    //   xProgress=1 doesn't jump.
     const canvasRect = canvas.getBoundingClientRect();
     const vH = canvasRect.height || window.innerHeight;
     const halfH = Math.tan((FOV_DEG * Math.PI / 180) / 2) * CAM_Z;
-    const yNdc = 1 - 2 * POS_Y_VH;
-    model.position.y = yNdc * halfH;
+
+    let targetYWorld;
+    if (xProgress < 1) {
+      // Fixed viewport Y
+      const yNdc = 1 - 2 * POS_Y_VH;
+      targetYWorld = yNdc * halfH;
+    } else {
+      // Weighted slot center (pixels in viewport)
+      const wM = slotWeight(musicSlot);
+      const wB = slotWeight(bookingSlot);
+      const total = wM + wB;
+      let targetPx;
+      if (total > 0) {
+        targetPx = 0;
+        if (musicSlot) {
+          const r = musicSlot.getBoundingClientRect();
+          targetPx += (r.top + r.height / 2) * (wM / total);
+        }
+        if (bookingSlot) {
+          const r = bookingSlot.getBoundingClientRect();
+          targetPx += (r.top + r.height / 2) * (wB / total);
+        }
+      } else {
+        // Neither slot in view — hold the last fixed position
+        targetPx = POS_Y_VH * vH;
+      }
+      const pixelInCanvas = targetPx - canvasRect.top;
+      const yNdc = 1 - 2 * (pixelInCanvas / vH);
+      targetYWorld = yNdc * halfH;
+    }
+
+    // Smooth toward target (per-frame lerp, ~18% catch-up)
+    if (model.userData.posY === undefined) model.userData.posY = targetYWorld;
+    model.userData.posY += (targetYWorld - model.userData.posY) * 0.18;
+    model.position.y = model.userData.posY;
 
     renderer.render(scene, camera);
+  }
+
+  // Helper: amount of a slot currently in viewport (same as sectionWeight
+  // but parameterised — kept close to the animate loop for readability)
+  function slotWeight(el) {
+    if (!el) return 0;
+    const r = el.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const visible = Math.min(vh, r.bottom) - Math.max(0, r.top);
+    return Math.max(0, visible);
   }
 
   evaluateVisibility();
