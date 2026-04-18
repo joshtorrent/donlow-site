@@ -151,17 +151,18 @@ function init() {
       : scroller.scrollTop;
   }
 
-  // Compute X-entry progress from Music section's position — identical to
-  // the old music-3d.js formula so the feel of the entry rotation is
-  // preserved exactly. Progress reaches 1 at ~60% of Music scroll.
+  // X-entry progress: 0 until the user has actually ENTERED the Music
+  // section (rect.top <= 0), then ramps to 1 across the first 60% of
+  // the section's height. This keeps the mask out of the testimonials
+  // panel above, and makes the tilt start precisely when Music owns
+  // the viewport.
   function updateXProgress() {
     if (!musicSection) { xProgress = 1; return; }
     const rect = musicSection.getBoundingClientRect();
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    const total = rect.height + vh;
-    const scrolled = vh - rect.top;
-    const raw = scrolled / total;
-    xProgress = Math.max(0, Math.min(1, raw * X_SCROLL_SPEED));
+    if (rect.top > 0) { xProgress = 0; return; }
+    const scrolled = -rect.top;
+    const total = rect.height * 0.6;   // tilt finishes at 60% through Music
+    xProgress = Math.max(0, Math.min(1, scrolled / total));
   }
 
   function onScroll() {
@@ -176,22 +177,26 @@ function init() {
   (scroller === window ? window : scroller).addEventListener('scroll', onScroll, { passive: true });
 
   // -----------------------------------------------------------
-  // VISIBILITY — based on music/booking SECTION overlap with viewport
-  // (not slots, which are small). The mask should be visible as long
-  // as either section is touching the viewport.
+  // VISIBILITY — mask only appears once the user has actually ENTERED
+  // Music (rect.top <= 0), or at any overlap with Booking. The old
+  // "any overlap" rule made the cap poke into the previous testimonials
+  // panel as Music peeked up from below, which we don't want.
   // -----------------------------------------------------------
-  function sectionWeight(el) {
-    if (!el) return 0;
-    const r = el.getBoundingClientRect();
+  function musicEntered() {
+    if (!musicSection) return false;
+    const r = musicSection.getBoundingClientRect();
+    // 1px slack for subpixel rounding (rect.top often lands at 0.3 at exact boundary)
+    return r.top <= 1 && r.bottom > 0;
+  }
+  function bookingInView() {
+    if (!bookingSection) return false;
+    const r = bookingSection.getBoundingClientRect();
     const vh = window.innerHeight || document.documentElement.clientHeight;
-    const visible = Math.min(vh, r.bottom) - Math.max(0, r.top);
-    return Math.max(0, visible);
+    return r.top < vh && r.bottom > 0;
   }
 
   function evaluateVisibility() {
-    const wM = sectionWeight(musicSection);
-    const wB = sectionWeight(bookingSection);
-    wantVisible = (wM + wB) > 0;
+    wantVisible = musicEntered() || bookingInView();
 
     if (wantVisible) {
       canvas.classList.add('mask-3d--visible');
