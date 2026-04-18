@@ -312,6 +312,26 @@ html, body {
   color: #E85050; /* brighter red — pops on dark video */
 }
 
+/* Bio "done" state — triggered by the mask script once the body copy
+   has fully risen up to the stop point (under the BIO. letters). At
+   that moment we kill the video and switch the sticky bg to pure
+   black for a clean reading frame. Smooth fade on both. */
+.bio-content--done .bio-hero-video {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.bio-content--done .bio-hero-sticky {
+  background: #080808;
+  transition: background 0.45s ease;
+}
+/* Reverse transitions when scrolling back up — user re-sees the video */
+.bio-content--preview .bio-hero-video {
+  transition: opacity 0.35s ease;
+}
+.bio-content--preview .bio-hero-sticky {
+  transition: background 0.35s ease;
+}
+
 /* Socials — single line row, centered, just below bio text */
 .bio-socials-row {
   display: flex;

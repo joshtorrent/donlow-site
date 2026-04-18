@@ -541,11 +541,15 @@
   <script>
   (function () {
     var frame  = document.getElementById('frame');
+    var bio    = document.getElementById('bio-section');
     var sticky = document.querySelector('.bio-hero-sticky');
     var mask   = document.querySelector('.bio-content--preview .bio-hero-mask');
     var text   = document.querySelector('.bio-content--preview .bio-text-section');
     if (!frame || !sticky || !mask || !text) return;
-    var MIN_MASK_VISIBLE_PCT = 35; // percent of mask always visible (top portion)
+    // Stop point: text top lands at the bottom of the "BIO." letters (approx
+    // 42% down the hero-mask PNG). Bumped up from 35 so there's a small gap
+    // (micro écart) between the bottom of "BIO." and the top of the body copy.
+    var MIN_MASK_VISIBLE_PCT = 42;
 
     var scheduled = false;
     function update() {
@@ -563,6 +567,16 @@
       mask.style.setProperty('clip-path', clipValue);
       mask.style.setProperty('-webkit-clip-path', clipValue);
       mask.setAttribute('data-clip', clipPct.toFixed(1));
+
+      // Once the text has risen up to the stop point (mask can't shrink any
+      // further because of MIN_MASK_VISIBLE_PCT cap), switch the bio into
+      // "done" mode: fade the video to 0 and swap the sticky bg to black,
+      // so the final reading frame is clean — no moving picture behind.
+      if (bio) {
+        var atStop = textTopInMask <= MIN_MASK_VISIBLE_PCT + 0.5;
+        if (atStop) bio.classList.add('bio-content--done');
+        else        bio.classList.remove('bio-content--done');
+      }
     }
     function request() { if (!scheduled) { scheduled = true; requestAnimationFrame(update); } }
     frame.addEventListener('scroll', request, { passive: true });
