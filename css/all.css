@@ -2,6 +2,101 @@
    DON LOW — Combined Preview (Hero + Bio + Reach + Testimonials)
    ============================================================ */
 
+/* ---------------------------------------------------------------
+   LOADER — "WELCOME TO THE JUNGLE" with BPM counter 70→170
+   Dark bg chosen over beige: stronger contrast with the beige hero
+   that appears behind it during fade-out, reads punchier on OLED
+   mobile screens, and the red bar + amber title POP on black.
+   JS (parallax.js) drives: letter stagger, BPM tween, bar fill,
+   pulse interval computed from live BPM (60000/bpm).
+--------------------------------------------------------------- */
+.loader {
+  /* Override style.css defaults — dark, not beige */
+  background: #080808 !important;
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.5, 0, 0.75, 0), visibility 0.6s ease !important;
+}
+.loader--hidden {
+  transform: translateY(-40px);
+}
+.loader__inner {
+  width: min(88vw, 560px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 24px;
+  text-align: center;
+}
+.loader__title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-family: 'Anton', 'Archivo Black', 'Impact', sans-serif;
+  font-weight: 400;
+  font-size: clamp(44px, 13vw, 88px);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  color: #E8E0D0;
+  text-transform: uppercase;
+  /* Pulse: JS writes --loader-pulse-dur (ms) into this element.
+     The scale animation runs on the whole title. */
+  animation: loader-pulse var(--loader-pulse-dur, 857ms) ease-in-out infinite;
+  transform-origin: center center;
+}
+.loader__word {
+  display: block;
+  overflow: hidden;  /* clips letters as they translate up */
+  padding: 0 0.04em;
+}
+.loader__letter {
+  display: inline-block;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
+              opacity  0.55s ease;
+}
+.loader__letter--in {
+  transform: translateY(0);
+  opacity: 1;
+}
+@keyframes loader-pulse {
+  0%, 100% { transform: scale(1);    }
+  50%      { transform: scale(1.04); }
+}
+.loader__bpm {
+  font-family: 'Barlow Condensed', 'Teko', sans-serif;
+  font-weight: 600;
+  font-size: clamp(14px, 3.6vw, 18px);
+  letter-spacing: 0.22em;
+  color: #A83030;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;  /* stable width as numbers change */
+}
+.loader__bpm #loader-bpm-val {
+  color: #E8E0D0;
+  margin-right: 4px;
+}
+.loader__bar {
+  width: min(60%, 320px);
+  height: 2px;
+  background: rgba(232, 224, 208, 0.18);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.loader__bar-fill {
+  width: 0%;
+  height: 100%;
+  background: #A83030;
+  /* JS writes width directly every frame (no CSS transition — we want 1:1 with BPM). */
+}
+
+/* Hero layers transform — parallax.js sets both transform (parallax + scroll-out)
+   and opacity (scroll-out fade). Keep transform-origin centered for clean scaling. */
+.layer { transform-origin: 50% 50%; }
+
+
 /* Global safety: kill any horizontal overflow that might cause the
    viewport to "zoom out" on mobile */
 html, body {

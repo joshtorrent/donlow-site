@@ -28,9 +28,19 @@
 </head>
 <body>
 
-  <!-- Loader (fades out once hero layers load) -->
+  <!-- Loader: "WELCOME TO THE JUNGLE" + BPM counter 70→170, bar, pulse at BPM
+       JS (parallax.js) drives: letter-stagger reveal, BPM tween, bar width,
+       pulse interval recomputed from current BPM. -->
   <div class="loader" id="loader">
-    <div class="loader__text">DON LOW</div>
+    <div class="loader__inner">
+      <h1 class="loader__title" id="loader-title" aria-label="Welcome to the jungle">
+        <span class="loader__word" data-word="WELCOME"></span>
+        <span class="loader__word" data-word="TO THE"></span>
+        <span class="loader__word" data-word="JUNGLE"></span>
+      </h1>
+      <div class="loader__bpm" id="loader-bpm"><span id="loader-bpm-val">70</span> BPM</div>
+      <div class="loader__bar"><div class="loader__bar-fill" id="loader-bar-fill"></div></div>
+    </div>
   </div>
 
   <!-- Animated film-grain overlay across the whole page -->
@@ -65,23 +75,23 @@
     <section class="hero-section" id="top">
 
       <div class="layers" id="layers">
-        <img class="layer" data-layer="10" data-parallax="0.2" src="/assets/10-carre-noir.png"   alt="" />
-        <img class="layer" data-layer="9"  data-parallax="0.3" src="/assets/09-carre-rouge.png"  alt="" />
-        <img class="layer" data-layer="8"  data-parallax="0.4" src="/assets/08-wttj-black.png"   alt="" />
-        <img class="layer" data-layer="7"  data-parallax="0.5" src="/assets/07-wttj-red.png"     alt="" />
+        <img class="layer" data-layer="10" data-parallax="0.2" data-exit="bottom-right" src="/assets/10-carre-noir.png"   alt="" />
+        <img class="layer" data-layer="9"  data-parallax="0.3" data-exit="top-left"     src="/assets/09-carre-rouge.png"  alt="" />
+        <img class="layer" data-layer="8"  data-parallax="0.4" data-exit="top"          src="/assets/08-wttj-black.png"   alt="" />
+        <img class="layer" data-layer="7"  data-parallax="0.5" data-exit="top"          src="/assets/07-wttj-red.png"     alt="" />
 
-        <video class="layer layer--video" data-layer="6" data-parallax="0.6"
+        <video class="layer layer--video" data-layer="6" data-parallax="0.6" data-exit="top"
                muted playsinline preload="auto" id="layer-mask-video"
                poster="/assets/masque-video-poster.jpg">
           <source src="/assets/masque-video.mp4" type="video/mp4" />
         </video>
-        <img class="layer" data-layer="6"  data-parallax="0.6" src="/assets/06-masque.png"       alt="" id="layer-mask-img" style="display:none;" />
+        <img class="layer" data-layer="6"  data-parallax="0.6" data-exit="top"          src="/assets/06-masque.png"       alt="" id="layer-mask-img" style="display:none;" />
 
-        <img class="layer" data-layer="5"  data-parallax="0.7" src="/assets/05-donlow.png"       alt="DON LOW" />
-        <img class="layer" data-layer="4"  data-parallax="0.8" src="/assets/04-bailepunk.png"    alt="" />
-        <img class="layer" data-layer="3"  data-parallax="0.9" src="/assets/03-feuilles.png"     alt="" />
-        <img class="layer" data-layer="2"  data-parallax="1.1" src="/assets/02-eclair.png"       alt="" />
-        <img class="layer" data-layer="1"  data-parallax="1.3" src="/assets/01-chain.png"        alt="" />
+        <img class="layer" data-layer="5"  data-parallax="0.7" data-exit="bottom"       src="/assets/05-donlow.png"       alt="DON LOW" />
+        <img class="layer" data-layer="4"  data-parallax="0.8" data-exit="bottom"       src="/assets/04-bailepunk.png"    alt="" />
+        <img class="layer" data-layer="3"  data-parallax="0.9" data-exit="left"         src="/assets/03-feuilles.png"     alt="" />
+        <img class="layer" data-layer="2"  data-parallax="1.1" data-exit="top-right"    src="/assets/02-eclair.png"       alt="" />
+        <img class="layer" data-layer="1"  data-parallax="1.3" data-exit="right"        src="/assets/01-chain.png"        alt="" />
       </div>
 
       <div class="stats">
