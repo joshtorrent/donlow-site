@@ -33,6 +33,9 @@
     <div class="loader__text">DON LOW</div>
   </div>
 
+  <!-- Animated film-grain overlay across the whole page -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
   <!-- Refresh button (fixed, always accessible — pull-to-refresh doesn't
        work with frame scrolling, so this is the fallback) -->
   <button class="refresh-btn" type="button" aria-label="Reload" onclick="window.location.reload()">
@@ -219,7 +222,7 @@
       <!-- Title + CTA at top, OVER the video and DMs -->
       <div class="testimonials__title-overlay">
         <h2 class="testimonials__title">
-          <span class="testimonials__title-big">They Play It.</span>
+          <span class="testimonials__title-big">They<br>Play<br>It.</span>
           <span class="testimonials__title-sub">They Love It.</span>
         </h2>
         <a class="testimonials__cta"
@@ -241,24 +244,73 @@
       <div class="music__3d" id="music-3d-canvas"></div>
 
       <!-- Artworks horizontal slider — replaces the Spotify embed.
-           Scales up at center, scales down at the edges, gentle levitation. -->
+           Each artwork has a track title button linking to Don Low's Spotify
+           artist page (same link for all — simpler to maintain).
+           Scales up at center, fades at edges, gentle levitation, auto-scroll. -->
       <div class="artworks" aria-label="Don Low artworks">
         <div class="artworks__track" id="artworks-track">
-          <div class="artwork"><img src="/assets/music/artworks/aw-01.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-02.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-03.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-04.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-05.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-06.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-07.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-08.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-09.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-10.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-11.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-12.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-13.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-14.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-          <div class="artwork"><img src="/assets/music/artworks/aw-15.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-01.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Bola</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-02.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Baile Bass Part. 3 — Centurião</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-03.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Don Low × Dang</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-04.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Namorado</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-05.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Ela Fica de 4</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-06.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Malandro</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-07.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Funk Motor</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-08.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Sex, Funk &amp; World War III — Part. 1</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-09.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Sex, Funk &amp; World War III — Part. 2</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-10.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Baile Bass Part. 1 — RzøFunk</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-11.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Orientelão Vol. II — Warda</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-12.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">Orientelão Vol. IV — Wawa</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-13.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title">NY Girls</span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-14.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title"></span>
+          </a>
+          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+            <div class="artwork__cover"><img src="/assets/music/artworks/aw-15.jpg" alt="" loading="lazy" width="800" height="800" /></div>
+            <span class="artwork__title"></span>
+          </a>
+
         </div>
       </div>
     </section>
@@ -370,7 +422,7 @@
     var mask  = document.querySelector('.testimonials__dm-mask');
     if (!track || !mask) return;
 
-    var SPEED   = 0.045;  // pixels per millisecond (~45 px/s)
+    var SPEED   = 0.065;  // pixels per millisecond (~65 px/s) — slightly faster
     var position = 0;      // current translateY value in px
     var setHeight = 0;     // height of ONE set of DMs (= scrollHeight / 2)
     var maskHeight = 0;
