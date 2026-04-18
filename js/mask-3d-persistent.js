@@ -1,20 +1,24 @@
 /* ============================================================
    DON LOW — Persistent 3D mask (Music → Booking)
    Single full-viewport fixed canvas (#mask-3d-canvas) outside
-   the scroll frame. Visible only while either the Music or
-   Booking section is on screen; pauses rAF otherwise.
+   the scroll frame. Visible only while either Music or Booking
+   is on screen; pauses rAF otherwise.
 
-   Rotation: Y axis.
-     - Idle spin: +0.005 rad / frame (≈5s per revolution @60fps)
-     - Scroll bonus: abs(scrollDelta) * 0.002, capped at 0.08
-     - Bonus decays per frame (damping 0.92), so it eases back
-       to idle within ~800ms after the user stops scrolling.
+   Two rotation phases:
+     1) X-axis entry (same behavior as the old music-3d.js):
+        head-down (INITIAL_TILT = 0.55π) → face-camera (0) as the
+        user scrolls through Music. Scroll-progress is scaled by
+        SPEED=1.7 so the tilt finishes around 60% of Music scroll
+        (exactly like the original).
+     2) After X is done (progress >= 1), X stays at 0 and Y-axis
+        rotation takes over: idle spin at 0.005 rad/frame plus a
+        scroll bonus proportional to scroll speed (capped 0.08,
+        damped 0.92/frame — eases back to idle in ~800ms).
 
-   Position: mask.position.y tracks the center of either the
-   music slot or the booking slot, weighted by how much each
-   is on screen. This makes the mask appear to sit inside the
-   Music 3D slot, then glide smoothly into the center of the
-   Booking section as the user scrolls between them.
+   Position: locked to a fixed viewport Y fraction (POS_Y_VH) the
+   whole time the mask is visible, so the user "carries" the mask
+   from Music into Booking with no jump. Scale stays constant at
+   BASE_SCALE — same size in both sections.
    ============================================================ */
 
 import * as THREE from 'three';
@@ -22,28 +26,33 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 const canvas = document.getElementById('mask-3d-canvas');
+const musicSection   = document.getElementById('music-section');
+const bookingSection = document.getElementById('booking-section');
 const musicSlot   = document.getElementById('music-3d-slot');
 const bookingSlot = document.getElementById('booking-3d-slot');
 
-if (canvas && (musicSlot || bookingSlot)) init();
+if (canvas && (musicSection || bookingSection)) init();
 
 function init() {
   // -----------------------------------------------------------
   // CONFIG
   // -----------------------------------------------------------
-  const MODEL_URL    = '/assets/music/mask.glb';
-  const FOV_DEG      = 30;
-  const CAM_Z        = 5;
-  // Scale retuned for the fullscreen canvas (was 2.6 when canvas was only
-  // 48dvh tall; at 100dvh the mask would fill the whole viewport). Target
-  // ~45% of viewport height in Music view, ~25% in Booking (cards need room).
-  const BASE_SCALE   = 1.25;
-  const BOOKING_SCALE_MULT = 0.55;
+  const MODEL_URL     = '/assets/music/mask.glb';
+  const FOV_DEG       = 30;
+  const CAM_Z         = 5;
+  const BASE_SCALE    = 1.25;          // same size in Music and Booking
+  const POS_Y_VH      = 0.38;          // mask anchored at 38% of viewport height (matches Music slot center)
 
+  // Entry rotation (X-axis) — matches the old music-3d.js exactly
+  const INITIAL_TILT  = Math.PI * 0.55; // head-down when entering Music
+  const FINAL_TILT    = 0;              // face camera
+  const X_SCROLL_SPEED = 1.7;           // >1 so the tilt finishes before Music exits
+
+  // Post-entry rotation (Y-axis)
   const IDLE_ROT_SPEED = 0.005;  // rad/frame idle spin
-  const SCROLL_GAIN    = 0.002;  // multiplier on |deltaScroll| for bonus
-  const BONUS_CAP      = 0.08;   // max added rad/frame
-  const BONUS_DAMP     = 0.92;   // per-frame damping of scroll bonus
+  const SCROLL_GAIN    = 0.002;  // |deltaScroll| × this → bonus rad/frame
+  const BONUS_CAP      = 0.08;
+  const BONUS_DAMP     = 0.92;
 
   // -----------------------------------------------------------
   // SETUP
@@ -59,12 +68,11 @@ function init() {
     antialias: true,
     alpha: true
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));  // mobile-friendly
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.toneMapping = THREE.NoToneMapping;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.shadowMap.enabled = false;
 
-  // Lights — one ambient + one directional (cheap, mobile-safe)
   scene.add(new THREE.AmbientLight(0xffffff, 1.15));
   const keyLight = new THREE.DirectionalLight(0xfff1d6, 1.8);
   keyLight.position.set(2, 3, 4);
@@ -75,14 +83,14 @@ function init() {
   // -----------------------------------------------------------
   let model = null;
   let rafId = null;
-  let rendering = false;    // whether the RAF loop is running
-  let wantVisible = false;  // whether at least one target slot is on screen
+  let rendering = false;
+  let wantVisible = false;
   let lastScrollTop = 0;
-  let scrollBonus = 0;      // current added Y rotation per frame
-  let currentScale = BASE_SCALE;
+  let scrollBonus = 0;
+  let xProgress = 0;   // 0..1 — driven by Music section scroll
 
   // -----------------------------------------------------------
-  // RESIZE — canvas matches the fixed element's displayed size
+  // RESIZE
   // -----------------------------------------------------------
   function resize() {
     const rect = canvas.getBoundingClientRect();
@@ -93,7 +101,6 @@ function init() {
     camera.updateProjectionMatrix();
   }
   window.addEventListener('resize', resize);
-  // Initial + late resize (fonts/layout)
   resize();
   setTimeout(resize, 150);
 
@@ -101,7 +108,7 @@ function init() {
   // LOAD MODEL
   // -----------------------------------------------------------
   const loader = new GLTFLoader();
-  loader.setMeshoptDecoder(MeshoptDecoder);  // GLB is gltfpack meshopt-compressed
+  loader.setMeshoptDecoder(MeshoptDecoder);
   loader.load(
     MODEL_URL,
     (gltf) => {
@@ -119,18 +126,18 @@ function init() {
       model.userData.baseScalar = baseScalar;
       model.scale.setScalar(baseScalar);
 
-      // Default orientation: face camera, Y-up
-      model.rotation.set(0, 0, 0);
+      // Start in the entry pose: head-down, ready to lift as user scrolls
+      model.rotation.set(INITIAL_TILT, 0, 0);
 
       scene.add(model);
-      evaluateVisibility();   // kick the loop if already on a target section
+      evaluateVisibility();
     },
     undefined,
     (err) => console.error('[mask-3d] GLB load failed', err)
   );
 
   // -----------------------------------------------------------
-  // SCROLL TRACKING — scroller is .frame (desktop) or window
+  // SCROLL TRACKING
   // -----------------------------------------------------------
   const frame = document.getElementById('frame');
   let scroller = window;
@@ -144,21 +151,36 @@ function init() {
       : scroller.scrollTop;
   }
 
+  // Compute X-entry progress from Music section's position — identical to
+  // the old music-3d.js formula so the feel of the entry rotation is
+  // preserved exactly. Progress reaches 1 at ~60% of Music scroll.
+  function updateXProgress() {
+    if (!musicSection) { xProgress = 1; return; }
+    const rect = musicSection.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const total = rect.height + vh;
+    const scrolled = vh - rect.top;
+    const raw = scrolled / total;
+    xProgress = Math.max(0, Math.min(1, raw * X_SCROLL_SPEED));
+  }
+
   function onScroll() {
     const cur = getScrollTop();
     const delta = cur - lastScrollTop;
     lastScrollTop = cur;
-    // Bump scroll bonus proportional to scroll speed, capped
     const bonus = Math.min(BONUS_CAP, Math.abs(delta) * SCROLL_GAIN);
     if (bonus > scrollBonus) scrollBonus = bonus;
+    updateXProgress();
     evaluateVisibility();
   }
   (scroller === window ? window : scroller).addEventListener('scroll', onScroll, { passive: true });
 
   // -----------------------------------------------------------
-  // VISIBILITY — fade canvas in/out based on slot intersection
+  // VISIBILITY — based on music/booking SECTION overlap with viewport
+  // (not slots, which are small). The mask should be visible as long
+  // as either section is touching the viewport.
   // -----------------------------------------------------------
-  function slotWeight(el) {
+  function sectionWeight(el) {
     if (!el) return 0;
     const r = el.getBoundingClientRect();
     const vh = window.innerHeight || document.documentElement.clientHeight;
@@ -167,8 +189,8 @@ function init() {
   }
 
   function evaluateVisibility() {
-    const wM = slotWeight(musicSlot);
-    const wB = slotWeight(bookingSlot);
+    const wM = sectionWeight(musicSection);
+    const wB = sectionWeight(bookingSection);
     wantVisible = (wM + wB) > 0;
 
     if (wantVisible) {
@@ -176,8 +198,6 @@ function init() {
       if (!rendering && model) startRender();
     } else {
       canvas.classList.remove('mask-3d--visible');
-      // Don't stop rendering immediately — let fade-out complete.
-      // A short delay also covers quick scroll-past cases.
       scheduleStopIfHidden();
     }
   }
@@ -194,6 +214,7 @@ function init() {
     if (rendering) return;
     rendering = true;
     lastScrollTop = getScrollTop();
+    updateXProgress();
     rafId = requestAnimationFrame(animate);
   }
   function stopRender() {
@@ -203,56 +224,36 @@ function init() {
   }
 
   // -----------------------------------------------------------
-  // ANIMATION LOOP — rotate + position + render
+  // ANIMATION LOOP
   // -----------------------------------------------------------
   function animate() {
     if (!rendering) return;
     rafId = requestAnimationFrame(animate);
     if (!model) return;
 
-    // Rotation: idle + bonus, bonus decays each frame
-    model.rotation.y += IDLE_ROT_SPEED + scrollBonus;
-    scrollBonus *= BONUS_DAMP;
-    if (scrollBonus < 0.0005) scrollBonus = 0;
+    // Phase 1: X-axis entry tilt, scroll-linked (same as music-3d.js)
+    model.rotation.x = INITIAL_TILT + (FINAL_TILT - INITIAL_TILT) * xProgress;
 
-    // Position the mask so it appears at the weighted slot center
-    const wM = slotWeight(musicSlot);
-    const wB = slotWeight(bookingSlot);
-    const total = wM + wB;
-    if (total > 0) {
-      // Weighted pixel center
-      let targetPx = 0;
-      if (musicSlot) {
-        const r = musicSlot.getBoundingClientRect();
-        targetPx += (r.top + r.height / 2) * (wM / total);
-      }
-      if (bookingSlot) {
-        const r = bookingSlot.getBoundingClientRect();
-        targetPx += (r.top + r.height / 2) * (wB / total);
-      }
-
-      // Convert target pixel Y to world Y at z=0 plane
-      const canvasRect = canvas.getBoundingClientRect();
-      const vH = canvasRect.height || window.innerHeight;
-      const halfH = Math.tan((FOV_DEG * Math.PI / 180) / 2) * CAM_Z;
-      // Transform: pixel Y within canvas (0..vH) → NDC Y (+1..-1) → world Y
-      const pixelInCanvas = targetPx - canvasRect.top;
-      const yNdc = 1 - 2 * (pixelInCanvas / vH);
-      model.position.y = yNdc * halfH;
-
-      // Scale interpolation: smaller in booking, base in music
-      const bookingFrac = wB / total;
-      const scaleMult = 1 + (BOOKING_SCALE_MULT - 1) * bookingFrac;
-      const targetScale = (model.userData.baseScalar || 1) * scaleMult;
-      // Smooth toward target (per-frame lerp)
-      const cur = model.scale.x;
-      const next = cur + (targetScale - cur) * 0.12;
-      model.scale.setScalar(next);
+    // Phase 2: once the tilt is complete, Y-axis rotation takes over.
+    // During the entry (xProgress < 1), Y stays at 0 so the lift reads clean.
+    if (xProgress >= 1) {
+      model.rotation.y += IDLE_ROT_SPEED + scrollBonus;
+      scrollBonus *= BONUS_DAMP;
+      if (scrollBonus < 0.0005) scrollBonus = 0;
+    } else {
+      model.rotation.y = 0;
     }
+
+    // Position: fixed viewport Y fraction so the mask stays anchored
+    // in the same screen spot across Music and Booking — no jump.
+    const canvasRect = canvas.getBoundingClientRect();
+    const vH = canvasRect.height || window.innerHeight;
+    const halfH = Math.tan((FOV_DEG * Math.PI / 180) / 2) * CAM_Z;
+    const yNdc = 1 - 2 * POS_Y_VH;
+    model.position.y = yNdc * halfH;
 
     renderer.render(scene, camera);
   }
 
-  // Kick visibility evaluation on load (in case we're already mid-page)
   evaluateVisibility();
 }
