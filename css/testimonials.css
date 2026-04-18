@@ -124,15 +124,15 @@
   background: #111;
 }
 
-/* CTA pinned to the bottom of the rise panel, centered */
+/* CTA pinned to the bottom of the rise panel, centered.
+   White bg / black text / no arrow — max contrast on the dark panel. */
 .support-dms__cta {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   margin: 0 auto 40px;
-  padding: 13px 22px;
-  background: #A83030;
-  color: #E8E0D0;
+  padding: 13px 26px;
+  background: #FFFFFF;
+  color: #080808;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   font-size: 13px;
@@ -140,20 +140,10 @@
   text-transform: uppercase;
   border-radius: 4px;
   text-decoration: none;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
   flex-shrink: 0;
 }
-.support-dms__cta::after {
-  content: "";
-  display: inline-block;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 5px 0 5px 8px;
-  border-color: transparent transparent transparent #E8E0D0;
-  margin-left: 2px;
-}
 .support-dms__cta:hover {
-  background: #C83838;
+  background: #E8E0D0;
   transform: translateY(-2px);
 }
