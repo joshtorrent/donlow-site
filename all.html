@@ -65,7 +65,7 @@
       <ul class="nav__links">
         <li><a href="#bio-section">Bio</a></li>
         <li><a href="#reach-section">Reach</a></li>
-        <li><a href="#testimonials-section">Love</a></li>
+        <li><a href="#testimonials-section">Support</a></li>
       </ul>
     </nav>
 
@@ -199,49 +199,53 @@
     </div><!-- /.reach-scroll-wrap -->
 
     <!-- ================================================================
-         SECTION 4 — TESTIMONIALS ("They Play It. They Love It.")
+         SECTION 4 — WORLD WIDE SUPPORT (sticky title) + DMs (rise over)
+         Mirrors the WWR pattern: full-screen Anton title pinned over a
+         background video, then a dark rise panel with the DM carousel
+         that scrolls up to cover the title.
     ================================================================= -->
-    <section id="testimonials-section" class="testimonials">
-      <!-- Full-screen background video (uncropped, fills the whole section) -->
-      <video class="testimonials__bg-video" autoplay muted loop playsinline
-             preload="none" data-lazy-video
-             poster="/assets/testimonials/bg-video-poster.jpg">
-        <source src="/assets/testimonials/bg-video.mp4" type="video/mp4" />
-      </video>
-      <div class="testimonials__bg-dim"></div>
+    <div class="support-scroll-wrap">
 
-      <!-- Red horizontal bar separating title/CTA from the DM scroll zone -->
-      <div class="testimonials__red-bar" aria-hidden="true"></div>
+      <section id="testimonials-section" class="support-hero support-hero--sticky">
+        <video class="support-hero__video" autoplay muted loop playsinline
+               preload="none" data-lazy-video
+               poster="/assets/testimonials/bg-video-poster.jpg">
+          <source src="/assets/testimonials/bg-video.mp4" type="video/mp4" />
+        </video>
+        <div class="support-hero__dim"></div>
 
-      <!-- DMs scroll upward OVER the video (not hidden behind anything) -->
-      <div class="testimonials__dm-mask" aria-hidden="true">
-        <div class="testimonials__dm-track">
-          <img src="/assets/testimonials/dm-1.jpg" alt="" loading="lazy" width="800" height="1422" />
-          <img src="/assets/testimonials/dm-2.jpg" alt="" loading="lazy" width="800" height="1422" />
-          <img src="/assets/testimonials/dm-3.jpg" alt="" loading="lazy" width="800" height="1422" />
-          <img src="/assets/testimonials/dm-4.jpg" alt="" loading="lazy" width="800" height="1422" />
-          <img src="/assets/testimonials/dm-5.jpg" alt="" loading="lazy" width="800" height="1422" />
-          <img src="/assets/testimonials/dm-1.jpg" alt="" loading="lazy" width="800" height="1422" />
-          <img src="/assets/testimonials/dm-2.jpg" alt="" loading="lazy" width="800" height="1422" />
-          <img src="/assets/testimonials/dm-3.jpg" alt="" loading="lazy" width="800" height="1422" />
-          <img src="/assets/testimonials/dm-4.jpg" alt="" loading="lazy" width="800" height="1422" />
-          <img src="/assets/testimonials/dm-5.jpg" alt="" loading="lazy" width="800" height="1422" />
+        <div class="support-hero__content">
+          <h2 class="support-hero__title">World<br>Wide<br>Support.</h2>
         </div>
-      </div>
+      </section>
 
-      <!-- Title + CTA at top, OVER the video and DMs -->
-      <div class="testimonials__title-overlay">
-        <h2 class="testimonials__title">
-          <span class="testimonials__title-big">They<br>Play<br>It.</span>
-          <span class="testimonials__title-sub">They Love It.</span>
-        </h2>
-        <a class="testimonials__cta"
+      <section class="support-dms support-dms--rise">
+        <!-- DM carousel: 2 sets of 5 screenshots for the seamless loop.
+             JS translates the track; reset happens after exactly one
+             set-height of motion. -->
+        <div class="support-dms__mask" aria-hidden="true">
+          <div class="support-dms__track" id="support-dms-track">
+            <img src="/assets/testimonials/dm-1.jpg" alt="" loading="lazy" width="800" height="1422" />
+            <img src="/assets/testimonials/dm-2.jpg" alt="" loading="lazy" width="800" height="1422" />
+            <img src="/assets/testimonials/dm-3.jpg" alt="" loading="lazy" width="800" height="1422" />
+            <img src="/assets/testimonials/dm-4.jpg" alt="" loading="lazy" width="800" height="1422" />
+            <img src="/assets/testimonials/dm-5.jpg" alt="" loading="lazy" width="800" height="1422" />
+            <img src="/assets/testimonials/dm-1.jpg" alt="" loading="lazy" width="800" height="1422" />
+            <img src="/assets/testimonials/dm-2.jpg" alt="" loading="lazy" width="800" height="1422" />
+            <img src="/assets/testimonials/dm-3.jpg" alt="" loading="lazy" width="800" height="1422" />
+            <img src="/assets/testimonials/dm-4.jpg" alt="" loading="lazy" width="800" height="1422" />
+            <img src="/assets/testimonials/dm-5.jpg" alt="" loading="lazy" width="800" height="1422" />
+          </div>
+        </div>
+
+        <a class="support-dms__cta"
            href="https://drive.google.com/drive/folders/1svWwYOacrsDXl1dncXACINcgsNiFwABC?usp=sharing"
            target="_blank" rel="noopener">
-          Watch Live Clips
+          Watch the Clips
         </a>
-      </div>
-    </section>
+      </section>
+
+    </div><!-- /.support-scroll-wrap -->
 
     <!-- ================================================================
          SECTION 5 — MUSIC (simple: title, 3D mask, Spotify player)
@@ -428,8 +432,8 @@
        passed, then resets by exactly one set height → seamless loop. -->
   <script>
   (function () {
-    var track = document.querySelector('.testimonials__dm-track');
-    var mask  = document.querySelector('.testimonials__dm-mask');
+    var track = document.querySelector('.support-dms__track');
+    var mask  = document.querySelector('.support-dms__mask');
     if (!track || !mask) return;
 
     var SPEED   = 0.065;  // pixels per millisecond (~65 px/s) — slightly faster

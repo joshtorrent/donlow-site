@@ -1,62 +1,135 @@
 /* ============================================================
-   DON LOW — Testimonials section
-   "They Play It. They Love It." — DMs carousel + vertical video
+   DON LOW — "World Wide Support" section
+   Sticky hero (video + big Anton title) + dark DMs panel that
+   rises over it on scroll. Mirrors the WWR / Reach pattern so
+   the two sections feel like twins.
+
+   The old testimonials__* markup is gone; this file now targets
+   .support-* classes only. Keeping the file name for historical
+   continuity in the build and to minimize the <head> change.
    ============================================================ */
 
-.testimonials {
+/* Wrapper that establishes the scroll context for sticky + rise */
+.support-scroll-wrap {
   position: relative;
-  width: 100%;
-  min-height: calc(100vh - 60px);
-  min-height: calc(100dvh - 60px);
+}
+
+/* ---- Part 1: sticky video hero with the big title ---- */
+.support-hero--sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 1;
   overflow: hidden;
   background: #080808;
   color: #E8E0D0;
-  padding: 60px 0 50px;
 }
 
-/* Background video — blurred + dimmed */
-.testimonials__bg {
+.support-hero__video {
   position: absolute;
-  inset: 0;
+  top: -12%;        /* shift up slightly so head sits higher behind the title */
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(18px) brightness(0.35) saturate(0.7);
-  transform: scale(1.1);
+  object-position: center center;
   z-index: 0;
+  transform: scaleX(-1);  /* mirror, per Kevin's request */
 }
-.testimonials__overlay {
+
+.support-hero__dim {
   position: absolute;
   inset: 0;
-  background: rgba(8, 8, 8, 0.55);
+  background: linear-gradient(180deg,
+    rgba(8, 8, 8, 0.25) 0%,
+    rgba(8, 8, 8, 0.55) 60%,
+    rgba(8, 8, 8, 0.85) 100%);
   z-index: 1;
+  pointer-events: none;
 }
 
-.testimonials__content {
+/* Title block — flush left at top, exactly like WWR */
+.support-hero__content {
   position: relative;
   z-index: 2;
-  padding: 0 24px;
+  width: 100%;
+  padding: 30px 20px 0;
 }
 
-/* --- Title ------------------------------------------------- */
-.testimonials__title {
-  font-family: 'JRK', 'Teko', sans-serif;
-  font-size: clamp(40px, 12vw, 64px);
-  line-height: 0.92;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+.support-hero__title {
+  display: block;
+  margin: 0;
+  font-family: 'Anton', 'Archivo Black', 'Impact', 'Teko', sans-serif;
+  font-weight: 400;
+  font-size: clamp(72px, 22vw, 140px);
+  line-height: 0.88;
+  letter-spacing: -0.015em;
   color: #E8E0D0;
-  margin-bottom: 22px;
-}
-.testimonials__title .gold {
-  color: #9B7A1E;
+  text-transform: uppercase;
+  text-align: left;
 }
 
-/* --- CTA button ------------------------------------------- */
-.testimonials__cta {
+/* ---- Part 2: dark rise panel with DMs + CTA ----
+   Bounded to one viewport so the DMs carousel fits without making the
+   section thousands of pixels tall. */
+.support-dms--rise {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+  height: 100dvh;
+  background: #080808;
+  color: #E8E0D0;
+  padding: 48px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* DMs container — masked top/bottom so cards fade in/out gracefully.
+   min-height: 0 is required so this flex child can shrink below its
+   intrinsic content height (which is ~6400px for 10 DM screenshots). */
+.support-dms__mask {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  flex: 1 1 0;
+  min-height: 0;
+  margin: 0 auto 28px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom,
+    transparent 0%, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to bottom,
+    transparent 0%, #000 12%, #000 88%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Track drives the infinite upward scroll (JS writes translate3d) */
+.support-dms__track {
+  display: block;
+  will-change: transform;
+}
+.support-dms__track img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 800 / 1422;
+  border-radius: 14px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+  margin-bottom: 24px;
+  background: #111;
+}
+
+/* CTA pinned to the bottom of the rise panel, centered */
+.support-dms__cta {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  margin: 0 auto 40px;
   padding: 13px 22px;
   background: #A83030;
   color: #E8E0D0;
@@ -66,79 +139,21 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   border-radius: 4px;
-  margin-bottom: 32px;
-  transition: background 0.2s, transform 0.2s;
   text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+  flex-shrink: 0;
 }
-.testimonials__cta:hover {
+.support-dms__cta::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 8px;
+  border-color: transparent transparent transparent #E8E0D0;
+  margin-left: 2px;
+}
+.support-dms__cta:hover {
   background: #C83838;
   transform: translateY(-2px);
-}
-.testimonials__cta::after {
-  content: "▶";
-  font-size: 11px;
-}
-
-/* --- Main grid: vertical video + DM carousel ---------------- */
-.testimonials__main {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 14px;
-  align-items: stretch;
-  height: 55vh;
-  min-height: 420px;
-}
-
-.testimonials__video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-  background: #000;
-  box-shadow: 0 16px 60px rgba(0, 0, 0, 0.5);
-  display: block;
-}
-
-/* --- DM carousel — infinite vertical scroll ---------------- */
-.testimonials__dms {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 10px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
-}
-.dms-track {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  animation: scroll-dms 28s linear infinite;
-  will-change: transform;
-}
-.dms-track img {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-  background: #111;
-  display: block;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-}
-@keyframes scroll-dms {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-50%); }
-}
-
-/* --- Footer label ----------------------------------------- */
-.testimonials__footer {
-  position: relative;
-  z-index: 2;
-  margin-top: 28px;
-  padding: 0 24px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: #E8E0D0;
-  opacity: 0.5;
-  text-align: center;
 }
