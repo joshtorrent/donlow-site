@@ -76,7 +76,8 @@
   position: relative;
   z-index: 2;
   background: #E8E0D0;
-  padding: 28px 26px 36px;
+  /* Tighter horizontal padding (22px vs 26px) = +4px each side of extra width for text */
+  padding: 28px 22px 36px;
   min-height: 60vh;
   min-height: 60dvh;
   display: flex;
@@ -86,12 +87,15 @@
 .bio-paragraph {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  font-size: 14px;
-  line-height: 1.5;
+  /* Mobile-first: bumped from 14px to 18px for readability.
+     Line-height tightened (1.5 → 1.45) because the type is larger.
+     Word-spacing reduced (0.08em → 0.06em) to keep rhythm with bigger letters. */
+  font-size: 18px;
+  line-height: 1.45;
   letter-spacing: 0.03em;
   color: #080808;
   text-transform: uppercase;
-  word-spacing: 0.08em;
+  word-spacing: 0.06em;
   margin-bottom: auto;
 }
 
