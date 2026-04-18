@@ -316,33 +316,27 @@ html, body {
 }
 
 /* Bio "done" state — triggered by the bio-stop script once the body copy
-   has risen up to the bottom of the "Bio." title. At that moment we kill
-   the video, switch every bg surface to pure black, and flip the title
-   color from dark-on-beige to beige-on-black so it stays legible. Smooth
-   fade on everything. */
+   has risen up to the bottom of the "Bio." title. Fades the video to 0
+   so the final reading frame is just beige-on-black Bio. title + body
+   copy on the black sticky bg (title + sticky are already black, so no
+   bg switch needed). Text-section gets a black bg too so words read
+   cleanly once they've risen above the sticky. */
 .bio-content--done .bio-hero-video {
   opacity: 0;
   transition: opacity 0.45s ease;
 }
-.bio-content--done .bio-hero-sticky,
-.bio-content--done .bio-hero-title,
 .bio-content--done .bio-text-section,
 .bio-content--done {
   background: #080808;
-  transition: background 0.45s ease, color 0.45s ease;
-}
-.bio-content--done .bio-hero-title {
-  color: #E8E0D0;
+  transition: background 0.45s ease;
 }
 /* Reverse transitions when scrolling back up — user re-sees the video */
 .bio-content--preview .bio-hero-video {
   transition: opacity 0.35s ease;
 }
-.bio-content--preview .bio-hero-sticky,
-.bio-content--preview .bio-hero-title,
 .bio-content--preview .bio-text-section,
 .bio-content--preview {
-  transition: background 0.35s ease, color 0.35s ease;
+  transition: background 0.35s ease;
 }
 
 /* Socials — single line row, centered, just below bio text */

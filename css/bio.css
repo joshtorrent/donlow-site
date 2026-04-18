@@ -37,25 +37,25 @@
   height: calc(100dvh - 60px);
   overflow: hidden;
   z-index: 1;
-  background: #E8E0D0;
+  background: #080808;
 }
 
-/* Title — "Bio." in Anton, flush-left, opaque beige block at the top of
-   the sticky. Sits above the jaguar photo so the mask PNG no longer
-   needs to bake in the word. */
+/* Title — "Bio." in Anton, flush-left, beige letters on an opaque black
+   block at the top of the sticky. Sits above the jaguar photo so the
+   mask PNG no longer needs to bake in the word. */
 .bio-hero-title {
   position: relative;
   z-index: 3;
   margin: 0;
-  padding: 30px 20px 0;
+  padding: 30px 20px 12px;
   font-family: 'Anton', 'Archivo Black', 'Impact', 'Teko', sans-serif;
   font-weight: 400;
   font-size: clamp(96px, 34vw, 240px);
   line-height: 0.88;
   letter-spacing: -0.015em;
-  color: #080808;
+  color: #E8E0D0;
   text-transform: uppercase;
-  background: #E8E0D0;   /* opaque so the video behind never bleeds through */
+  background: #080808;   /* opaque so the video behind never bleeds through */
 }
 
 /* Cropped jaguar photo — no more "BIO." baked in. Flows just below the

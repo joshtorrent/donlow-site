@@ -533,11 +533,15 @@
   <!-- Booking section — generates the WhatsApp QR + stagger-reveals cards -->
   <script src="/js/booking.js" defer></script>
 
-  <!-- Bio stop detector: the cropped mask PNG no longer contains the "BIO."
-       title — it's now its own <h1>, with the jaguar photo sitting just
-       below. So the stop logic is dead simple: when the rising text's top
-       reaches the bottom of the title, we're at the landing point, switch
-       the bio into --done state (fade video, bg → black). -->
+  <!-- Bio stop + clamp: the cropped mask PNG no longer contains the
+       "BIO." title — it's now its own <h1>, with the jaguar photo
+       just below. As the body copy rises, we want it to STOP exactly
+       at the bottom of the title and stay pinned there (not continue
+       rising behind the title). Two things happen when it lands:
+         1) .bio-content--done class toggled → fades video, bg → black
+         2) transform: translateY applied to the text section to clamp
+            its visual position at title.bottom, so further scrolling
+            doesn't push it up. -->
   <script>
   (function () {
     var frame = document.getElementById('frame');
@@ -550,10 +554,18 @@
     function update() {
       scheduled = false;
       var titleRect = title.getBoundingClientRect();
-      var textRect  = text.getBoundingClientRect();
-      // Landing: text's top has risen to (or past) the bottom of the title.
-      // Small slack so we don't flicker at exactly the threshold.
-      var atStop = textRect.top <= titleRect.bottom + 1;
+
+      // Clamp: if the text's natural top would be above the title's bottom,
+      // push it back down so it visually stops at title.bottom. Strip any
+      // previous transform first so we measure the "natural" position.
+      text.style.transform = '';
+      var naturalTop = text.getBoundingClientRect().top;
+      var clamp = Math.max(0, titleRect.bottom - naturalTop);
+      if (clamp > 0) {
+        text.style.transform = 'translateY(' + clamp.toFixed(1) + 'px)';
+      }
+
+      var atStop = clamp > 0;
       if (atStop) bio.classList.add('bio-content--done');
       else        bio.classList.remove('bio-content--done');
     }
