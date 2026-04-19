@@ -18,14 +18,21 @@
     {
       "source": "/css/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=60, must-revalidate" }
       ]
     },
     {
       "source": "/js/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=60, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/all",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=0, must-revalidate" }
       ]
     }
   ]
 }
+</content>
