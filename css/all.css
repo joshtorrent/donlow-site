@@ -593,6 +593,15 @@ html, body {
   will-change: transform;
   text-decoration: none;
   color: inherit;
+  /* Button reset — .artwork is a <button> so Spotify player modal can open inline */
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
   /* JS sets --s (scale) and --y (levitation) as CSS custom props */
   transform: translateY(var(--y, 0px)) scale(var(--s, 0.82));
   transition: transform 0.05s linear;  /* tiny smoothing */

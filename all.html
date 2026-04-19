@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="/css/testimonials.css" />
 <link rel="stylesheet" href="/css/booking.css" />
 <link rel="stylesheet" href="/css/all.css" />
+<link rel="stylesheet" href="/css/player-modal.css" />
 
 <script type="importmap">
 {
@@ -258,73 +259,69 @@
            appear during the Music section. No canvas inside — just layout. -->
       <div class="music__3d" id="music-3d-slot" aria-hidden="true"></div>
 
-      <!-- Artworks horizontal slider — replaces the Spotify embed.
-           Each artwork has a track title button linking to Don Low's Spotify
-           artist page (same link for all — simpler to maintain).
+      <!-- Artworks horizontal slider.
+           Each artwork is a button that opens the inline Spotify player modal
+           (see /js/music-player.js + /data/tracks.json).
            Scales up at center, fades at edges, gentle levitation, auto-scroll. -->
       <div class="artworks" aria-label="Don Low artworks">
         <div class="artworks__track" id="artworks-track">
 
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
-            <div class="artwork__cover"><img src="/assets/music/artworks/aw-01.jpg" alt="" loading="lazy" width="800" height="800" /></div>
-            <span class="artwork__title">Bola</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          <button type="button" class="artwork" data-track-id="baile-bass-centuriao">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-02.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Baile Bass Part. 3 — Centurião</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="don-low-dang">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-03.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Don Low × Dang</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="namorado">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-04.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Namorado</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="ela-fica-de-4">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-05.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Ela Fica de 4</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="malandro">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-06.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Malandro</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="funk-motor">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-07.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Funk Motor</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="sex-funk-ww3-pt1">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-08.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Sex, Funk &amp; World War III — Part. 1</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="sex-funk-ww3-pt2">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-09.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Sex, Funk &amp; World War III — Part. 2</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="baile-bass-rzofunk">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-10.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Baile Bass Part. 1 — RzøFunk</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="orientelao-warda">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-11.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Orientelão Vol. II — Warda</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="orientelao-wawa">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-12.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">Orientelão Vol. IV — Wawa</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="ny-girls">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-13.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title">NY Girls</span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="aw-14">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-14.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title"></span>
-          </a>
-          <a class="artwork" href="https://open.spotify.com/intl-fr/artist/2fBDf4ES1SWLbeH4GuiOVz" target="_blank" rel="noopener">
+          </button>
+          <button type="button" class="artwork" data-track-id="aw-15">
             <div class="artwork__cover"><img src="/assets/music/artworks/aw-15.jpg" alt="" loading="lazy" width="800" height="800" /></div>
             <span class="artwork__title"></span>
-          </a>
+          </button>
 
         </div>
       </div>
@@ -649,6 +646,17 @@
   })();
   </script>
 
+  <!-- Inline Spotify player modal — desktop centered, mobile bottom sheet.
+       Triggered by .artwork[data-track-id] buttons in the Music section.
+       Data: /data/tracks.json ; Logic: /js/music-player.js -->
+  <div class="player-modal" id="player-modal" aria-hidden="true" role="dialog" aria-label="Spotify player">
+    <div class="player-modal__backdrop"></div>
+    <div class="player-modal__box">
+      <button type="button" class="player-modal__close" aria-label="Close player">×</button>
+      <div class="player-modal__player-wrap" id="player-modal-wrap"></div>
+    </div>
+  </div>
+  <script src="/js/music-player.js" defer></script>
 
 </body>
 </html>
