@@ -142,12 +142,23 @@
   opacity: 1;
 }
 
-/* Music section — the .music__3d placeholder reserves the visual slot
-   where the fixed mask sits while Music is on screen. No canvas inside
-   now, just a transparent sizing box. */
+/* Music slot — reserves the layout space UNDER the "MUSIC." title where
+   the 3D mask should visually sit, and pins there (position: sticky) once
+   the user has scrolled it to its sticky top. As long as it's pinned,
+   the fixed canvas draws the mask at its viewport rect, so the mask feels
+   like an element in the page layout: it arrives with the title from below,
+   sticks under the title during the Music scroll, then releases smoothly
+   as Music ends and hands off to the Booking slot (same pattern). */
 .music__3d#music-3d-slot {
-  opacity: 1;   /* no fade-in waiting for canvas — the fixed canvas handles visibility */
+  position: sticky;
+  top: 30px;
+  opacity: 1;
   transition: none;
+  pointer-events: none;
+}
+.booking__3d-slot {
+  position: sticky;
+  top: 30px;
 }
 
 
@@ -529,18 +540,22 @@ html, body {
 .artworks__track {
   display: flex;
   align-items: center;
-  gap: 18px;
-  padding: 40px 40vw; /* generous side padding so first/last can reach center */
+  gap: 14px;
+  /* Smaller vertical padding so the whole Music section fits in ~100vh
+     (Kevin: "joue plutôt sur la taille des artwork"). */
+  padding: 14px 40vw;
   width: max-content;
 }
 .artwork {
   flex: 0 0 auto;
-  width: 58vw;
-  max-width: 260px;
+  /* Cards reduced from 58vw/260px to 44vw/200px so they + title pill +
+     Music title + mask slot all sum under one viewport on mobile. */
+  width: 44vw;
+  max-width: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   scroll-snap-align: center;
   will-change: transform;
   text-decoration: none;

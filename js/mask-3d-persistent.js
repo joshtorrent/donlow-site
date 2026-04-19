@@ -282,25 +282,34 @@ function init() {
     const vH = canvasRect.height || window.innerHeight;
     const halfH = Math.tan((FOV_DEG * Math.PI / 180) / 2) * CAM_Z;
 
-    // Target viewport Y fraction. Always kept within [MUSIC_Y, BOOKING_Y]
-    // so the mask NEVER leaves the screen (Kevin: "SANS JUMP"):
-    //   • User in Music (booking far below):       target = MUSIC_Y
-    //   • User in Booking (booking top reached 0): target = BOOKING_Y
-    //   • Transition (booking entering viewport):  linear lerp between
-    // BOOKING_Y is slightly lower than MUSIC_Y so the mask visibly
-    // "descends" as Kevin asked — from ~38% viewport in Music down to
-    // ~48% viewport in Booking (landing under the BOOKING title).
-    const MUSIC_Y_VH = POS_Y_VH;       // 0.38
-    const BOOKING_Y_VH = 0.48;
-    let targetVh = MUSIC_Y_VH;
-    if (bookingSection) {
-      const bookingR = bookingSection.getBoundingClientRect();
-      // 0 when booking is still a full viewport away below,
-      // 1 when booking.top has reached viewport top.
-      const p = Math.max(0, Math.min(1, 1 - bookingR.top / vH));
-      targetVh = MUSIC_Y_VH + (BOOKING_Y_VH - MUSIC_Y_VH) * p;
+    // Target viewport pixel Y = scroll-progress-weighted average of the
+    // music and booking slot centers. Both slots are sticky in their
+    // section (pinned under their titles), so their rect.top returns
+    // the current on-screen position whether pinned or flowing. We
+    // lerp between the two centers based on how far past Music's top
+    // we've scrolled, so the mask transitions continuously from the
+    // Music sticky position to the Booking sticky position — no
+    // "nearest slot" switch, no jump.
+    const musicR = musicSlot ? musicSlot.getBoundingClientRect() : null;
+    const bookingR = bookingSlot ? bookingSlot.getBoundingClientRect() : null;
+    let targetPx;
+    if (musicR && bookingR && musicSection) {
+      const mCenter = musicR.top + musicR.height / 2;
+      const bCenter = bookingR.top + bookingR.height / 2;
+      const msR = musicSection.getBoundingClientRect();
+      // p = 0 at music.top = 0 (Music just arrived),
+      // p = 1 at music.top = -musicHeight (Music has fully scrolled past).
+      const p = Math.max(0, Math.min(1, -msR.top / Math.max(1, msR.height)));
+      targetPx = mCenter + (bCenter - mCenter) * p;
+    } else if (musicR) {
+      targetPx = musicR.top + musicR.height / 2;
+    } else if (bookingR) {
+      targetPx = bookingR.top + bookingR.height / 2;
+    } else {
+      targetPx = POS_Y_VH * vH;
     }
-    const yNdc = 1 - 2 * targetVh;
+    const pixelInCanvas = targetPx - canvasRect.top;
+    const yNdc = 1 - 2 * (pixelInCanvas / vH);
     const targetYWorld = yNdc * halfH;
 
     // Smooth toward target (per-frame lerp, ~18% catch-up)
