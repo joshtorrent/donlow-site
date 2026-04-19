@@ -4,14 +4,24 @@
    player on click. Sober, on-brand with the main presskit.
    ============================================================ */
 
+/* Reset the main presskit's body lock (Lenis smooth scroll uses
+   overflow:hidden + height:100vh on the home; /support needs the
+   native browser scroll instead). */
+html:has(body.support-page),
+body.support-page {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+  min-height: 100vh;
+  -webkit-overflow-scrolling: touch;
+}
+
 .support-page {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
   background: #0a0a0a;
   color: #E8E0D0;
   font-family: 'Barlow Condensed', 'Space Grotesk', system-ui, sans-serif;
-  overflow-x: hidden;
 }
 
 /* Close button — back to /all */

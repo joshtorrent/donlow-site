@@ -107,6 +107,22 @@
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
   if (backdrop) backdrop.addEventListener('click', closeModal);
 
+  /* Back button (×) — prefer history.back() so the user returns to
+     their exact scroll position on /all. Fall back to the href="/all"
+     anchor behavior if the user arrived on /support directly (bookmark,
+     shared link, etc.). */
+  var backBtn = document.querySelector('.support-page__back');
+  if (backBtn) {
+    backBtn.addEventListener('click', function (e) {
+      var ref = document.referrer;
+      var cameFromSite = ref && ref.indexOf(location.origin) === 0;
+      if (cameFromSite && history.length > 1) {
+        e.preventDefault();
+        history.back();
+      }
+    });
+  }
+
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
       closeModal();
