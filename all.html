@@ -345,6 +345,7 @@
            inline script at the end of this file. -->
       <video class="booking__bg-video" muted playsinline
              preload="metadata"
+             data-no-autoplay
              poster="/assets/booking/bg-video-poster.jpg?v=1">
         <source src="/assets/booking/bg-video.mp4?v=1" type="video/mp4" />
       </video>
@@ -401,11 +402,18 @@
   <canvas id="mask-3d-canvas" aria-hidden="true"></canvas>
 
   <!-- Force-play all videos on mobile: iOS Safari blocks autoplay sometimes,
-       retry on first user interaction + whenever the page becomes visible. -->
+       retry on first user interaction + whenever the page becomes visible.
+       Exception: any <video data-no-autoplay> is LEFT ALONE — it's
+       controlled by its own script (e.g. booking bg-video which must
+       only play when the user hits the very end of the page). Without
+       this opt-out, the booking video was getting forced to play on
+       DOMContentLoaded, load, first touch, and every tab-focus → it
+       was already playing long before Kevin reached the section end. -->
   <script>
   (function () {
     function playAll() {
       document.querySelectorAll('video').forEach(function (v) {
+        if (v.hasAttribute('data-no-autoplay')) return;
         try {
           v.muted = true;
           v.setAttribute('muted', '');
