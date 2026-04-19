@@ -196,14 +196,31 @@ function init() {
     return r.top < vh && r.bottom > 0;
   }
 
+  // Is Music approaching? (section top within one viewport below)
+  // We start the RAF render loop EARLY so the canvas has painted frames
+  // ready by the time visibility actually fires — no "blanc" at entry.
+  function musicApproaching() {
+    if (!musicSection) return false;
+    const r = musicSection.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    return r.top < vh && r.bottom > 0;
+  }
+
   function evaluateVisibility() {
     wantVisible = musicEntered() || bookingInView();
 
     if (wantVisible) {
       canvas.classList.add('mask-3d--visible');
-      if (!rendering && model) startRender();
     } else {
       canvas.classList.remove('mask-3d--visible');
+    }
+
+    // Keep rendering while music is approaching (even if not yet
+    // visible) so first paint is already on-screen when visibility fires.
+    const shouldRender = wantVisible || musicApproaching();
+    if (shouldRender && !rendering && model) {
+      startRender();
+    } else if (!shouldRender) {
       scheduleStopIfHidden();
     }
   }
@@ -265,42 +282,26 @@ function init() {
     const vH = canvasRect.height || window.innerHeight;
     const halfH = Math.tan((FOV_DEG * Math.PI / 180) / 2) * CAM_Z;
 
-    let targetYWorld;
-    if (xProgress < 1) {
-      // Fixed viewport Y
-      const yNdc = 1 - 2 * POS_Y_VH;
-      targetYWorld = yNdc * halfH;
-    } else {
-      // Target = center of the NEAREST slot (in viewport pixel Y).
-      // This works whether the slot is currently in view or not:
-      //   • Slot above viewport → targetPx is negative → mask drifts
-      //     off the top, naturally "following" Music as it scrolls.
-      //   • Slot below viewport → targetPx > vh → mask drifts in from
-      //     the bottom as Booking approaches.
-      //   • Between sections: whichever slot is closer to viewport wins,
-      //     so the mask transitions cleanly from Music to Booking.
-      // The per-frame lerp below smooths the switch.
-      const musicR = musicSlot ? musicSlot.getBoundingClientRect() : null;
-      const bookingR = bookingSlot ? bookingSlot.getBoundingClientRect() : null;
-      const viewportMid = vH / 2;
-      let targetPx;
-      if (musicR && bookingR) {
-        const musicCenter = musicR.top + musicR.height / 2;
-        const bookingCenter = bookingR.top + bookingR.height / 2;
-        const distMusic = Math.abs(musicCenter - viewportMid);
-        const distBooking = Math.abs(bookingCenter - viewportMid);
-        targetPx = distMusic < distBooking ? musicCenter : bookingCenter;
-      } else if (musicR) {
-        targetPx = musicR.top + musicR.height / 2;
-      } else if (bookingR) {
-        targetPx = bookingR.top + bookingR.height / 2;
-      } else {
-        targetPx = POS_Y_VH * vH;
-      }
-      const pixelInCanvas = targetPx - canvasRect.top;
-      const yNdc = 1 - 2 * (pixelInCanvas / vH);
-      targetYWorld = yNdc * halfH;
+    // Target viewport Y fraction. Always kept within [MUSIC_Y, BOOKING_Y]
+    // so the mask NEVER leaves the screen (Kevin: "SANS JUMP"):
+    //   • User in Music (booking far below):       target = MUSIC_Y
+    //   • User in Booking (booking top reached 0): target = BOOKING_Y
+    //   • Transition (booking entering viewport):  linear lerp between
+    // BOOKING_Y is slightly lower than MUSIC_Y so the mask visibly
+    // "descends" as Kevin asked — from ~38% viewport in Music down to
+    // ~48% viewport in Booking (landing under the BOOKING title).
+    const MUSIC_Y_VH = POS_Y_VH;       // 0.38
+    const BOOKING_Y_VH = 0.48;
+    let targetVh = MUSIC_Y_VH;
+    if (bookingSection) {
+      const bookingR = bookingSection.getBoundingClientRect();
+      // 0 when booking is still a full viewport away below,
+      // 1 when booking.top has reached viewport top.
+      const p = Math.max(0, Math.min(1, 1 - bookingR.top / vH));
+      targetVh = MUSIC_Y_VH + (BOOKING_Y_VH - MUSIC_Y_VH) * p;
     }
+    const yNdc = 1 - 2 * targetVh;
+    const targetYWorld = yNdc * halfH;
 
     // Smooth toward target (per-frame lerp, ~18% catch-up)
     if (model.userData.posY === undefined) model.userData.posY = targetYWorld;
@@ -308,16 +309,6 @@ function init() {
     model.position.y = model.userData.posY;
 
     renderer.render(scene, camera);
-  }
-
-  // Helper: amount of a slot currently in viewport (same as sectionWeight
-  // but parameterised — kept close to the animate loop for readability)
-  function slotWeight(el) {
-    if (!el) return 0;
-    const r = el.getBoundingClientRect();
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    const visible = Math.min(vh, r.bottom) - Math.max(0, r.top);
-    return Math.max(0, visible);
   }
 
   evaluateVisibility();

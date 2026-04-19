@@ -124,11 +124,14 @@
   z-index: 5;
   pointer-events: none;
   opacity: 0;
-  /* Short fade on the way IN (mask should feel "already there" when
-     the slot enters view), slightly longer fade on the way OUT so
-     the exit is smooth once user has left both slots. */
-  transition: opacity 0.15s ease;
+  /* Instant on the way IN — mask must be present the SECOND the MUSIC.
+     title hits the viewport top, no perceptible fade ("blanc"). Short
+     fade on the way OUT so the exit past Booking is clean. */
+  transition: opacity 0s;
   display: block;
+}
+#mask-3d-canvas:not(.mask-3d--visible) {
+  transition: opacity 0.25s ease;
 }
 @media (min-aspect-ratio: 1125/2436) {
   #mask-3d-canvas {
