@@ -147,20 +147,27 @@
      off viewport HEIGHT (which drives the frame width on desktop)
      instead. 22% of frame width = 22% × 46.2vh ≈ 10.2vh.
   --------------------------------------------------------------- */
+  /* All 5 titles share the same Anton visual grammar. On desktop
+     we scale them to the frame width, not the window width. Using
+     min(vw, vh) means: on very narrow desktop windows the vw term
+     wins; on normal/large desktop it's the vh term (since frame
+     width is derived from vh in the portrait mode). The target
+     visual size is roughly equal to the mobile equivalent. */
+  #reach-section .reach-hero__title,
   .reach-hero--centered .reach-hero__title {
-    font-size: min(34vw, 15.7vh);   /* was clamp(96px, 34vw, 240px) */
+    font-size: min(34vw, 15.7vh) !important;  /* was clamp(96px, 34vw, 240px) */
   }
   .support-hero__title {
-    font-size: min(22vw, 10.2vh);   /* was clamp(72px, 22vw, 140px) */
+    font-size: min(22vw, 10.2vh);             /* was clamp(72px, 22vw, 140px) */
   }
   .music__title {
-    font-size: min(26vw, 12vh);     /* was clamp(72px, 26vw, 180px) */
+    font-size: min(26vw, 12vh);               /* was clamp(72px, 26vw, 180px) */
   }
   .booking__title {
-    font-size: min(26vw, 12vh);     /* was clamp(72px, 26vw, 180px) */
+    font-size: min(26vw, 12vh);               /* was clamp(72px, 26vw, 180px) */
   }
   .bio-hero-title {
-    font-size: min(34vw, 15.7vh);   /* was clamp(96px, 34vw, 240px) */
+    font-size: min(34vw, 15.7vh);             /* was clamp(96px, 34vw, 240px) */
   }
 }
 #mask-3d-canvas.mask-3d--visible {
@@ -473,10 +480,11 @@ html, body {
   padding: 0 20px;
   text-align: left;
 }
+#reach-section .reach-hero__title,
 .reach-hero--centered .reach-hero__title {
   display: block;
   width: 100%;
-  font-family: 'Anton', 'Archivo Black', 'Impact', 'Teko', sans-serif;
+  font-family: 'Anton', 'Archivo Black', 'Impact', 'Teko', sans-serif !important;
   font-size: clamp(96px, 34vw, 240px);
   line-height: 0.88;
   letter-spacing: -0.015em;
