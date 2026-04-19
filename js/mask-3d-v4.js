@@ -161,14 +161,13 @@ function init() {
     const rect = musicSection.getBoundingClientRect();
     if (rect.top > 0) { xProgress = 0; return; }
     const scrolled = -rect.top;
-    // Tilt finishes at 30% of Music section's height (was 0.6 = 60%).
-    // Music is one viewport tall, and the natural scroll range between
-    // "just arrived" and "starting to reach Booking" is only ~40-50% of
-    // that height, so 60% meant the mask was still tilting as the user
-    // left the section. 30% means the mask reaches face-camera early,
-    // giving the user time to enjoy the portrait pose before Booking.
-    const total = rect.height * 0.3;
-    xProgress = Math.max(0, Math.min(1, scrolled / total));
+    // Music is exactly one viewport tall, and sits right after a sticky
+    // WWS section. The actual scroll distance the user gets INSIDE Music
+    // (before Booking starts pushing in from below) equals roughly the
+    // height of Music MINUS one viewport, i.e. close to zero. So we tie
+    // the tilt to a short absolute distance instead of a % of section
+    // height: 300px of scroll past Music's top = fully face-camera.
+    xProgress = Math.max(0, Math.min(1, scrolled / 300));
   }
 
   function onScroll() {
@@ -240,6 +239,10 @@ function init() {
     rendering = true;
     lastScrollTop = getScrollTop();
     updateXProgress();
+    // Clear cached posY so the first frame snaps to the target pixel
+    // instead of lerping from the last frozen value (which caused the
+    // mask to "slide in" from wherever it was when it was hidden).
+    if (model && model.userData) model.userData.posY = undefined;
     rafId = requestAnimationFrame(animate);
   }
   function stopRender() {
