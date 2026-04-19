@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>DON LOW — World Wide Support</title>
+  <meta name="description" content="DJs and artists around the world supporting Don Low." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;700&family=Teko:wght@700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/support-page.css" />
+</head>
+<body class="support-page">
+
+  <a class="support-page__back" href="/all" aria-label="Back to presskit">
+    <span aria-hidden="true">×</span>
+  </a>
+
+  <header class="support-page__header">
+    <h1 class="support-page__title">World Wide<br>Support.</h1>
+    <p class="support-page__subtitle">DJs and artists around the world — playing Don Low.</p>
+  </header>
+
+  <main class="support-page__grid" id="support-grid" aria-live="polite">
+    <!-- Clip cards injected by /js/support-page.js -->
+  </main>
+
+  <div class="support-page__modal" id="support-modal" aria-hidden="true" role="dialog" aria-label="Video player">
+    <div class="support-page__modal-backdrop"></div>
+    <button type="button" class="support-page__modal-close" aria-label="Close video">×</button>
+    <div class="support-page__modal-box">
+      <div class="support-page__modal-player-wrap">
+        <video class="support-page__modal-player" id="support-modal-player" playsinline controls preload="none"></video>
+      </div>
+      <div class="support-page__modal-info">
+        <div class="support-page__modal-dj" id="support-modal-dj"></div>
+        <div class="support-page__modal-venue" id="support-modal-venue"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/support-page.js" defer></script>
+</body>
+</html>
