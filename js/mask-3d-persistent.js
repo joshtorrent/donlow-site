@@ -41,7 +41,7 @@ function init() {
   const FOV_DEG       = 30;
   const CAM_Z         = 5;
   const BASE_SCALE    = 1.25;          // same size in Music and Booking
-  const POS_Y_VH      = 0.38;          // mask anchored at 38% of viewport height (matches Music slot center)
+  const POS_Y_VH      = 0.395;         // mask anchored at 39.5% viewport (measured slot center in Music AND Booking)
 
   // Entry rotation (X-axis) — matches the old music-3d.js exactly
   const INITIAL_TILT  = Math.PI * 0.55; // head-down when entering Music
@@ -282,32 +282,13 @@ function init() {
     const vH = canvasRect.height || window.innerHeight;
     const halfH = Math.tan((FOV_DEG * Math.PI / 180) / 2) * CAM_Z;
 
-    // Target viewport pixel Y = scroll-progress-weighted average of the
-    // music and booking slot centers. Both slots are sticky in their
-    // section (pinned under their titles), so their rect.top returns
-    // the current on-screen position whether pinned or flowing. We
-    // lerp between the two centers based on how far past Music's top
-    // we've scrolled, so the mask transitions continuously from the
-    // Music sticky position to the Booking sticky position — no
-    // "nearest slot" switch, no jump.
-    const musicR = musicSlot ? musicSlot.getBoundingClientRect() : null;
-    const bookingR = bookingSlot ? bookingSlot.getBoundingClientRect() : null;
-    let targetPx;
-    if (musicR && bookingR && musicSection) {
-      const mCenter = musicR.top + musicR.height / 2;
-      const bCenter = bookingR.top + bookingR.height / 2;
-      const msR = musicSection.getBoundingClientRect();
-      // p = 0 at music.top = 0 (Music just arrived),
-      // p = 1 at music.top = -musicHeight (Music has fully scrolled past).
-      const p = Math.max(0, Math.min(1, -msR.top / Math.max(1, msR.height)));
-      targetPx = mCenter + (bCenter - mCenter) * p;
-    } else if (musicR) {
-      targetPx = musicR.top + musicR.height / 2;
-    } else if (bookingR) {
-      targetPx = bookingR.top + bookingR.height / 2;
-    } else {
-      targetPx = POS_Y_VH * vH;
-    }
+    // Music and Booking slots live at the SAME offset in their sections
+    // (both right under their respective big title). Since each section
+    // fits in one viewport, the slot center always lands at the same
+    // screen Y whether Music or Booking is the active section. So the
+    // mask just needs to stay at that fixed viewport Y — which IS the
+    // "sticky" behavior Kevin asked for, simple and jump-free.
+    const targetPx = POS_Y_VH * vH;
     const pixelInCanvas = targetPx - canvasRect.top;
     const yNdc = 1 - 2 * (pixelInCanvas / vH);
     const targetYWorld = yNdc * halfH;
