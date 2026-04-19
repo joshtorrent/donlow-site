@@ -14,6 +14,9 @@ assets/Page Archievments/
 *.MOV
 *.mov
 
+# Helper scripts — kept in repo for re-running locally, not shipped.
+assets/support/_*.sh
+
 # Editor / OS
 .DS_Store
 Thumbs.db
