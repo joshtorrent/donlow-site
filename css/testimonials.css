@@ -73,15 +73,15 @@
 }
 
 /* ---- Part 2: dark rise panel with DMs + CTA ----
-   Min-height only (80vh, matching WWR's .proof--rise pattern) so the
-   transition to the next section feels tight — the previous full
-   100vh setup left a long black tail visible as Music was entering
-   from below. */
+   Full viewport tall (100vh) so the rising panel fully covers the sticky
+   hero at max scroll — matches the WWR pattern where the proof rises up
+   to meet and hide the hero title. Kevin asked for the DMs to rise all
+   the way to the top like WWR does. */
 .support-dms--rise {
   position: relative;
   z-index: 2;
-  min-height: 80vh;
-  min-height: 80dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: #080808;
   color: #E8E0D0;
   padding: 48px 20px 40px;
