@@ -60,6 +60,12 @@
     "spotify": { "kind": "track", "id": "7626ESrOQj0RAS0drGxi2B" }
   },
   {
+    "id": "orientelao-luta",
+    "title": "Orientelão Vol. III — Luta",
+    "cover": "/assets/music/artworks/luta.jpg",
+    "spotify": { "kind": "track", "id": "7Mz4cIm2U0C44iSyAmwFvN" }
+  },
+  {
     "id": "orientelao-wawa",
     "title": "Orientelão Vol. IV — Wawa",
     "cover": "/assets/music/artworks/aw-12.jpg",
