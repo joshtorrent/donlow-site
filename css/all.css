@@ -137,6 +137,31 @@
   #mask-3d-canvas {
     max-width: calc(100vh * (1125 / 2436));
   }
+
+  /* ---------------------------------------------------------------
+     DESKTOP TITLE SCALING — on desktop the .frame is portrait-ratio
+     (~46.2% of viewport height wide, centered with black sides). The
+     section titles use clamp(px, VW, px) which references the FULL
+     window width, so on a 1500px desktop "22vw" = 330px, way bigger
+     than the 375-ish frame can hold. Override each title to scale
+     off viewport HEIGHT (which drives the frame width on desktop)
+     instead. 22% of frame width = 22% × 46.2vh ≈ 10.2vh.
+  --------------------------------------------------------------- */
+  .reach-hero--centered .reach-hero__title {
+    font-size: min(34vw, 15.7vh);   /* was clamp(96px, 34vw, 240px) */
+  }
+  .support-hero__title {
+    font-size: min(22vw, 10.2vh);   /* was clamp(72px, 22vw, 140px) */
+  }
+  .music__title {
+    font-size: min(26vw, 12vh);     /* was clamp(72px, 26vw, 180px) */
+  }
+  .booking__title {
+    font-size: min(26vw, 12vh);     /* was clamp(72px, 26vw, 180px) */
+  }
+  .bio-hero-title {
+    font-size: min(34vw, 15.7vh);   /* was clamp(96px, 34vw, 240px) */
+  }
 }
 #mask-3d-canvas.mask-3d--visible {
   opacity: 1;
