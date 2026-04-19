@@ -177,24 +177,20 @@ function init() {
   (scroller === window ? window : scroller).addEventListener('scroll', onScroll, { passive: true });
 
   // -----------------------------------------------------------
-  // VISIBILITY — mask is tied STRICTLY to the Music section (and
-  // Booking). It must NOT bleed into the preceding Support section
-  // even while Music is peeking from below. So trigger only once
-  // music.rect.top is at or above viewport top (user has arrived).
-  // Combined with the 0.15s canvas fade, the mask appears instantly
-  // the moment Music takes over the viewport — "déjà là".
+  // VISIBILITY — mask = "a PNG placed between the title and the
+  // artworks". It should exist (be visible) whenever its slot
+  // element is intersecting the viewport, and NOT before. That's
+  // the exact behavior of a static image in the page layout —
+  // visible when its position is visible, invisible otherwise.
   // -----------------------------------------------------------
-  function musicEntered() {
-    if (!musicSection) return false;
-    const r = musicSection.getBoundingClientRect();
-    return r.top <= 1 && r.bottom > 0;
-  }
-  function bookingInView() {
-    if (!bookingSection) return false;
-    const r = bookingSection.getBoundingClientRect();
+  function slotIntersectsViewport(el) {
+    if (!el) return 0;
+    const r = el.getBoundingClientRect();
     const vh = window.innerHeight || document.documentElement.clientHeight;
-    return r.top < vh && r.bottom > 0;
+    return Math.max(0, Math.min(vh, r.bottom) - Math.max(0, r.top));
   }
+  function musicEntered()  { return slotIntersectsViewport(musicSlot)   > 0; }
+  function bookingInView() { return slotIntersectsViewport(bookingSlot) > 0; }
 
   // Is Music approaching? (section top within one viewport below)
   // We start the RAF render loop EARLY so the canvas has painted frames
@@ -282,13 +278,30 @@ function init() {
     const vH = canvasRect.height || window.innerHeight;
     const halfH = Math.tan((FOV_DEG * Math.PI / 180) / 2) * CAM_Z;
 
-    // Music and Booking slots live at the SAME offset in their sections
-    // (both right under their respective big title). Since each section
-    // fits in one viewport, the slot center always lands at the same
-    // screen Y whether Music or Booking is the active section. So the
-    // mask just needs to stay at that fixed viewport Y — which IS the
-    // "sticky" behavior Kevin asked for, simple and jump-free.
-    const targetPx = POS_Y_VH * vH;
+    // Mask = "PNG between title and artworks". Target pixel Y is the
+    // center of the currently-visible slot. When BOTH slots are
+    // intersecting the viewport (during the Music→Booking handoff),
+    // use an intersection-area weighted average of the two centers so
+    // the mask glides continuously from one slot to the other with NO
+    // jump. When only one slot is visible, it's 100% that slot.
+    const aM = slotIntersectsViewport(musicSlot);
+    const aB = slotIntersectsViewport(bookingSlot);
+    const total = aM + aB;
+    let targetPx;
+    if (total > 0) {
+      let sum = 0;
+      if (aM > 0 && musicSlot) {
+        const r = musicSlot.getBoundingClientRect();
+        sum += (r.top + r.height / 2) * (aM / total);
+      }
+      if (aB > 0 && bookingSlot) {
+        const r = bookingSlot.getBoundingClientRect();
+        sum += (r.top + r.height / 2) * (aB / total);
+      }
+      targetPx = sum;
+    } else {
+      targetPx = POS_Y_VH * vH;
+    }
     const pixelInCanvas = targetPx - canvasRect.top;
     const yNdc = 1 - 2 * (pixelInCanvas / vH);
     const targetYWorld = yNdc * halfH;
