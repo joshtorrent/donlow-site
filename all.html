@@ -563,11 +563,14 @@
     function check() {
       scheduled = false;
       if (hasPlayed) return;
-      var rect = section.getBoundingClientRect();
-      var vh = window.innerHeight || document.documentElement.clientHeight;
-      // User has reached the end of the section when its bottom edge
-      // is at (or above) the viewport bottom.
-      if (rect.bottom <= vh + 1) {
+      // Trigger = user has reached the absolute bottom of the page
+      // (can't scroll any further). This is the last possible moment
+      // the user can reveal anything new. `.frame` is the scroll
+      // container on this site.
+      var el = (frame && /auto|scroll/.test(getComputedStyle(frame).overflowY)) ? frame : document.scrollingElement || document.documentElement;
+      var top = el.scrollTop;
+      var max = el.scrollHeight - el.clientHeight;
+      if (max > 0 && top >= max - 2) {
         hasPlayed = true;
         try {
           video.muted = true;
