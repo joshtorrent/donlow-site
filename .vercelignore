@@ -1,0 +1,28 @@
+# Raw source material — not shipped to prod.
+# Without this file, `vercel` (CLI or GitHub integration) uploads the
+# whole working tree including 5+ GB of untracked source videos, which
+# fails with "Max request body size" / timeout errors.
+assets/Animation 1/
+assets/Contenu brut Don Low/
+assets/Content Processed Don Low/
+assets/Page Bio/
+assets/3D/
+assets/_originals/
+*.psd
+*.MOV
+*.mov
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python
+__pycache__/
+*.pyc
+
+# Claude agent metadata
+.claude/
