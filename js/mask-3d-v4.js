@@ -161,7 +161,13 @@ function init() {
     const rect = musicSection.getBoundingClientRect();
     if (rect.top > 0) { xProgress = 0; return; }
     const scrolled = -rect.top;
-    const total = rect.height * 0.6;   // tilt finishes at 60% through Music
+    // Tilt finishes at 30% of Music section's height (was 0.6 = 60%).
+    // Music is one viewport tall, and the natural scroll range between
+    // "just arrived" and "starting to reach Booking" is only ~40-50% of
+    // that height, so 60% meant the mask was still tilting as the user
+    // left the section. 30% means the mask reaches face-camera early,
+    // giving the user time to enjoy the portrait pose before Booking.
+    const total = rect.height * 0.3;
     xProgress = Math.max(0, Math.min(1, scrolled / total));
   }
 
