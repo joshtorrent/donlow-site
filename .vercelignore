@@ -16,6 +16,7 @@ assets/Page Archievments/
 
 # Helper scripts — kept in repo for re-running locally, not shipped.
 assets/support/_*.sh
+assets/_*.py
 
 # Editor / OS
 .DS_Store
