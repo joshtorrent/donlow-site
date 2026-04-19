@@ -1,0 +1,86 @@
+[
+  {
+    "id": "clip-01",
+    "dj": "Nas Thug",
+    "venue": "Boiler Room — NY Girls",
+    "video": "/assets/support/clip-01.mp4",
+    "thumbnail": "/assets/support/clip-01.jpg"
+  },
+  {
+    "id": "clip-02",
+    "dj": "Cut Killer",
+    "venue": "France 2 TV",
+    "video": "/assets/support/clip-02.mp4",
+    "thumbnail": "/assets/support/clip-02.jpg"
+  },
+  {
+    "id": "clip-03",
+    "dj": "Rain Katayanagi",
+    "venue": "Glastonbury, UK",
+    "video": "/assets/support/clip-03.mp4",
+    "thumbnail": "/assets/support/clip-03.jpg"
+  },
+  {
+    "id": "clip-04",
+    "dj": "Tropkillaz × Klean / Apashe",
+    "venue": "Studio Session",
+    "video": "/assets/support/clip-04.mp4",
+    "thumbnail": "/assets/support/clip-04.jpg"
+  },
+  {
+    "id": "clip-05",
+    "dj": "Untalasalsa",
+    "venue": "Boiler Room",
+    "video": "/assets/support/clip-05.mp4",
+    "thumbnail": "/assets/support/clip-05.jpg"
+  },
+  {
+    "id": "clip-06",
+    "dj": "Mau Moctezuma",
+    "venue": "Antidoto Club",
+    "video": "/assets/support/clip-06.mp4",
+    "thumbnail": "/assets/support/clip-06.jpg"
+  },
+  {
+    "id": "clip-07",
+    "dj": "Tye Turner",
+    "venue": "Syber Experience",
+    "video": "/assets/support/clip-07.mp4",
+    "thumbnail": "/assets/support/clip-07.jpg"
+  },
+  {
+    "id": "clip-08",
+    "dj": "Baby J",
+    "venue": "Syber Asia",
+    "video": "/assets/support/clip-08.mp4",
+    "thumbnail": "/assets/support/clip-08.jpg"
+  },
+  {
+    "id": "clip-09",
+    "dj": "Akalex",
+    "venue": "NY Girls",
+    "video": "/assets/support/clip-09.mp4",
+    "thumbnail": "/assets/support/clip-09.jpg"
+  },
+  {
+    "id": "clip-10",
+    "dj": "SANTO",
+    "venue": "Polonia",
+    "video": "/assets/support/clip-10.mp4",
+    "thumbnail": "/assets/support/clip-10.jpg"
+  },
+  {
+    "id": "clip-11",
+    "dj": "Mabrada",
+    "venue": "Baile Trama",
+    "video": "/assets/support/clip-11.mp4",
+    "thumbnail": "/assets/support/clip-11.jpg"
+  },
+  {
+    "id": "clip-12",
+    "dj": "Tye Turner × Baby J",
+    "venue": "Syber Experience",
+    "video": "/assets/support/clip-12.mp4",
+    "thumbnail": "/assets/support/clip-12.jpg"
+  }
+]
