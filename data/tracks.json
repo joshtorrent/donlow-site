@@ -6,10 +6,10 @@
     "spotify": { "kind": "track", "id": "2DRFSa39n4hqukdXD61KOf" }
   },
   {
-    "id": "don-low-dang",
-    "title": "Don Low × Dang",
+    "id": "bico-da-glock",
+    "title": "Bico da Glock",
     "cover": "/assets/music/artworks/aw-03.jpg",
-    "spotify": { "kind": "artist", "id": "2fBDf4ES1SWLbeH4GuiOVz" }
+    "spotify": { "kind": "track", "id": "6uniCXawPfK6JRjXkABMys" }
   },
   {
     "id": "namorado",
@@ -72,14 +72,14 @@
     "spotify": { "kind": "track", "id": "4jxQsDi5s6TI8CoWbZQG9M" }
   },
   {
-    "id": "aw-14",
-    "title": "",
+    "id": "pro-novinho",
+    "title": "Pro Novinho",
     "cover": "/assets/music/artworks/aw-14.jpg",
-    "spotify": { "kind": "artist", "id": "2fBDf4ES1SWLbeH4GuiOVz" }
+    "spotify": { "kind": "track", "id": "0DElvr9OSPNrIUVKZPn9Hs" }
   },
   {
-    "id": "aw-15",
-    "title": "",
+    "id": "ta-ardendo",
+    "title": "Tá Ardendo Mas Eu Aguento",
     "cover": "/assets/music/artworks/aw-15.jpg",
     "spotify": { "kind": "artist", "id": "2fBDf4ES1SWLbeH4GuiOVz" }
   }
