@@ -1,0 +1,86 @@
+[
+  {
+    "id": "baile-bass-centuriao",
+    "title": "Baile Bass Part. 3 — Centurião",
+    "cover": "/assets/music/artworks/aw-02.jpg",
+    "spotify": { "kind": "track", "id": "2DRFSa39n4hqukdXD61KOf" }
+  },
+  {
+    "id": "don-low-dang",
+    "title": "Don Low × Dang",
+    "cover": "/assets/music/artworks/aw-03.jpg",
+    "spotify": { "kind": "artist", "id": "2fBDf4ES1SWLbeH4GuiOVz" }
+  },
+  {
+    "id": "namorado",
+    "title": "Namorado",
+    "cover": "/assets/music/artworks/aw-04.jpg",
+    "spotify": { "kind": "artist", "id": "2fBDf4ES1SWLbeH4GuiOVz" }
+  },
+  {
+    "id": "ela-fica-de-4",
+    "title": "Ela Fica de 4",
+    "cover": "/assets/music/artworks/aw-05.jpg",
+    "spotify": { "kind": "track", "id": "1YgKJqEaTIreRid9AKpeMz" }
+  },
+  {
+    "id": "malandro",
+    "title": "Malandro",
+    "cover": "/assets/music/artworks/aw-06.jpg",
+    "spotify": { "kind": "track", "id": "0M2dpuO9ONK0SlLRQlU5EZ" }
+  },
+  {
+    "id": "funk-motor",
+    "title": "Funk Motor",
+    "cover": "/assets/music/artworks/aw-07.jpg",
+    "spotify": { "kind": "track", "id": "2QBB1vwjVIsZ1gEFASW5lK" }
+  },
+  {
+    "id": "sex-funk-ww3-pt1",
+    "title": "Sex, Funk & World War III — Part. 1",
+    "cover": "/assets/music/artworks/aw-08.jpg",
+    "spotify": { "kind": "album", "id": "4s0SbBFgJh3LTUTeOU0G04" }
+  },
+  {
+    "id": "sex-funk-ww3-pt2",
+    "title": "Sex, Funk & World War III — Part. 2",
+    "cover": "/assets/music/artworks/aw-09.jpg",
+    "spotify": { "kind": "album", "id": "4s0SbBFgJh3LTUTeOU0G04" }
+  },
+  {
+    "id": "baile-bass-rzofunk",
+    "title": "Baile Bass Part. 1 — RzøFunk",
+    "cover": "/assets/music/artworks/aw-10.jpg",
+    "spotify": { "kind": "track", "id": "5AT7Cuzw19Z4DlxaRc6Dzm" }
+  },
+  {
+    "id": "orientelao-warda",
+    "title": "Orientelão Vol. II — Warda",
+    "cover": "/assets/music/artworks/aw-11.jpg",
+    "spotify": { "kind": "track", "id": "7626ESrOQj0RAS0drGxi2B" }
+  },
+  {
+    "id": "orientelao-wawa",
+    "title": "Orientelão Vol. IV — Wawa",
+    "cover": "/assets/music/artworks/aw-12.jpg",
+    "spotify": { "kind": "track", "id": "0Lwztg9K3olAV73ehgStxa" }
+  },
+  {
+    "id": "ny-girls",
+    "title": "NY Girls",
+    "cover": "/assets/music/artworks/aw-13.jpg",
+    "spotify": { "kind": "track", "id": "4jxQsDi5s6TI8CoWbZQG9M" }
+  },
+  {
+    "id": "aw-14",
+    "title": "",
+    "cover": "/assets/music/artworks/aw-14.jpg",
+    "spotify": { "kind": "artist", "id": "2fBDf4ES1SWLbeH4GuiOVz" }
+  },
+  {
+    "id": "aw-15",
+    "title": "",
+    "cover": "/assets/music/artworks/aw-15.jpg",
+    "spotify": { "kind": "artist", "id": "2fBDf4ES1SWLbeH4GuiOVz" }
+  }
+]
