@@ -159,15 +159,15 @@ function init() {
   function updateXProgress() {
     if (!musicSection) { xProgress = 1; return; }
     const rect = musicSection.getBoundingClientRect();
-    if (rect.top > 0) { xProgress = 0; return; }
-    const scrolled = -rect.top;
-    // Music is exactly one viewport tall, and sits right after a sticky
-    // WWS section. The actual scroll distance the user gets INSIDE Music
-    // (before Booking starts pushing in from below) equals roughly the
-    // height of Music MINUS one viewport, i.e. close to zero. So we tie
-    // the tilt to a short absolute distance instead of a % of section
-    // height: 300px of scroll past Music's top = fully face-camera.
-    xProgress = Math.max(0, Math.min(1, scrolled / 300));
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    // Rotation is tied to Music's ARRIVAL progress, not to scrolling
+    // past it. Music is one viewport tall, so there is barely any
+    // scroll distance INSIDE Music — we use the "how much of the
+    // section has arrived from below" signal instead:
+    //   rect.top = vh  → Music just peeking at the bottom → xProgress 0 (head-down)
+    //   rect.top = 0   → Music fully at viewport top     → xProgress 1 (face camera)
+    //   rect.top < 0   → Music scrolling out the top     → xProgress stays 1
+    xProgress = Math.max(0, Math.min(1, 1 - rect.top / vh));
   }
 
   function onScroll() {
@@ -287,12 +287,13 @@ function init() {
     const vH = canvasRect.height || window.innerHeight;
     const halfH = Math.tan((FOV_DEG * Math.PI / 180) / 2) * CAM_Z;
 
-    // Mask = "PNG between title and artworks". Target pixel Y is the
-    // center of the currently-visible slot. When BOTH slots are
-    // intersecting the viewport (during the Music→Booking handoff),
-    // use an intersection-area weighted average of the two centers so
-    // the mask glides continuously from one slot to the other with NO
-    // jump. When only one slot is visible, it's 100% that slot.
+    // Target pixel Y = center of the music or booking slot, whichever
+    // is closer to the viewport. We ALWAYS aim at a real slot center
+    // (even when both slots are off-screen), so the mask pre-renders
+    // at the correct future position. This way, the instant the slot
+    // becomes visible, the mask is already there — no "slide in from
+    // previous position" artefact. Weighted average when both slots
+    // overlap the viewport, for a smooth Music→Booking handoff.
     const aM = slotIntersectsViewport(musicSlot);
     const aB = slotIntersectsViewport(bookingSlot);
     const total = aM + aB;
@@ -308,6 +309,23 @@ function init() {
         sum += (r.top + r.height / 2) * (aB / total);
       }
       targetPx = sum;
+    } else if (musicSlot && bookingSlot) {
+      // Neither in view — aim at whichever slot is closer to the
+      // viewport center. During the Music-approaching phase this is
+      // the music slot (below the viewport), so the mask renders low
+      // and ready. When it scrolls into view, no jump.
+      const musicR = musicSlot.getBoundingClientRect();
+      const bookingR = bookingSlot.getBoundingClientRect();
+      const viewMid = vH / 2;
+      const mCenter = musicR.top + musicR.height / 2;
+      const bCenter = bookingR.top + bookingR.height / 2;
+      targetPx = Math.abs(mCenter - viewMid) < Math.abs(bCenter - viewMid) ? mCenter : bCenter;
+    } else if (musicSlot) {
+      const r = musicSlot.getBoundingClientRect();
+      targetPx = r.top + r.height / 2;
+    } else if (bookingSlot) {
+      const r = bookingSlot.getBoundingClientRect();
+      targetPx = r.top + r.height / 2;
     } else {
       targetPx = POS_Y_VH * vH;
     }
