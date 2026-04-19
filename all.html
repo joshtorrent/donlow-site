@@ -339,12 +339,11 @@
     ================================================================= -->
     <section id="booking-section" class="booking">
       <!-- Background video — stays on its poster (a still frame) until
-           Booking is FULLY in view, then plays. NOT autoplay and NOT
-           data-lazy-video (both fire too early — the user would see the
-           video moving as Music is still leaving the screen). A small
-           inline script at the end of this file observes the section
-           and toggles play/pause. -->
-      <video class="booking__bg-video" muted loop playsinline
+           the user has fully REACHED THE END of the booking section
+           (bottom of section = bottom of viewport), then plays once,
+           then freezes on the last frame. No loop. Controlled by the
+           inline script at the end of this file. -->
+      <video class="booking__bg-video" muted playsinline
              preload="metadata"
              poster="/assets/booking/bg-video-poster.jpg?v=1">
         <source src="/assets/booking/bg-video.mp4?v=1" type="video/mp4" />
@@ -546,31 +545,55 @@
   <!-- Booking section — generates the WhatsApp QR + stagger-reveals cards -->
   <script src="/js/booking.js" defer></script>
 
-  <!-- Booking background video — only starts playing once the section
-       is FULLY in view (threshold 0.95). Pauses on exit. Kevin asked
-       for this so the video doesn't move while the user is still on
-       Music / transitioning in. The poster stays visible meanwhile. -->
+  <!-- Booking background video — plays ONCE when the user has scrolled
+       to the very end of the section (section bottom reaches viewport
+       bottom). Before that, poster stays visible (so the beige Music
+       seam is clean). After playback, video freezes on the last frame
+       (no loop). If the user scrolls back up and returns, it stays on
+       the last frame — no replay. -->
   <script>
   (function () {
     var video = document.querySelector('.booking__bg-video');
     var section = document.getElementById('booking-section');
-    if (!video || !section || !('IntersectionObserver' in window)) return;
+    var frame = document.getElementById('frame');
+    if (!video || !section) return;
 
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.intersectionRatio >= 0.95) {
-          try {
-            video.muted = true;
-            if (video.readyState === 0) { try { video.load(); } catch (x) {} }
-            var p = video.play();
-            if (p && p.catch) p.catch(function () {});
-          } catch (x) {}
-        } else if (!e.isIntersecting) {
-          try { if (!video.paused) video.pause(); } catch (x) {}
-        }
-      });
-    }, { threshold: [0, 0.95, 1] });
-    io.observe(section);
+    var hasPlayed = false;
+    var scheduled = false;
+    function check() {
+      scheduled = false;
+      if (hasPlayed) return;
+      var rect = section.getBoundingClientRect();
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      // User has reached the end of the section when its bottom edge
+      // is at (or above) the viewport bottom.
+      if (rect.bottom <= vh + 1) {
+        hasPlayed = true;
+        try {
+          video.muted = true;
+          video.loop = false;
+          if (video.readyState === 0) { try { video.load(); } catch (x) {} }
+          var p = video.play();
+          if (p && p.catch) p.catch(function () {});
+        } catch (x) {}
+      }
+    }
+    function request() {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(check);
+    }
+
+    // On 'ended', pause so the browser sticks on the last rendered frame
+    // (no rewind, no loop).
+    video.addEventListener('ended', function () {
+      try { video.pause(); } catch (x) {}
+    });
+
+    var scroller = frame && /auto|scroll/.test(getComputedStyle(frame).overflowY) ? frame : window;
+    scroller.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    request();
   })();
   </script>
 
