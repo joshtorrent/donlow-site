@@ -1,0 +1,121 @@
+/* ============================================================
+   DON LOW — Inline Spotify player modal
+   Desktop: centered modal (scale + fade).
+   Mobile:  bottom sheet (slide up, swipe-down to dismiss).
+   ============================================================ */
+
+.player-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  pointer-events: none;
+}
+.player-modal[aria-hidden="false"] {
+  display: block;
+  pointer-events: auto;
+}
+
+.player-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 8, 8, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.player-modal[aria-hidden="false"] .player-modal__backdrop {
+  opacity: 1;
+}
+
+.player-modal__box {
+  position: absolute;
+  background: #0a0a0a;
+  color: #E8E0D0;
+  box-shadow: 0 -8px 60px rgba(0, 0, 0, 0.7);
+}
+
+.player-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(232, 224, 208, 0.08);
+  border: none;
+  color: #E8E0D0;
+  font-family: 'Anton', 'Space Grotesk', sans-serif;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 200ms ease, transform 200ms ease;
+}
+.player-modal__close:hover,
+.player-modal__close:focus-visible {
+  background: #A83030;
+  transform: scale(1.06);
+  outline: none;
+}
+
+.player-modal__player-wrap {
+  padding: 56px 20px 20px;
+  min-height: 240px;
+}
+.player-modal__player-wrap iframe {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+}
+
+/* MOBILE — bottom sheet */
+@media (max-width: 767px) {
+  .player-modal__box {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 60vh;
+    min-height: 420px;
+    border-radius: 16px 16px 0 0;
+    transform: translateY(100%);
+    transition: transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .player-modal[aria-hidden="false"] .player-modal__box {
+    transform: translateY(0);
+  }
+  /* Swipe grabber */
+  .player-modal__box::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 4px;
+    background: rgba(232, 224, 208, 0.3);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+}
+
+/* DESKTOP — centered modal */
+@media (min-width: 768px) {
+  .player-modal__box {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.96);
+    opacity: 0;
+    width: min(520px, 90vw);
+    border-radius: 10px;
+    transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 300ms ease;
+  }
+  .player-modal[aria-hidden="false"] .player-modal__box {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
