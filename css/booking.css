@@ -12,11 +12,55 @@
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
-  background: #E8E0D0;     /* palette Music — continuity with the mask */
+  /* Fallback beige matches Music and the video's dominant color (#d8c9b2)
+     so if the video takes a beat to paint, there's no color flash. */
+  background: #E8E0D0;
   color: #080808;
   padding: 32px 0 48px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+/* Background video — covers the whole section, behind all content. */
+.booking__bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Dim + blend overlay:
+   - Top 20% fades from solid Music beige → transparent, so the seam
+     with the previous section (Music, #E8E0D0 solid beige) is invisible.
+   - Middle is fully transparent so the video shows through.
+   - Light dim (rgba beige) across the whole frame to bump text
+     readability without washing the video out. */
+.booking__bg-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(232, 224, 208, 1) 0%,
+      rgba(232, 224, 208, 0.75) 8%,
+      rgba(232, 224, 208, 0) 20%),
+    linear-gradient(180deg,
+      rgba(232, 224, 208, 0.15) 0%,
+      rgba(232, 224, 208, 0.15) 100%);
+}
+
+/* All content sits above the video + overlay */
+.booking__title-wrap,
+.booking__3d-slot,
+.booking__contacts {
+  position: relative;
+  z-index: 2;
 }
 
 /* Title — same treatment as Music (light-bg section family) */

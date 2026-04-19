@@ -338,6 +338,16 @@
          columns under the mask — no stickers, no QR.
     ================================================================= -->
     <section id="booking-section" class="booking">
+      <!-- Background video — lazy-loaded, muted, loops. Sits behind all
+           the booking content (z-index 0). A dimming overlay on top
+           keeps the text readable. -->
+      <video class="booking__bg-video" autoplay muted loop playsinline
+             preload="none" data-lazy-video
+             poster="/assets/booking/bg-video-poster.jpg?v=1">
+        <source src="/assets/booking/bg-video.mp4?v=1" type="video/mp4" />
+      </video>
+      <div class="booking__bg-dim" aria-hidden="true"></div>
+
       <div class="booking__title-wrap">
         <h2 class="booking__title">Booking.</h2>
       </div>
