@@ -338,11 +338,14 @@
          columns under the mask — no stickers, no QR.
     ================================================================= -->
     <section id="booking-section" class="booking">
-      <!-- Background video — lazy-loaded, muted, loops. Sits behind all
-           the booking content (z-index 0). A dimming overlay on top
-           keeps the text readable. -->
-      <video class="booking__bg-video" autoplay muted loop playsinline
-             preload="none" data-lazy-video
+      <!-- Background video — stays on its poster (a still frame) until
+           Booking is FULLY in view, then plays. NOT autoplay and NOT
+           data-lazy-video (both fire too early — the user would see the
+           video moving as Music is still leaving the screen). A small
+           inline script at the end of this file observes the section
+           and toggles play/pause. -->
+      <video class="booking__bg-video" muted loop playsinline
+             preload="metadata"
              poster="/assets/booking/bg-video-poster.jpg?v=1">
         <source src="/assets/booking/bg-video.mp4?v=1" type="video/mp4" />
       </video>
@@ -542,6 +545,34 @@
 
   <!-- Booking section — generates the WhatsApp QR + stagger-reveals cards -->
   <script src="/js/booking.js" defer></script>
+
+  <!-- Booking background video — only starts playing once the section
+       is FULLY in view (threshold 0.95). Pauses on exit. Kevin asked
+       for this so the video doesn't move while the user is still on
+       Music / transitioning in. The poster stays visible meanwhile. -->
+  <script>
+  (function () {
+    var video = document.querySelector('.booking__bg-video');
+    var section = document.getElementById('booking-section');
+    if (!video || !section || !('IntersectionObserver' in window)) return;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.intersectionRatio >= 0.95) {
+          try {
+            video.muted = true;
+            if (video.readyState === 0) { try { video.load(); } catch (x) {} }
+            var p = video.play();
+            if (p && p.catch) p.catch(function () {});
+          } catch (x) {}
+        } else if (!e.isIntersecting) {
+          try { if (!video.paused) video.pause(); } catch (x) {}
+        }
+      });
+    }, { threshold: [0, 0.95, 1] });
+    io.observe(section);
+  })();
+  </script>
 
   <!-- Bio stop + clamp: as the body copy rises, we want it to STOP at
        the bottom of the BIO. title and stay pinned there (not continue
